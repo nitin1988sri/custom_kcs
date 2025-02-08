@@ -1,3 +1,4 @@
+
 app_name = "custom_kcs"
 app_title = "Custom Kcs"
 app_publisher = "saurabh srivastava"
@@ -7,6 +8,8 @@ app_license = "mit"
 
 # Apps
 # ------------------
+after_migrate = ["custom_kcs.src.custom_field.create_employee_image_field" ]   
+
 
 # required_apps = []
 
