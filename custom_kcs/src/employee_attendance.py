@@ -2,7 +2,7 @@ import frappe
 from custom_kcs.src.utils.base64_utils import decode_base64
 
 @frappe.whitelist()
-def employee_checkin(employee, log_type, base64_image=None, filename=None):
+def attendance(employee, log_type, base64_image=None, filename=None):
     try:
         file_url = None  
         
