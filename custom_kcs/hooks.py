@@ -152,7 +152,6 @@ scheduler_events = {
 # 		"on_trash": "method"
 # 	}
 # }
-
 # Scheduled Tasks
 # ---------------
 
