@@ -10,6 +10,11 @@ app_license = "mit"
 # ------------------
 after_migrate = ["custom_kcs.src.custom_field.create_employee_image_field" ]   
 
+scheduler_events = {
+    "all": [
+        "custom_kcs.src.utils.delete_old_attendance.delete_old_attendance_files"
+    ]
+}
 
 # required_apps = []
 
@@ -151,23 +156,23 @@ after_migrate = ["custom_kcs.src.custom_field.create_employee_image_field" ]
 # Scheduled Tasks
 # ---------------
 
-# scheduler_events = {
-# 	"all": [
-# 		"custom_kcs.tasks.all"
-# 	],
-# 	"daily": [
-# 		"custom_kcs.tasks.daily"
-# 	],
-# 	"hourly": [
-# 		"custom_kcs.tasks.hourly"
-# 	],
-# 	"weekly": [
-# 		"custom_kcs.tasks.weekly"
-# 	],
-# 	"monthly": [
-# 		"custom_kcs.tasks.monthly"
-# 	],
-# }
+scheduler_events = {
+	"all": [
+        "custom_kcs.src.utils.delete_old_attendance.delete_old_attendance_files"
+	],
+	# "daily": [
+	# 	"custom_kcs.tasks.daily"
+	# ],
+	# "hourly": [
+	# 	"custom_kcs.tasks.hourly"
+	# ],
+	# "weekly": [
+	# 	"custom_kcs.tasks.weekly"
+	# ],
+	# "monthly": [
+	# 	"custom_kcs.tasks.monthly"
+	# ],
+}
 
 # Testing
 # -------
