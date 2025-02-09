@@ -1,6 +1,5 @@
 import frappe
 from custom_kcs.src.utils.base64_utils import decode_base64
-import base64
 import os
 
 
