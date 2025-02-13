@@ -8,7 +8,10 @@ app_license = "mit"
 
 # Apps
 # ------------------
-after_migrate = ["custom_kcs.src.custom_field.create_employee_image_field" ]   
+after_migrate = ["custom_kcs.src.custom_fields.custom_field.create_employee_image_field",
+                 "custom_kcs.src.custom_fields.create_contract_doctype.create_custom_fields",
+                 "custom_kcs.src.custom_fields.create_contract_role_doctype.create_contract_role_doctype"
+                ]   
 
 scheduler_events = {
     "all": [
@@ -51,7 +54,7 @@ scheduler_events = {
 # page_js = {"page" : "public/js/file.js"}
 
 # include js in doctype views
-# doctype_js = {"doctype" : "public/js/doctype.js"}
+doctype_js = {"Contract": "public/js/contract.js"}
 # doctype_list_js = {"doctype" : "public/js/doctype_list.js"}
 # doctype_tree_js = {"doctype" : "public/js/doctype_tree.js"}
 # doctype_calendar_js = {"doctype" : "public/js/doctype_calendar.js"}
@@ -155,9 +158,16 @@ scheduler_events = {
 # Scheduled Tasks
 # ---------------
 
+doc_events = {
+    "Contract": {
+        "before_save": "custom_kcs.src.contract.update_personnel_count"
+    }
+}
+
 scheduler_events = {
 	"all": [
-        "custom_kcs.src.utils.delete_old_attendance.delete_old_attendance_files"
+        "custom_kcs.src.cron.delete_old_attendance.delete_old_attendance_files",
+        "custom_kcs.src.cron.send_contract_renewal_reminder.send_contract_renewal_reminder"
 	],
 	# "daily": [
 	# 	"custom_kcs.tasks.daily"
