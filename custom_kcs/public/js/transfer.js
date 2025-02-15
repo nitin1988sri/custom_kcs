@@ -12,7 +12,7 @@ function fetchEmployees() {
             response.message.forEach(emp => {
                 let option = document.createElement("option");
                 option.value = emp.name;
-                option.text = emp.employee_name;
+                option.text = emp.employee_name+" {"+ emp.branch+"}";
                 employeeSelect.appendChild(option);
             });
         }
@@ -45,6 +45,7 @@ function transferSecurityGuard() {
         method: "custom_kcs.src.assign_temporary_transfer.assign_temporary_transfer",
         args: { employee_id, temp_branch_id, start_date, end_date },
         callback: function(response) {
+            console.log(response)
             document.getElementById("response").innerHTML = `<p>${response.message}</p>`;
         }
     });
