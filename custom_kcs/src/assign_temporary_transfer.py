@@ -1,6 +1,11 @@
 import frappe
 from frappe.utils import nowdate
 
+
+@frappe.whitelist()
+def validate_admin_access():
+    return "Administrator" in frappe.get_roles(frappe.session.user)
+
 @frappe.whitelist()
 def get_employees():
     employees = frappe.get_all("Employee", fields=["name", "employee_name", "branch"])
@@ -13,6 +18,9 @@ def get_branches():
 
 @frappe.whitelist()
 def assign_temporary_transfer(employee_id, temp_branch_id, start_date, end_date):
+    if "Administrator" not in frappe.get_roles(frappe.session.user):
+        frappe.throw("You are not authorized to perform this action.", frappe.PermissionError)
+
     employee = frappe.get_doc("Employee", employee_id)
     original_branch = employee.branch
     current_contract = frappe.get_value("Contract", {"party_name": employee.client}, "name")

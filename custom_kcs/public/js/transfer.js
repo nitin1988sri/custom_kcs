@@ -50,3 +50,16 @@ function transferSecurityGuard() {
         }
     });
 }
+
+
+frappe.ready(function () {
+    frappe.call({
+        method: "custom_kcs.src.assign_temporary_transfer.validate_admin_access",
+        callback: function (response) {
+            if (!response.message) {  
+                frappe.msgprint(__("You are not authorized to access this page."));
+                window.location.href = "/app"; 
+            }
+        }
+    });
+});

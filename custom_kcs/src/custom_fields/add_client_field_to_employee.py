@@ -5,7 +5,6 @@ def add_client_field_to_employee():
         print("Employee doctype does not exist!")
         return
 
-    # Check if the client field already exists
     if not frappe.db.exists("Custom Field", {"dt": "Employee", "fieldname": "client"}):
         custom_field = frappe.get_doc({
             "doctype": "Custom Field",
