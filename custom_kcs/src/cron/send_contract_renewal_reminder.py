@@ -4,11 +4,11 @@ def send_contract_renewal_reminder():
     today = frappe.utils.today()
     contracts = frappe.get_all("Contract", 
         filters={"contract_end_date": ["<=", frappe.utils.add_days(today, 30)]},
-        fields=["name", "customer", "contract_end_date"])
+        fields=["name", "customer", "contract_end_date", "party_user"])
     
     for contract in contracts:
         frappe.sendmail(
-            recipients=["admin@example.com"],
+            recipients=contract['party_user'],
             subject=f"Contract Renewal Reminder: {contract['name']}",
             message=f"The contract {contract['name']} with {contract['customer']} is ending on {contract['contract_end_date']}. Please review for renewal."
         )

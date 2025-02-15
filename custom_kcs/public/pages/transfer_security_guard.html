@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Security Guard Transfer</title>
+    <script src="/assets/frappe/js/frappe-web.min.js"></script>
+    <script src="/assets/custom_kcs/js/transfer.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        label, input, select { display: block; margin-bottom: 10px; }
+        button { background-color: blue; color: white; padding: 8px 16px; border: none; cursor: pointer; }
+        button:hover { background-color: darkblue; }
+    </style>
+</head>
+<body>
+    <h2>Security Guard Transfer</h2>
+
+    <label for="employee">Select Employee:</label>
+    <select id="employee"></select>
+
+    <label for="temp_branch">Select Temporary Branch:</label>
+    <select id="temp_branch"></select>
+
+    <label for="start_date">Start Date:</label>
+    <input type="date" id="start_date">
+
+    <label for="end_date">End Date:</label>
+    <input type="date" id="end_date">
+
+    <button onclick="transferSecurityGuard()">Transfer</button>
+
+    <div id="response"></div>
+</body>
+</html>

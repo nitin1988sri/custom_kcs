@@ -10,7 +10,10 @@ app_license = "mit"
 # ------------------
 after_migrate = ["custom_kcs.src.custom_fields.custom_field.create_employee_image_field",
                  "custom_kcs.src.custom_fields.create_contract_doctype.create_custom_fields",
-                 "custom_kcs.src.custom_fields.create_contract_role_doctype.create_contract_role_doctype"
+                 "custom_kcs.src.custom_fields.create_contract_role_doctype.create_contract_role_doctype",
+                 "custom_kcs.src.custom_fields.add_fields_to_branch.add_fields_to_branch",
+                 "custom_kcs.src.custom_fields.create_temporary_transfer_doctype.create_temporary_transfer_doctype",
+                 "custom_kcs.src.custom_fields.add_client_field_to_employee.add_client_field_to_employee",				 
                 ]   
 
 scheduler_events = {
@@ -166,12 +169,11 @@ doc_events = {
 
 scheduler_events = {
 	"all": [
-        "custom_kcs.src.cron.delete_old_attendance.delete_old_attendance_files",
-        "custom_kcs.src.cron.send_contract_renewal_reminder.send_contract_renewal_reminder"
+        "custom_kcs.src.cron.delete_old_attendance.delete_old_attendance_files"
 	],
-	# "daily": [
-	# 	"custom_kcs.tasks.daily"
-	# ],
+	"daily": [
+		"custom_kcs.src.cron.send_contract_renewal_reminder.send_contract_renewal_reminder"
+	],
 	# "hourly": [
 	# 	"custom_kcs.tasks.hourly"
 	# ],
