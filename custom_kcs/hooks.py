@@ -13,7 +13,9 @@ after_migrate = ["custom_kcs.src.custom_fields.custom_field.create_employee_imag
                  "custom_kcs.src.custom_fields.create_contract_role_doctype.create_contract_role_doctype",
                  "custom_kcs.src.custom_fields.add_fields_to_branch.add_fields_to_branch",
                  "custom_kcs.src.custom_fields.create_temporary_transfer_doctype.create_temporary_transfer_doctype",
-                 "custom_kcs.src.custom_fields.add_client_field_to_employee.add_client_field_to_employee",				 
+                 "custom_kcs.src.custom_fields.add_client_field_to_employee.add_client_field_to_employee",	
+                 "custom_kcs.src.custom_fields.create_shift_log_doctype.create_shift_log_doctype",
+                 "custom_kcs.src.custom_fields.add_fields_to_employee_checkin.add_fields_to_employee_checkin"
                 ]   
 
 scheduler_events = {
@@ -164,8 +166,12 @@ doctype_js = {"Contract": "public/js/contract.js"}
 doc_events = {
     "Contract": {
         "before_save": "custom_kcs.src.contract.update_personnel_count"
+    },
+    "Employee Checkin": {
+        "before_insert": "custom_kcs.src.before_insert_checkin.before_insert_checkin"
     }
 }
+
 
 scheduler_events = {
 	"all": [

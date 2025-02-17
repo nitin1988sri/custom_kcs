@@ -3,7 +3,7 @@ import os
 from frappe.utils import get_files_path, now_datetime, add_days
 
 def delete_old_attendance_files():
-    seven_days_ago = add_days(now_datetime(), -7)
+    seven_days_ago = add_days(now_datetime(), -45)
     checkins = frappe.get_all(
         "Employee Checkin",
         filters={"creation": ("<=", seven_days_ago), "employee_image": ["!=", ""]},
