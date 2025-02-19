@@ -3,7 +3,6 @@ from custom_kcs.src.utils.base64_utils import decode_base64
 import os
 from frappe.utils import now, get_time, today
 
-
 @frappe.whitelist()
 def attendance(employee, log_type, base64_image=None, filename=None, branch=None, work_location=None):
     try:
@@ -32,24 +31,22 @@ def attendance(employee, log_type, base64_image=None, filename=None, branch=None
             file_doc.insert(ignore_permissions=True)
             frappe.db.commit()
 
+        if log_type == "IN":
+            response = check_in_employee_for_shift(employee, branch, work_location)
+        elif log_type == "OUT":
+            response = check_out_employee_for_shift(employee)
+
         checkin = frappe.get_doc({
             "doctype": "Employee Checkin",
             "employee": employee,
             "log_type": log_type,
             "employee_image": file_url,
+            "branch": branch,
+            "work_location": work_location,
         })
-        
         checkin.flags.ignore_hooks = True
-
         checkin.insert(ignore_permissions=True)
         frappe.db.commit()
-
-        if log_type == "IN":
-            response = check_in_employee_for_shift(employee, branch, work_location)
-            return response
-        elif log_type == "OUT":
-            response = check_out_employee_for_shift(employee)
-
         return {
             "status": response.get("status"),
             "message": response.get("message"),

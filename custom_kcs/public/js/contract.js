@@ -34,3 +34,48 @@ function fetchPersonnelCount(frm, cdt, cdn, role, branch) {
         }
     });
 }
+
+
+frappe.ui.form.on('Contract', {
+	// Recalculate on form refresh
+	refresh: function(frm) {
+		calculateMonthlyContractValue(frm);
+	},
+
+	// Recalculate on validating the form
+	validate: function(frm) {
+		calculateMonthlyContractValue(frm);
+	}
+});
+
+// Also, trigger calculation when any row in the child table "roles" is changed.
+frappe.ui.form.on('Contract Role', {
+	roles_add: function(frm, cdt, cdn) {
+		calculateMonthlyContractValue(frm);
+	},
+	
+	// When any field in the child table row changes
+	no_of_personnel: function(frm, cdt, cdn) {
+		calculateMonthlyContractValue(frm);
+	},
+	billing_rate: function(frm, cdt, cdn) {
+		calculateMonthlyContractValue(frm);
+	},
+	
+	// When a row is removed, recalc the total
+	on_remove: function(frm, cdt, cdn) {
+		calculateMonthlyContractValue(frm);
+	}
+});
+
+function calculateMonthlyContractValue(frm) {
+	let total = 0;
+	
+	(frm.doc.roles || []).forEach(function(row) {
+		if (row.billing_rate && row.no_of_personnel) {
+			total += row.billing_rate * row.no_of_personnel;
+		}
+	});
+	
+	frm.set_value("monthly_contract_value", total);
+}

@@ -9,7 +9,27 @@ def validate_admin_access():
 @frappe.whitelist()
 def get_employees():
     employees = frappe.get_all("Employee", fields=["name", "employee_name", "branch"])
+    
+    for emp in employees:
+        shift_logs = frappe.get_all(
+            "Shift Log", 
+            filters={"employee": emp.name}, 
+            fields=["shift_type", "check_in_time"],
+            order_by="check_in_time desc",
+            limit_page_length=2
+        )
+        shift_info = ""
+        for log in shift_logs:
+            if log.shift_type.lower() == "day shift":
+                shift_info += " (Day shift done)"
+            elif log.shift_type.lower() == "night shift":
+                shift_info += " (Night shift done)"
+        emp["shift_info"] = shift_info
     return employees
+
+# def get_employees():
+#     employees = frappe.get_all("Employee", fields=["name", "employee_name", "branch"])
+#     return employees
 
 @frappe.whitelist()
 def get_branches():

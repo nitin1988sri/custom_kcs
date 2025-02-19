@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Security Guard Transfer</title>
+    <title>OverTime</title>
 
     <script src="/assets/frappe/js/frappe-web.min.js"></script>
     <script src="/assets/custom_kcs/js/transfer.js"></script>
 
     <style>
-        .page-container {
+      .page-container {
             max-width: 600px;
             margin: auto;
             padding: 20px;
@@ -29,6 +29,35 @@
             text-align: center;
             font-weight: bold;
         }
+        /* Suggestion Items */
+        .suggestions {
+            border: 1px solid #ddd;
+            overflow-y: auto;
+            background: #fff;
+            z-index: 100;
+            width: 100%;
+        }
+        .suggestion-item {
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #fff;
+            transition: background 0.3s ease;
+        }
+        .suggestion-item:hover {
+            background-color: #f0f0f0;
+            font-weight: bold;
+        }
+        /* Style the text selection in the input */
+        #employee_input::selection {
+            background: #ffeb3b;
+            color: #000;
+        }
+        #employee_input::-moz-selection {
+            background: #ffeb3b;
+            color: #000;
+        }
+  
     </style>
 </head>
 <body>
@@ -37,10 +66,12 @@
         <div class="card">
             <h2>Security Guard Transfer</h2>
 
-            <div class="frappe-control">
-                <label for="employee">Select Employee:</label>
-                <select id="employee" class="form-control"></select>
+            <div class="frappe-control autocomplete-container">
+                <label for="employee_input">Select Employee:</label>
+                <input type="text" id="employee_input" class="form-control" placeholder="Search by EmpID or Emp Name" />
+                <div id="employee_suggestions" class="suggestions"></div>
             </div>
+
 
             <div class="frappe-control">
                 <label for="temp_branch">Select Temporary Branch:</label>
