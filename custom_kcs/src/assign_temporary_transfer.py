@@ -27,10 +27,6 @@ def get_employees():
         emp["shift_info"] = shift_info
     return employees
 
-# def get_employees():
-#     employees = frappe.get_all("Employee", fields=["name", "employee_name", "branch"])
-#     return employees
-
 @frappe.whitelist()
 def get_branches():
     branches = frappe.get_all("Branch", fields=["branch"])

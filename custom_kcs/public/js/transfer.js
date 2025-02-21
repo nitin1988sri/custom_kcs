@@ -5,7 +5,6 @@ document.addEventListener("DOMContentLoaded", function() {
     setupEmployeeSearch();
 });
 
-// Fetch employees from the server
 function fetchEmployees() {
     frappe.call({
       method: "custom_kcs.src.assign_temporary_transfer.get_employees",
@@ -41,16 +40,14 @@ function setupEmployeeSearch() {
     
     const suggestionsContainer = document.getElementById("employee_suggestions");
 
-    // Listen for input changes
     employeeInput.addEventListener("input", function(e) {
         let query = e.target.value.toLowerCase();
         suggestionsContainer.innerHTML = "";
 
         if (query.length === 0) {
-            return; // Do not show suggestions if query is empty
+            return; 
         }
 
-        // Filter employees by empID (name) or employee_name
         let filteredEmployees = employees_list.filter(emp => {
             return (
                 emp.name.toLowerCase().includes(query) ||
@@ -58,16 +55,13 @@ function setupEmployeeSearch() {
             );
         });
 
-        // Create suggestion items for each filtered employee
         filteredEmployees.forEach(emp => {
             let suggestionItem = document.createElement("div");
             suggestionItem.className = "suggestion-item";
             
-            // Display in the format: HR-EMP-00002-Amit (Day shift done) (Night shift done)
             suggestionItem.textContent = emp.name + "-" + emp.employee_name + (emp.shift_info || "");
             suggestionItem.setAttribute("data-emp-id", emp.name);
 
-            // When a suggestion is clicked, set the input value and store the selected employee ID
             suggestionItem.addEventListener("click", function() {
                 employeeInput.value = this.textContent;
                 employeeInput.setAttribute("data-selected-emp", this.getAttribute("data-emp-id"));
@@ -77,7 +71,6 @@ function setupEmployeeSearch() {
         });
     });
 
-    // Optionally, close suggestions when clicking outside the input field
     document.addEventListener("click", function(e) {
         if (!employeeInput.contains(e.target)) {
             suggestionsContainer.innerHTML = "";
