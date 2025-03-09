@@ -47,6 +47,18 @@ def attendance(employee, log_type, base64_image=None, filename=None, branch=None
         checkin.flags.ignore_hooks = True
         checkin.insert(ignore_permissions=True)
         frappe.db.commit()
+
+        attendance = frappe.get_doc({
+            "doctype": "Attendance",
+            "employee": employee,
+            "attendance_date": today(),
+            "status": "Present",
+            "in_time": now(),
+          })
+        attendance.insert(ignore_permissions=True)
+        attendance.submit()
+        frappe.db.commit()
+
         return {
             "status": response.get("status"),
             "message": response.get("message"),
@@ -58,28 +70,28 @@ def attendance(employee, log_type, base64_image=None, filename=None, branch=None
         return {"status": "error", "message": str(e)}
 
 
-def check_in_employee_for_shift(employee, branch, work_location):
+def check_in_employee_for_shift(employee, branch, work_location, shift_type):
     
     if not branch or not work_location:
         return {"status": "error", "message": "Employee must have a Branch and Work Location!"}
 
     current_time = get_time(now().split(" ")[1])
-    shift_type = frappe.db.sql(
-        """
-        SELECT name FROM `tabShift Type`
-        WHERE 
-            (%s BETWEEN start_time AND end_time)
-            OR (start_time > end_time AND (%s >= start_time OR %s <= end_time))
-        LIMIT 1
-        """,
-        (current_time, current_time, current_time),
-        as_dict=True
-    )
+    # shift_type = frappe.db.sql(
+    #     """
+    #     SELECT name FROM `tabShift Type`
+    #     WHERE 
+    #         (%s BETWEEN start_time AND end_time)
+    #         OR (start_time > end_time AND (%s >= start_time OR %s <= end_time))
+    #     LIMIT 1
+    #     """,
+    #     (current_time, current_time, current_time),
+    #     as_dict=True
+    # )
 
-    if not shift_type:
-        return {"status": "error", "message": "No Shift Type found for the current time!"}
+    # if not shift_type:
+    #     return {"status": "error", "message": "No Shift Type found for the current time!"}
 
-    shift_type_name = shift_type[0]["name"]
+    # shift_type_name = shift_type[0]["name"]
 
     shift_count = frappe.db.count("Shift Log", {
         "employee": employee,
@@ -89,13 +101,12 @@ def check_in_employee_for_shift(employee, branch, work_location):
     if shift_count >= 2:
         return {"status": "error", "message": "This employee has already completed 2 shifts today!"}
 
-    # Create & Insert Shift Log
     shift_log = frappe.get_doc({
         "doctype": "Shift Log",
         "employee": employee,
         "branch": branch,
         "work_location": work_location,
-        "shift_type": shift_type_name,
+        "shift_type": shift_type,
         "check_in_time": now()
     })
     shift_log.insert(ignore_permissions=True)

@@ -1,7 +1,7 @@
 import frappe
 
-def add_fields_to_employee_checkin():
-    checkin_meta = frappe.get_doc("DocType", "Employee Checkin")
+def add_fields_to_employee_attendance():
+    checkin_meta = frappe.get_doc("DocType", "Attendance")
 
     if not any(field.fieldname == "branch" for field in checkin_meta.fields):
         checkin_meta.append("fields", {
@@ -20,17 +20,8 @@ def add_fields_to_employee_checkin():
             "reqd": 1 
         })
 
-    if not any(field.fieldname == "shift_type" for field in checkin_meta.fields):
-        checkin_meta.append("fields", {
-            "fieldname": "shift_type",
-            "label": "Shift Type",
-            "fieldtype": "Link",
-            "options": "Shift Type",
-            "reqd": 1  
-        })
-
     checkin_meta.save()
     frappe.db.commit()
     print("Fields added successfully!")
 
-add_fields_to_employee_checkin()
+add_fields_to_employee_attendance()

@@ -15,7 +15,12 @@ after_migrate = ["custom_kcs.src.custom_fields.custom_field.create_employee_imag
                  "custom_kcs.src.custom_fields.create_temporary_transfer_doctype.create_temporary_transfer_doctype",
                  "custom_kcs.src.custom_fields.add_client_field_to_employee.add_client_field_to_employee",	
                  "custom_kcs.src.custom_fields.create_shift_log_doctype.create_shift_log_doctype",
-                 "custom_kcs.src.custom_fields.add_fields_to_employee_checkin.add_fields_to_employee_checkin"
+                 "custom_kcs.src.custom_fields.add_fields_to_employee_checkin.add_fields_to_employee_checkin",
+                 "custom_kcs.src.custom_fields.add_incentive_days_field_in_salary_slip.add_incentive_days_field_in_salary_slip",
+                 "custom_kcs.src.custom_fields.add_basic_incentive_amout_hidden_field_salary_slip.add_basic_incentive_amout_hidden_field_salary_slip",
+                 "custom_kcs.src.custom_fields.add_fields_to_employee_attendance.add_fields_to_employee_attendance",
+                 "custom_kcs.src.delete_wrong_attendance.cancel_and_delete_all_attendance",
+                 "custom_kcs.src.mark_bulk_attendance.mark_bulk_attendance"
                 ]   
 
 scheduler_events = {
@@ -59,7 +64,7 @@ scheduler_events = {
 # page_js = {"page" : "public/js/file.js"}
 
 # include js in doctype views
-doctype_js = {"Contract": "public/js/contract.js"}
+doctype_js = {"Contract": "public/js/contract.js", "Salary Slip":"public/js/salary_slip.js"}
 # doctype_list_js = {"doctype" : "public/js/doctype_list.js"}
 # doctype_tree_js = {"doctype" : "public/js/doctype_tree.js"}
 # doctype_calendar_js = {"doctype" : "public/js/doctype_calendar.js"}
@@ -149,6 +154,10 @@ doctype_js = {"Contract": "public/js/contract.js"}
 # 	"ToDo": "custom_app.overrides.CustomToDo"
 # }
 
+override_doctype_class = {
+    "Attendance": "custom_kcs.src.overrides.custom_attendance.CustomAttendance"
+}
+
 # Document Events
 # ---------------
 # Hook on document methods and events
@@ -169,6 +178,13 @@ doc_events = {
     },
     "Employee Checkin": {
         "before_insert": "custom_kcs.src.before_insert_checkin.before_insert_checkin"
+    },
+    "Attendance": {
+        "before_insert": "custom_kcs.src.attendance_customization.validate_duplicate_attendance"
+    },
+    "Salary Slip": {
+        "before_insert": "custom_kcs.src.custom_salary_slip.get_employee_attendance_data_on_save",
+        "before_submit": "custom_kcs.src.custom_salary_slip.get_employee_attendance_data_on_save"
     }
 }
 
