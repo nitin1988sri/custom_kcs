@@ -19,6 +19,7 @@ after_migrate = ["custom_kcs.src.custom_fields.custom_field.create_employee_imag
                  "custom_kcs.src.custom_fields.add_incentive_days_field_in_salary_slip.add_incentive_days_field_in_salary_slip",
                  "custom_kcs.src.custom_fields.add_basic_incentive_amout_hidden_field_salary_slip.add_basic_incentive_amout_hidden_field_salary_slip",
                  "custom_kcs.src.custom_fields.add_fields_to_employee_attendance.add_fields_to_employee_attendance",
+                 "custom_kcs.src.custom_fields.add_shift_field.add_shift_field",
                  "custom_kcs.src.delete_wrong_attendance.cancel_and_delete_all_attendance",
                  "custom_kcs.src.mark_bulk_attendance.mark_bulk_attendance"
                 ]   
