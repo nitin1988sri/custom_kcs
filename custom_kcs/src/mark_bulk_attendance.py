@@ -14,7 +14,7 @@ def mark_bulk_attendance():
     double_shift_days = random.sample(range(1, 31), 5)  
     absent_days = random.sample(range(1, 31), 3)  
 
-    employee_exists = frappe.db.get_value("Employee", {"name": employee_id, "first_name":"Amit"}, "name")
+    employee_exists = frappe.db.get_value("Employee", {"name": employee_id, "first_name":"varun"}, "name")
     if not employee_exists:
         frappe.logger().error(f"Employee {employee_id} not found!")
         return
