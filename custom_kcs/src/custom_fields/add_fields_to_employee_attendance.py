@@ -16,8 +16,7 @@ def add_fields_to_employee_attendance():
         checkin_meta.append("fields", {
             "fieldname": "work_location",
             "label": "Work Location",
-            "fieldtype": "Data",  
-            "reqd": 1 
+            "fieldtype": "Data"  
         })
 
     checkin_meta.save()

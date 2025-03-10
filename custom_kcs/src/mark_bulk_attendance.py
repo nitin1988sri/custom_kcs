@@ -3,25 +3,18 @@ from frappe.utils import today, now, add_days
 import random
 
 def mark_bulk_attendance():
-    employee_id = "HR-EMP-00002"  # Ensure only Employee ID
-    company = "KCS"
+    employee_id = "HR-EMP-00001" 
     
-            # Fetch all available branches dynamically from the Branch doctype
-    branch_list = frappe.get_all("Branch", fields=["name"])  # Get all branch names
-    branch_names = [branch["name"] for branch in branch_list]  # Extract names
-
+    branch_list = frappe.get_all("Branch", fields=["name"])  
+    branch_names = [branch["name"] for branch in branch_list]  
     if not branch_names:
         frappe.logger().error("No branches found! Please add branches first.")
         return
 
-    start_date = "2025-03-01"
-    end_date = "2025-03-31"
+    double_shift_days = random.sample(range(1, 31), 5)  
+    absent_days = random.sample(range(1, 31), 3)  
 
-    double_shift_days = random.sample(range(1, 31), 5)  # 5 days with both shifts
-    absent_days = random.sample(range(1, 31), 3)  # 3 days marked as absent
-
-    # Ensure employee exists
-    employee_exists = frappe.db.get_value("Employee", {"name": employee_id}, "name")
+    employee_exists = frappe.db.get_value("Employee", {"name": employee_id, "first_name":"Amit"}, "name")
     if not employee_exists:
         frappe.logger().error(f"Employee {employee_id} not found!")
         return
@@ -30,8 +23,8 @@ def mark_bulk_attendance():
 
     for day in range(1, 40):
         attendance_date = f"2025-03-{str(day).zfill(2)}"
-        random_branch = random.choice(branch_names)  # Select a random branch
-        work_location = f"{random_branch} - Work Site"  # Example Work Location format
+        random_branch = random.choice(branch_names)  
+        work_location = f"{random_branch} - Work Site"  
 
         if day in absent_days:
             try:
@@ -94,6 +87,5 @@ def mark_bulk_attendance():
                 except Exception as e:
                     frappe.logger().error(f"Failed to add night shift attendance: {str(e)}")
 
-    # Commit only once after all insertions
     frappe.db.commit()
     frappe.logger().info(f"✅ Successfully added {len(attendance_entries)} attendance records.")
