@@ -1,6 +1,6 @@
 import frappe
 
-def add_custom_fields():
+def add_fields_to_employee_checkin():
     custom_fields = {
         "Employee Checkin": [
             {
@@ -48,4 +48,4 @@ def add_custom_fields():
 
     frappe.db.commit()
 
-add_custom_fields()
+add_fields_to_employee_checkin()
