@@ -1,6 +1,6 @@
 import frappe
 
-def add_custom_fields_to_attendance():
+def add_fields_to_employee_attendance():
     custom_fields = {
         "Attendance": [
             {
@@ -39,4 +39,4 @@ def add_custom_fields_to_attendance():
 
     frappe.db.commit()
 
-add_custom_fields_to_attendance()
+add_fields_to_employee_attendance()
