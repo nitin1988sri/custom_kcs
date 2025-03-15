@@ -31,6 +31,7 @@ def add_custom_fields():
 
     for doctype, fields in custom_fields.items():
         for field in fields:
+            # Check if field already exists
             if not frappe.db.exists("Custom Field", {"dt": doctype, "fieldname": field["fieldname"]}):
                 custom_field = frappe.get_doc({
                     "doctype": "Custom Field",
@@ -38,7 +39,9 @@ def add_custom_fields():
                     **field
                 })
                 custom_field.insert()
-                print(f"Added custom field {field['fieldname']} to {doctype}")
+                print(f"✅ Added custom field: {field['fieldname']} to {doctype}")
+            else:
+                print(f"⚠️ Field {field['fieldname']} already exists in {doctype}, skipping.")
 
     frappe.db.commit()
 
