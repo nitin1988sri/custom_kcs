@@ -1,26 +1,42 @@
 import frappe
 
-def add_fields_to_employee_attendance():
-    checkin_meta = frappe.get_doc("DocType", "Attendance")
+def add_custom_fields_to_attendance():
+    custom_fields = {
+        "Attendance": [
+            {
+                "fieldname": "branch",
+                "label": "Branch",
+                "fieldtype": "Link",
+                "options": "Branch",
+                "reqd": 1,
+                "insert_after": "employee",
+            },
+            {
+                "fieldname": "work_location",
+                "label": "Work Location",
+                "fieldtype": "Data",
+                "insert_after": "branch",
+            }
+        ]
+    }
 
-    if not any(field.fieldname == "branch" for field in checkin_meta.fields):
-        checkin_meta.append("fields", {
-            "fieldname": "branch",
-            "label": "Branch",
-            "fieldtype": "Link",
-            "options": "Branch",
-            "reqd": 1  
-        })
+    for doctype, fields in custom_fields.items():
+        doctype_meta = frappe.get_meta(doctype)  # Get Doctype Metadata
+        
+        for field in fields:
+            # Check if field exists in Doctype OR Custom Field
+            if frappe.db.exists("Custom Field", {"dt": doctype, "fieldname": field["fieldname"]}) or \
+               field["fieldname"] in [df.fieldname for df in doctype_meta.fields]:
+                print(f"⚠️ Field {field['fieldname']} already exists in {doctype}, skipping.")
+            else:
+                custom_field = frappe.get_doc({
+                    "doctype": "Custom Field",
+                    "dt": doctype,
+                    **field
+                })
+                custom_field.insert()
+                print(f"✅ Added custom field: {field['fieldname']} to {doctype}")
 
-    if not any(field.fieldname == "work_location" for field in checkin_meta.fields):
-        checkin_meta.append("fields", {
-            "fieldname": "work_location",
-            "label": "Work Location",
-            "fieldtype": "Data"  
-        })
-
-    checkin_meta.save()
     frappe.db.commit()
-    print("Fields added successfully!")
 
-add_fields_to_employee_attendance()
+add_custom_fields_to_attendance()
