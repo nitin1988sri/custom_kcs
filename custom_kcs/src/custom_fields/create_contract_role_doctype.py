@@ -24,12 +24,6 @@ def create_contract_role_doctype():
                     "fieldname": "billing_rate",
                     "fieldtype": "Currency",
                     "label": "Billing Rate"
-                },
-                {
-                    "fieldname": "employee_percent",
-                    "fieldtype": "Percent",
-                    "label": "Employee Percent",
-                    "default": 80
                 }
             ],
             "engine": "InnoDB"

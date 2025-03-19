@@ -9,7 +9,7 @@ frappe.ui.form.on("Contract", {
 frappe.ui.form.on("Contract Role", {
     role: function(frm, cdt, cdn) {
         let row = locals[cdt][cdn];
-        if (frm.doc.branch && row.role) {
+        if (row.role) {
             fetchPersonnelCount(frm, cdt, cdn, row.role, frm.doc.branch);
         }
     },
@@ -37,24 +37,20 @@ function fetchPersonnelCount(frm, cdt, cdn, role, branch) {
 
 
 frappe.ui.form.on('Contract', {
-	// Recalculate on form refresh
 	refresh: function(frm) {
 		calculateMonthlyContractValue(frm);
 	},
 
-	// Recalculate on validating the form
 	validate: function(frm) {
 		calculateMonthlyContractValue(frm);
 	}
 });
 
-// Also, trigger calculation when any row in the child table "roles" is changed.
 frappe.ui.form.on('Contract Role', {
 	roles_add: function(frm, cdt, cdn) {
 		calculateMonthlyContractValue(frm);
 	},
 	
-	// When any field in the child table row changes
 	no_of_personnel: function(frm, cdt, cdn) {
 		calculateMonthlyContractValue(frm);
 	},
@@ -62,7 +58,6 @@ frappe.ui.form.on('Contract Role', {
 		calculateMonthlyContractValue(frm);
 	},
 	
-	// When a row is removed, recalc the total
 	on_remove: function(frm, cdt, cdn) {
 		calculateMonthlyContractValue(frm);
 	}
@@ -79,3 +74,37 @@ function calculateMonthlyContractValue(frm) {
 	
 	frm.set_value("monthly_contract_value", total);
 }
+
+frappe.ui.form.on('Contract', {
+    party_name: function(frm) {
+        frm.set_query("branch", function() {  
+            return {
+                filters: {
+                    "client": frm.doc.party_name 
+                }
+            };
+        });
+    }
+});
+
+frappe.ui.form.on('Contract', {
+    party_name: function(frm) {
+        if (frm.doc.party_name) {
+            frappe.call({
+                method: "frappe.client.get_list",
+                args: {
+                    doctype: "Contract",
+                    fields: ["name"]
+                },
+                callback: function(response) {
+                    let random_string = Math.random().toString(36).substring(2, 6).toUpperCase(); 
+                    let contract_code = frm.doc.party_name + "-" + random_string;
+
+                    frm.set_value("contract_code", contract_code);
+                }
+            });
+        }
+    }
+});
+
+

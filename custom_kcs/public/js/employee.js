@@ -18,3 +18,15 @@ frappe.ui.form.on('Employee', {
         }
     }
 });
+
+frappe.ui.form.on('Employee', {
+    validate: function(frm) {
+        let required_fields = ["company", "designation", "grade", "client", "branch", "shift", "department", "employment_type", "reports_to"];
+        
+        required_fields.forEach(field => {
+            if (!frm.doc[field]) {
+                frappe.throw(`${frappe.meta.get_docfield("Employee", field).label} is mandatory.`);
+            }
+        });
+    }
+});
