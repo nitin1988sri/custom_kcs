@@ -4,14 +4,12 @@ import string
 from datetime import datetime, timedelta
 
 def generate_random_password(length=8):
-    """Generate a random password"""
     return ''.join(secrets.choice(string.ascii_letters + string.digits) for _ in range(length))
 
 def get_random_record(doctype, filters=None, field="name"):
-    """Fetch a random record from a given Doctype with optional filters"""
     filters = filters or {}
     records = frappe.get_all(doctype, filters=filters, fields=[field])
-    return secrets.choice(records)[field] if records else None  # ✅ Using `secrets.choice()`
+    return secrets.choice(records)[field] if records else None 
 
 def create_users_and_employees(count=5):
     """Creates multiple Users and their linked Employees"""
@@ -75,8 +73,8 @@ def create_users_and_employees(count=5):
         grade = "D"
         gender = secrets.choice(["Male", "Female", "Other"])
         
-        date_of_birth = datetime.today() - timedelta(days=secrets.randbelow(20000))  # Random DOB
-        date_of_joining = datetime.today() - timedelta(days=secrets.randbelow(365))  # Random past joining date
+        date_of_birth = datetime.today() - timedelta(days=secrets.randbelow(20000))  
+        date_of_joining = datetime.today() - timedelta(days=secrets.randbelow(365))  
 
         if not client or not branch or not shift:
             print(f"❌ Missing data for Client, Branch, or Shift! Skipping user {email}...")
