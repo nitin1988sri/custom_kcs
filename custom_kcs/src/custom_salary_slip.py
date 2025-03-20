@@ -33,13 +33,13 @@ def get_employee_attendance_data(employee, start_date, end_date):
             payment_days += 1
         else:
             incentive_days += 1
-            total_incentive_salary += calculate_incentive_per_day(employee, att["branch"], start_date, end_date)
+            total_incentive_salary += calculate_incentive_per_day(employee, att["branch"], start_date)
 
     base_salary = frappe.get_value("Salary Structure Assignment", {"employee": employee}, "base") or 0
     in_hand_salary = (flt(base_salary) / 26) * payment_days if base_salary else 0
 
     gross_pay = in_hand_salary + total_incentive_salary
-    rounded_gross_pay = round(gross_pay)
+    rounded_gross_pay = round(gross_pay) - 0
     total_in_words = money_in_words(rounded_gross_pay, "INR")
 
     return {
@@ -53,7 +53,14 @@ def get_employee_attendance_data(employee, start_date, end_date):
         "total_in_words": total_in_words
     }
 
-def calculate_incentive_per_day(employee, branch, start_date, end_date):
+def calculate_incentive_per_day(employee, branch, start_date):
+    total_days_in_month = frappe.db.sql(
+        """SELECT DAY(LAST_DAY(%s)) AS days""", (start_date,)
+    )[0][0]
+
+    employee = frappe.get_doc("Employee", employee)
+    employee_role = employee.designation  
+
     contract = frappe.get_value("Contract", {"branch": branch, "docstatus": 1}, ["name"], as_dict=True)
     if not contract:
         frappe.logger().error(f"No active contract found for branch {branch}")
@@ -63,29 +70,33 @@ def calculate_incentive_per_day(employee, branch, start_date, end_date):
 
     contract_role = frappe.get_value(
         "Contract Role",
-        {"parent": contract_name, "role": "Security guard"},
-        ["billing_rate", "employee_percent"],
+        {"parent": contract_name, "role": employee_role},
+        ["salary_structure"],
         as_dict=True
     )
 
-    if not contract_role or not contract_role["billing_rate"] or not contract_role["employee_percent"]:
-        frappe.logger().error(f"No billing rate found for Security Guard in {contract_name}")
+    if not contract_role or not contract_role["salary_structure"]:
+        frappe.logger().error(f"No billing rate found for {employee_role} in {contract_name}")
         return 0
 
-    billing_rate = flt(contract_role["billing_rate"])
-    employee_percent = flt(contract_role["employee_percent"]) / 100  # Convert to decimal
 
-    total_days_in_month = frappe.db.sql(
-        """SELECT DAY(LAST_DAY(%s)) AS days""", (start_date)
-    )[0][0]
+    salary_structure = contract_role["salary_structure"]
+    earnings = frappe.get_all("Salary Detail",
+                              filters={"parent": salary_structure, "salary_component": "In Hand"},
+                              fields=["amount"])
 
-    incentive_per_day = (billing_rate * employee_percent) / total_days_in_month
+    if not earnings:
+        frappe.logger().error(f"No 'In Hand' salary found in Salary Structure {salary_structure}")
+        return 0
+
+    in_hand_per_month = flt(earnings[0]["amount"])
+    incentive_per_day = in_hand_per_month / total_days_in_month  
+
     return incentive_per_day
 
 
 @frappe.whitelist()
 def get_employee_attendance_data_on_save(doc, method):
-    """Hook to update earnings before saving Salary Slip."""
     
     frappe.log_error(f"Processing Salary Slip for {doc.employee} from {doc.start_date} to {doc.end_date}", "Debugging Salary Slip")
 
@@ -119,14 +130,13 @@ def get_employee_attendance_data_on_save(doc, method):
             payment_days += 1
         else:
             incentive_days += 1
-            total_incentive_salary += calculate_incentive_per_day(doc.employee, att["branch"], doc.start_date, doc.end_date)
+            total_incentive_salary += calculate_incentive_per_day(doc.employee, att["branch"], doc.start_date)
 
-    # Fetch Base Salary
     base_salary = frappe.get_value("Salary Structure Assignment", {"employee": doc.employee}, "base") or 0
     in_hand_salary = (flt(base_salary) / 26) * payment_days if base_salary else 0
 
     gross_pay = in_hand_salary + total_incentive_salary
-    rounded_gross_pay = round(gross_pay)
+    rounded_gross_pay = round(gross_pay)-0
     total_in_words = money_in_words(rounded_gross_pay, "INR")
 
     frappe.log_error(f"Final Salary Calculation - Employee: {doc.employee}, Payment Days: {payment_days}, Gross Pay: {gross_pay}, Incentive: {total_incentive_salary}", "Salary Debug")
@@ -148,9 +158,8 @@ def get_employee_attendance_data_on_save(doc, method):
     doc.gross_pay = gross_pay
     doc.rounded_total = rounded_gross_pay
     doc.total_in_words = total_in_words
-
+    doc.net_pay = rounded_gross_pay - 0
     earnings_list = [earning.as_dict() for earning in doc.earnings]
     earnings_str = json.dumps(earnings_list, indent=2)
-    frappe.msgprint(f"✅ Updated Salary Slip Earnings:\n<pre>{earnings_str}</pre>", title="Debug Info")
 
     frappe.log_error("Updated Salary Slip successfully", "Salary Debug")
