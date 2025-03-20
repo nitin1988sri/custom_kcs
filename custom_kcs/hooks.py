@@ -25,12 +25,6 @@ after_migrate = ["custom_kcs.src.custom_fields.custom_field.create_employee_imag
                  "custom_kcs.src.mark_bulk_attendance.mark_bulk_attendance"
                 ]   
 
-scheduler_events = {
-    "all": [
-        "custom_kcs.src.utils.delete_old_attendance.delete_old_attendance_files"
-    ]
-}
-
 # required_apps = []
 
 # Each item in the list will be shown as an app in the apps page
@@ -192,7 +186,7 @@ doc_events = {
         "before_insert": "custom_kcs.src.attendance_customization.validate_duplicate_attendance"
     },
     "Salary Slip": {
-        "before_insert": "custom_kcs.src.custom_salary_slip.get_employee_attendance_data_on_save",
+        "before_save": "custom_kcs.src.custom_salary_slip.get_employee_attendance_data_on_save",
         "before_submit": "custom_kcs.src.custom_salary_slip.get_employee_attendance_data_on_save"
     },
     "Employee": {
@@ -214,9 +208,9 @@ scheduler_events = {
 	# "weekly": [
 	# 	"custom_kcs.tasks.weekly"
 	# ],
-	# "monthly": [
-	# 	"custom_kcs.tasks.monthly"
-	# ],
+	"monthly": [
+		"custom_kcs.src.cron.generate_salary_slip.generate_salary_slip"
+	],
 }
 
 # Testing
