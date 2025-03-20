@@ -66,7 +66,9 @@ def create_users_and_employees(count=5):
         client = get_random_record("Customer")
         branch = get_random_record("Branch", filters={"client": client})
         shift = get_random_record("Shift Type")
-        allowed_designations = ["Cook", "Security guard", "Driver", "Superviser", "Gardener"]
+        #allowed_designations = ["Cook", "Security guard", "Driver", "Superviser", "Gardener"]
+        allowed_designations = ["Security guard"]
+
         designation = secrets.choice(allowed_designations)
 
         department = "Sales"
