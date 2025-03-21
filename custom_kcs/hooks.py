@@ -30,7 +30,9 @@ after_migrate = ["custom_kcs.src.custom_fields.custom_field.create_employee_imag
 fixtures = ["Customer", "Branch",
             "Shift Type","Designation", 
             "Employee", "Contract","Attendance",
-            "Shift Log","Temporary Transfer"
+            "Shift Log","Temporary Transfer",
+            "Salary Component","Salary Structure",
+            "Salary Structure Assignment","Salary Slip"
             ]
 
 
