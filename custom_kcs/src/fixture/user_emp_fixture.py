@@ -98,8 +98,7 @@ def create_users_and_employees(count=5):
             "gender": gender,
             "date_of_birth": date_of_birth.strftime('%Y-%m-%d'),
             "date_of_joining": date_of_joining.strftime('%Y-%m-%d'),
-            "status": "Active",
-            "reports_to": "HR-EMP-00001"
+            "status": "Active"
         })
         employee.insert(ignore_permissions=True)
         frappe.db.commit()
