@@ -2779,7 +2779,7 @@
   "date_of_joining": "2025-02-01",
   "date_of_retirement": "2050-01-01",
   "default_shift": null,
-  "department": null,
+  "department": "Sales",
   "designation": "Security guard",
   "docstatus": 0,
   "doctype": "Employee",
