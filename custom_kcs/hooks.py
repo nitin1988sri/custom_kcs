@@ -27,7 +27,7 @@ after_migrate = ["custom_kcs.src.custom_fields.custom_field.create_employee_imag
                 ]   
 
 # required_apps = []
-fixtures = ["Customer", "Branch", "Shift Type","Designation", "Employee"]
+fixtures = ["Customer", "Branch", "Shift Type","Designation", "Employee", "Contract"]
 
 
 # Each item in the list will be shown as an app in the apps page
