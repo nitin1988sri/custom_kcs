@@ -109,7 +109,7 @@
   "date_of_joining": "2025-01-01",
   "date_of_retirement": "2031-05-04",
   "default_shift": null,
-  "department": null,
+  "department": "Sales",
   "designation": "Superviser",
   "docstatus": 0,
   "doctype": "Employee",
