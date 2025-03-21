@@ -21,7 +21,7 @@ frappe.ui.form.on('Employee', {
 
 frappe.ui.form.on('Employee', {
     validate: function(frm) {
-        let required_fields = ["company", "designation", "grade", "client", "branch", "shift", "department", "employment_type", "reports_to"];
+        let required_fields = ["company", "designation", "grade", "client", "branch", "shift", "department", "employment_type"];
         
         required_fields.forEach(field => {
             if (!frm.doc[field]) {

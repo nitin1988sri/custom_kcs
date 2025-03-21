@@ -1,0 +1,41 @@
+[
+ {
+  "billing_rate": 120000.0,
+  "docstatus": 0,
+  "doctype": "Temporary Transfer",
+  "employee": "HR-EMP-00002",
+  "end_date": "2025-02-16",
+  "modified": "2025-02-15 20:25:14.644476",
+  "name": "pdj42c3a0b",
+  "original_branch": "HCL (Delhi)",
+  "start_date": "2025-02-15",
+  "temporary_branch": "TCS (Gurgaon Udyog Vihar)",
+  "transfer_status": "Active"
+ },
+ {
+  "billing_rate": 20000.0,
+  "docstatus": 0,
+  "doctype": "Temporary Transfer",
+  "employee": "HR-EMP-00002",
+  "end_date": "2025-02-19",
+  "modified": "2025-02-18 22:34:38.110546",
+  "name": "tqjqrsie9i",
+  "original_branch": "HCL (Delhi)",
+  "start_date": "2025-02-18",
+  "temporary_branch": "HCL (Delhi)",
+  "transfer_status": "Active"
+ },
+ {
+  "billing_rate": 100000.0,
+  "docstatus": 0,
+  "doctype": "Temporary Transfer",
+  "employee": "HR-EMP-00002",
+  "end_date": "2025-02-20",
+  "modified": "2025-02-19 23:30:16.283526",
+  "name": "38ruc6htkt",
+  "original_branch": "HCL (Delhi)",
+  "start_date": "2025-02-19",
+  "temporary_branch": "HCL (Delhi)",
+  "transfer_status": "Active"
+ }
+]
