@@ -27,10 +27,7 @@ after_migrate = ["custom_kcs.src.custom_fields.custom_field.create_employee_imag
                 ]   
 
 # required_apps = []
-fixtures = [
-            "Salary Component","Salary Structure",
-            "Salary Structure Assignment","Salary Slip"
-            ]
+fixtures = ["Salary Component","Salary Structure","Salary Structure Assignment","Salary Slip"]
 
 
 # Each item in the list will be shown as an app in the apps page
