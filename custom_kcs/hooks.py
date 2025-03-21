@@ -23,7 +23,7 @@ after_migrate = ["custom_kcs.src.custom_fields.custom_field.create_employee_imag
                  "custom_kcs.src.custom_fields.add_shift_field.add_shift_field",
                  "custom_kcs.src.delete_wrong_attendance.cancel_and_delete_all_attendance",
                 #  "custom_kcs.src.fixture.user_emp_fixture.create_users_and_employees",
-                 "custom_kcs.src.fixture.mark_bulk_attendance.mark_bulk_attendance"
+                # "custom_kcs.src.fixture.mark_bulk_attendance.mark_bulk_attendance"
                 ]   
 
 # required_apps = []
