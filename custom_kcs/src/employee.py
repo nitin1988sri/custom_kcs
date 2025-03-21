@@ -9,7 +9,7 @@ def get_branches_by_client(client):
     return branches
 
 def validate_employee(doc, method):
-    required_fields = ["company", "designation", "grade", "client", "branch", "shift", "department", "employment_type", "reports_to"]
+    required_fields = ["company", "designation", "grade", "client", "branch", "shift", "department", "employment_type"]
     
     for field in required_fields:
         if not doc.get(field):
