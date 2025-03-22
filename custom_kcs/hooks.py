@@ -21,6 +21,8 @@ after_migrate = ["custom_kcs.src.custom_fields.custom_field.create_employee_imag
                  "custom_kcs.src.custom_fields.add_salary_structure_field.add_salary_structure_field",
                  "custom_kcs.src.custom_fields.add_client_field_to_branch.add_client_field_to_branch",
                  "custom_kcs.src.custom_fields.add_shift_field.add_shift_field",
+                 "custom_kcs.src.custom_fields.add_contract_field_to_employee.add_contract_field_to_employee",
+
                 # "custom_kcs.src.delete_wrong_attendance.cancel_and_delete_all_attendance",
                 #  "custom_kcs.src.fixture.user_emp_fixture.create_users_and_employees",
                 # "custom_kcs.src.fixture.mark_bulk_attendance.mark_bulk_attendance"
@@ -29,6 +31,9 @@ after_migrate = ["custom_kcs.src.custom_fields.custom_field.create_employee_imag
 # required_apps = []
 fixtures = ["Salary Component","Salary Structure","Salary Structure Assignment","Salary Slip"]
 
+override_query_reports = {
+    "Monthly Attendance Sheet": "custom_kcs.src.custom_reports.monthly_attendance_sheet.monthly_attendance_sheet"
+}
 
 # Each item in the list will be shown as an app in the apps page
 # add_to_apps_screen = [

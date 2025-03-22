@@ -24,7 +24,6 @@ def add_fields_to_employee_attendance():
         doctype_meta = frappe.get_meta(doctype)  # Get Doctype Metadata
         
         for field in fields:
-            # Check if field exists in Doctype OR Custom Field
             if frappe.db.exists("Custom Field", {"dt": doctype, "fieldname": field["fieldname"]}) or \
                field["fieldname"] in [df.fieldname for df in doctype_meta.fields]:
                 print(f"⚠️ Field {field['fieldname']} already exists in {doctype}, skipping.")

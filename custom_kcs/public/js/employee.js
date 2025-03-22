@@ -30,3 +30,25 @@ frappe.ui.form.on('Employee', {
         });
     }
 });
+
+frappe.ui.form.on('Employee', {
+    setup: function(frm) {
+        frm.set_query("contract", () => {
+            return {
+                query: "custom_kcs.src.employee.get_active_contracts",
+                filters: {
+                    client: frm.doc.client,
+                    branch: frm.doc.branch
+                }
+            };
+        });
+    },
+
+    client: function(frm) {
+        frm.set_value("contract", null);
+    },
+
+    branch: function(frm) {
+        frm.set_value("contract", null);
+    }
+});
