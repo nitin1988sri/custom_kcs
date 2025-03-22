@@ -4,7 +4,7 @@ import os
 from frappe.utils import now, get_time, today
 
 @frappe.whitelist()
-def attendance(employee, log_type, base64_image=None, filename=None, branch=None, work_location=None):
+def attendance(employee, log_type, base64_image=None, filename=None, branch=None, work_location=None, shift_type="Day"):
     try:
         file_url = None
         if log_type != "OUT" and base64_image and filename:
@@ -32,7 +32,7 @@ def attendance(employee, log_type, base64_image=None, filename=None, branch=None
             frappe.db.commit()
 
         if log_type == "IN":
-            response = check_in_employee_for_shift(employee, branch, work_location)
+            response = check_in_employee_for_shift(employee, branch, work_location, shift_type)
         elif log_type == "OUT":
             response = check_out_employee_for_shift(employee)
 
@@ -42,22 +42,27 @@ def attendance(employee, log_type, base64_image=None, filename=None, branch=None
             "log_type": log_type,
             "employee_image": file_url,
             "branch": branch,
+            "shift_type": shift_type,
             "work_location": work_location,
         })
         checkin.flags.ignore_hooks = True
         checkin.insert(ignore_permissions=True)
         frappe.db.commit()
 
-        attendance = frappe.get_doc({
-            "doctype": "Attendance",
-            "employee": employee,
-            "attendance_date": today(),
-            "status": "Present",
-            "in_time": now(),
-          })
-        attendance.insert(ignore_permissions=True)
-        attendance.submit()
-        frappe.db.commit()
+        if log_type == "IN":
+            attendance = frappe.get_doc({
+                "doctype": "Attendance",
+                "employee": employee,
+                "attendance_date": today(),
+                "status": "Present",
+                "branch": branch,
+                "employee_image": file_url,
+                "shift_type": shift_type,
+                "in_time": now(),
+            })
+            attendance.insert(ignore_permissions=True)
+            attendance.submit()
+            frappe.db.commit()
 
         return {
             "status": response.get("status"),
@@ -74,24 +79,6 @@ def check_in_employee_for_shift(employee, branch, work_location, shift_type):
     
     if not branch or not work_location:
         return {"status": "error", "message": "Employee must have a Branch and Work Location!"}
-
-    current_time = get_time(now().split(" ")[1])
-    # shift_type = frappe.db.sql(
-    #     """
-    #     SELECT name FROM `tabShift Type`
-    #     WHERE 
-    #         (%s BETWEEN start_time AND end_time)
-    #         OR (start_time > end_time AND (%s >= start_time OR %s <= end_time))
-    #     LIMIT 1
-    #     """,
-    #     (current_time, current_time, current_time),
-    #     as_dict=True
-    # )
-
-    # if not shift_type:
-    #     return {"status": "error", "message": "No Shift Type found for the current time!"}
-
-    # shift_type_name = shift_type[0]["name"]
 
     shift_count = frappe.db.count("Shift Log", {
         "employee": employee,
