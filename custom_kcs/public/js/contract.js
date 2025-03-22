@@ -108,3 +108,38 @@ frappe.ui.form.on('Contract', {
 });
 
 
+frappe.ui.form.on('Contract', {
+    party_name: function(frm) {
+        frm.trigger("fetch_employees");
+    },
+    branch: function(frm) {
+        frm.trigger("fetch_employees");
+    },
+
+    fetch_employees: function(frm) {
+        if (!frm.doc.party_name || !frm.doc.branch) return;
+
+        frappe.call({
+            method: "custom_kcs.src.contract.get_employees_for_contract",
+            args: {
+                client: frm.doc.party_name,
+                branch: frm.doc.branch
+            },
+            callback: function(r) {
+                if (r.message) {
+                    frm.clear_table("employees_list");
+                    r.message.forEach(emp => {
+                        let row = frm.add_child("employees_list");
+                        row.employee = emp.name;
+                        row.employee_name = emp.employee_name;
+                        row.designation = emp.designation;
+                        row.shift = emp.shift;
+                        row.branch = emp.branch;
+                        row.date_of_joining = emp.date_of_joining;
+                    });
+                    frm.refresh_field("employees_list");
+                }
+            }
+        });
+    }
+});
