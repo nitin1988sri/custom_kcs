@@ -22,7 +22,9 @@ after_migrate = ["custom_kcs.src.custom_fields.custom_field.create_employee_imag
                  "custom_kcs.src.custom_fields.add_client_field_to_branch.add_client_field_to_branch",
                  "custom_kcs.src.custom_fields.add_shift_field.add_shift_field",
                  "custom_kcs.src.custom_fields.add_contract_field_to_employee.add_contract_field_to_employee",
-                  "custom_kcs.src.custom_fields.add_contract_employee_child_table.add_contract_employee_child_table"
+                 "custom_kcs.src.custom_fields.add_contract_employee_child_table.add_contract_employee_child_table",
+                 "custom_kcs.src.custom_fields.add_customer_to_salary_structure.add_customer_to_salary_structure",
+                 "custom_kcs.src.custom_fields.add_customer_to_salary_component.add_customer_to_salary_component"
                 ]   
 
 override_query_reports = {
@@ -67,9 +69,11 @@ doctype_js = {"Contract": "public/js/contract.js",
               "Employee":"public/js/employee.js",
               "Employee Grade": "public/js/employee_grade.js",
               "Salary Structure Assignment": "public/js/salary_structure_assignment.js",
-              "Contract": "public/js/contract.js"
-
+              "Contract": "public/js/contract.js",
+              "Salary Structure": "public/js/salary_structure.js"
 }
+
+
 # doctype_list_js = {"doctype" : "public/js/doctype_list.js"}
 # doctype_tree_js = {"doctype" : "public/js/doctype_tree.js"}
 # doctype_calendar_js = {"doctype" : "public/js/doctype_calendar.js"}
@@ -194,6 +198,12 @@ doc_events = {
     },
     "Employee": {
         "validate": "custom_kcs.src.employee.validate_employee"
+    },
+    "Salary Structure": {
+        "validate": "custom_kcs.src.salary_structure.validate"
+    },
+    "Salary Component": {
+        "validate": "custom_kcs.src.salary_component.salary_component.validate"
     }
 }
 
