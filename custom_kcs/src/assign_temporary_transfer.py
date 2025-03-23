@@ -14,17 +14,24 @@ def get_employees():
         shift_logs = frappe.get_all(
             "Shift Log", 
             filters={"employee": emp.name}, 
-            fields=["shift_type", "check_in_time"],
+            fields=["shift_type", "check_in_time", "branch"],
             order_by="check_in_time desc",
             limit_page_length=2
         )
+
         shift_info = ""
         for log in shift_logs:
-            if log.shift_type.lower() == "day shift":
-                shift_info += " (Day shift done)"
-            elif log.shift_type.lower() == "night shift":
-                shift_info += " (Night shift done)"
+            if log.shift_type and log.branch:
+                shift_label = log.shift_type.lower()
+                if shift_label == "day shift":
+                    shift_info += f" (Day shift Branch:- {log.branch})"
+                elif shift_label == "night shift":
+                    shift_info += f" (Night shift Branch:- {log.branch})"
+                else:
+                    shift_info += f" ({shift_label.title()} Branch:- {log.branch})"
+        
         emp["shift_info"] = shift_info
+
     return employees
 
 @frappe.whitelist()
