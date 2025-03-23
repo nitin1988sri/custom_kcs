@@ -21,9 +21,10 @@ def create_contract_role_doctype():
                     "label": "Number of Personnel"
                 },
                 {
-                    "fieldname": "billing_rate",
-                    "fieldtype": "Currency",
-                    "label": "Billing Rate"
+                    "fieldname": "contract_cost_structure",
+                    "fieldtype": "Link",
+                    "options": "Salary Structure",
+                    "label": "Contract Cost Structure"
                 }
             ],
             "engine": "InnoDB"

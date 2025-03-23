@@ -143,3 +143,38 @@ frappe.ui.form.on('Contract', {
         });
     }
 });
+
+
+frappe.ui.form.on("Contract", {
+    onload: function(frm) {
+        setup_role_filters(frm);
+    },
+
+    refresh: function(frm) {
+        setup_role_filters(frm);
+    }
+});
+
+function setup_role_filters(frm) {
+    frm.fields_dict["roles"].grid.get_field("salary_structure").get_query = function(doc, cdt, cdn) {
+        return {
+            filters: [
+                ["customer", "=", ""],
+            ]
+        };
+    };
+
+    frm.fields_dict["roles"].grid.get_field("contract_cost_structure").get_query = function(doc, cdt, cdn) {
+        return {
+            filters: [
+                ["customer", "=", frm.doc.party_name],
+            ]
+        };
+    };
+}
+
+frappe.ui.form.on("Contract Role", {
+    form_render: function(frm, cdt, cdn) {
+        setup_role_filters(frm);
+    }
+})

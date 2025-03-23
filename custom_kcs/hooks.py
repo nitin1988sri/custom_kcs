@@ -24,7 +24,6 @@ after_migrate = ["custom_kcs.src.custom_fields.custom_field.create_employee_imag
                  "custom_kcs.src.custom_fields.add_contract_field_to_employee.add_contract_field_to_employee",
                  "custom_kcs.src.custom_fields.add_contract_employee_child_table.add_contract_employee_child_table",
                  "custom_kcs.src.custom_fields.add_customer_to_salary_structure.add_customer_to_salary_structure",
-                 "custom_kcs.src.custom_fields.add_customer_to_salary_component.add_customer_to_salary_component"
                 ]   
 
 override_query_reports = {
@@ -201,9 +200,6 @@ doc_events = {
     },
     "Salary Structure": {
         "validate": "custom_kcs.src.salary_structure.validate"
-    },
-    "Salary Component": {
-        "validate": "custom_kcs.src.salary_component.salary_component.validate"
     }
 }
 
