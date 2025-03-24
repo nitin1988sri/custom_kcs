@@ -4,8 +4,6 @@ frappe.ui.form.on("Salary Structure", {
             if (frm.is_new() && frm.doc.company) {
                 frm.set_value("company", "");
             }
-
-            // Always show both on load
             frm.set_df_property("company", "hidden", 0);
             frm.set_df_property("customer", "hidden", 0);
         }, 200);

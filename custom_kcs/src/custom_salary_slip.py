@@ -4,7 +4,9 @@ from frappe.utils.data import money_in_words
 import json
 
 @frappe.whitelist()
-def get_employee_attendance_data(employee, start_date, end_date):
+def get_employee_attendance_data(employee, start_date=None, end_date=None):
+    if start_date is None or end_date is None:
+        return
     employee_data = frappe.get_value(
         "Employee", {"name": employee}, ["branch", "shift"], as_dict=True
     )

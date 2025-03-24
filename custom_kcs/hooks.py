@@ -71,7 +71,7 @@ doctype_js = {"Contract": "public/js/contract.js",
               "Salary Structure Assignment": "public/js/salary_structure_assignment.js",
               "Contract": "public/js/contract.js",
               "Salary Structure": "public/js/salary_structure.js"
-}
+            }
 
 
 # doctype_list_js = {"doctype" : "public/js/doctype_list.js"}
