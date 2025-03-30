@@ -6,7 +6,7 @@ def create_shift_log_doctype():
             "doctype": "DocType",
             "name": "Shift Log",
             "module": "Custom Kcs",
-            "custom": 1,  # Mark as custom doctype
+            "custom": 1, 
             "fields": [
                 {
                     "fieldname": "employee",

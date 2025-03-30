@@ -1,12 +1,10 @@
 import frappe
-from frappe.custom.doctype.custom_field.custom_field import create_custom_fields
-from frappe.core.doctype.doctype.doctype import make_module_and_roles
 
-def add_contract_employee_child_table():
-    if not frappe.db.exists("DocType", "Contract Employee Detail"):
+def create_employee_child_table():
+    if not frappe.db.exists("DocType", "Employee Detail"):
         doc = frappe.get_doc({
             "doctype": "DocType",
-            "name": "Contract Employee Detail",
+            "name": "Employee Detail",
             "module": "Custom kcs",
             "custom": 1,
             "istable": 1,
@@ -25,17 +23,17 @@ def add_contract_employee_child_table():
         doc.insert()
         frappe.db.commit()
 
-create_custom_fields({
-    "Contract": [
-        {
-            "fieldname": "employees_list",
-            "label": "Employees List",
-            "fieldtype": "Table",
-            "options": "Contract Employee Detail",
-            "insert_after": "roles",
-            "in_list_view": 0,
-            "read_only": 1,               
-            "cannot_add_rows": 1         
-        }
-    ]
-})
+# create_custom_fields({
+#     "Contract": [
+#         {
+#             "fieldname": "employees_list",
+#             "label": "Employees List",
+#             "fieldtype": "Table",
+#             "options": "Contract Employee Detail",
+#             "insert_after": "roles",
+#             "in_list_view": 0,
+#             "read_only": 1,               
+#             "cannot_add_rows": 1         
+#         }
+#     ]
+# })

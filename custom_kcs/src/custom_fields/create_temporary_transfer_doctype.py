@@ -16,7 +16,6 @@ def create_temporary_transfer_doctype():
             {"fieldname": "temporary_branch", "label": "Temporary Branch", "fieldtype": "Link", "options": "Branch", "reqd": 1},
             {"fieldname": "start_date", "label": "Start Date", "fieldtype": "Date", "reqd": 1},
             {"fieldname": "end_date", "label": "End Date", "fieldtype": "Date", "reqd": 1},
-            {"fieldname": "billing_rate", "label": "Billing Rate at Temporary Branch", "fieldtype": "Currency", "reqd": 1},
             {"fieldname": "transfer_status", "label": "Transfer Status", "fieldtype": "Select", "options": "Active\nCompleted", "reqd": 1}
         ],
         "permissions": [{"role": "System Manager", "read": 1, "write": 1, "create": 1, "delete": 1}]

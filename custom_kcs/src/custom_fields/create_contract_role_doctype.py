@@ -21,6 +21,19 @@ def create_contract_role_doctype():
                     "label": "Number of Personnel"
                 },
                 {
+                    "fieldname": "minimum_required_personnel",
+                    "fieldtype": "Int",
+                    "label": "Minimum Required personnel"
+                },
+                {
+                    "doctype": "Custom Field",
+                    "fieldname": "salary_structure",
+                    "label": "Salary Structure",
+                    "fieldtype": "Link",
+                    "options": "Salary Structure",
+                    "insert_after": "minimum_required_personnel",  
+                },
+                {
                     "fieldname": "contract_cost_structure",
                     "fieldtype": "Link",
                     "options": "Salary Structure",

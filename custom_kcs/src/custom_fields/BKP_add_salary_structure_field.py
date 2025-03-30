@@ -5,7 +5,6 @@ def add_salary_structure_field():
     doctype = "Contract Role"
     fieldname = "salary_structure"
 
-    # Check if field already exists
     meta = get_meta(doctype)
     if any(df.fieldname == fieldname for df in meta.fields):
         print(f"Field '{fieldname}' already exists in {doctype}")
@@ -19,7 +18,7 @@ def add_salary_structure_field():
         "label": "Salary Structure",
         "fieldtype": "Link",
         "options": "Salary Structure",
-        "insert_after": "billing_rate",  # Adjust as per requirement
+        "insert_after": "billing_rate",  
     }).insert()
 
     print(f"Field '{fieldname}' added to {doctype} successfully.")

@@ -1,8 +1,8 @@
 import frappe
 
-def add_fields_to_employee_checkin():
+def add_fields_to_employee_attendance():
     custom_fields = {
-        "Employee Checkin": [
+        "Attendance": [
             {
                 "fieldname": "branch",
                 "label": "Branch",
@@ -15,25 +15,15 @@ def add_fields_to_employee_checkin():
                 "fieldname": "work_location",
                 "label": "Work Location",
                 "fieldtype": "Data",
-                "reqd": 1,
                 "insert_after": "branch",
-            },
-            {
-                "fieldname": "shift_type",
-                "label": "Shift Type",
-                "fieldtype": "Link",
-                "options": "Shift Type",
-                "reqd": 1,
-                "insert_after": "work_location",
             }
         ]
     }
 
     for doctype, fields in custom_fields.items():
-        doctype_meta = frappe.get_meta(doctype)  # Get Doctype Metadata
+        doctype_meta = frappe.get_meta(doctype) 
         
         for field in fields:
-            # Check if field exists in Doctype OR Custom Field
             if frappe.db.exists("Custom Field", {"dt": doctype, "fieldname": field["fieldname"]}) or \
                field["fieldname"] in [df.fieldname for df in doctype_meta.fields]:
                 print(f"⚠️ Field {field['fieldname']} already exists in {doctype}, skipping.")
@@ -48,4 +38,4 @@ def add_fields_to_employee_checkin():
 
     frappe.db.commit()
 
-add_fields_to_employee_checkin()
+add_fields_to_employee_attendance()

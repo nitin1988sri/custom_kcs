@@ -8,22 +8,23 @@ app_license = "mit"
 
 # Apps
 # ------------------
-after_migrate = ["custom_kcs.src.custom_fields.custom_field.create_employee_image_field",
-                 "custom_kcs.src.custom_fields.create_contract_doctype.create_custom_fields",
+after_migrate = ["custom_kcs.src.custom_fields.add_fields_employee_checkIn.run_all",
+                 
+                 "custom_kcs.src.custom_fields.add_fields_contract_doctype.run_all",
+
                  "custom_kcs.src.custom_fields.create_contract_role_doctype.create_contract_role_doctype",
-                 "custom_kcs.src.custom_fields.add_fields_to_branch.add_fields_to_branch",
+
                  "custom_kcs.src.custom_fields.create_temporary_transfer_doctype.create_temporary_transfer_doctype",
-                 "custom_kcs.src.custom_fields.add_client_field_to_employee.add_client_field_to_employee",	
-                 "custom_kcs.src.custom_fields.create_shift_log_doctype.create_shift_log_doctype",
-                 "custom_kcs.src.custom_fields.add_fields_to_employee_checkin.add_fields_to_employee_checkin",
-                 "custom_kcs.src.custom_fields.add_incentive_days_field_in_salary_slip.add_incentive_days_field_in_salary_slip",
-                 "custom_kcs.src.custom_fields.add_fields_to_employee_attendance.add_fields_to_employee_attendance",
-                 "custom_kcs.src.custom_fields.add_salary_structure_field.add_salary_structure_field",
-                 "custom_kcs.src.custom_fields.add_client_field_to_branch.add_client_field_to_branch",
-                 "custom_kcs.src.custom_fields.add_shift_field.add_shift_field",
-                 "custom_kcs.src.custom_fields.add_contract_field_to_employee.add_contract_field_to_employee",
-                 "custom_kcs.src.custom_fields.add_contract_employee_child_table.add_contract_employee_child_table",
-                 "custom_kcs.src.custom_fields.add_customer_to_salary_structure.add_customer_to_salary_structure",
+
+                 "custom_kcs.src.custom_fields.add_fields_employee.run_all",	
+
+                 "custom_kcs.src.custom_fields.add_fields_employee_attendance.add_fields_to_employee_attendance",
+                 
+                 "custom_kcs.src.custom_fields.add_fields_branch.create_custom_fields_for_branch",
+
+                 "custom_kcs.src.custom_fields.create_employee_child_table.create_employee_child_table",
+
+                 "custom_kcs.src.custom_fields.add_fields_employee_incentive.add_incentive_days_field",
                 ]   
 
 override_query_reports = {
@@ -64,13 +65,14 @@ fixtures = ["Salary Structure", "Salary Component"]
 # page_js = {"page" : "public/js/file.js"}
 
 # include js in doctype views
-doctype_js = {"Contract": "public/js/contract.js", 
-              "Salary Slip":"public/js/salary_slip.js",
+doctype_js = {"Branch": "public/js/branch.js", 
+            #   "Salary Slip":"public/js/salary_slip.js",
               "Employee":"public/js/employee.js",
               "Employee Grade": "public/js/employee_grade.js",
               "Salary Structure Assignment": "public/js/salary_structure_assignment.js",
               "Contract": "public/js/contract.js",
-              "Salary Structure": "public/js/salary_structure.js"
+              "Salary Structure": "public/js/salary_structure.js",
+              "Employee Incentive":"public/js/employee_incentive.js",
             }
 
 
@@ -182,10 +184,10 @@ override_doctype_class = {
 # ---------------
 
 doc_events = {
-    "Contract": {
-        "before_save": "custom_kcs.src.contract.update_personnel_count",
-        "before_insert": "custom_kcs.src.contract.before_insert"
-    },
+    # "Contract": {
+    #     "before_save": "custom_kcs.src.contract.update_personnel_count",
+    #     "before_insert": "custom_kcs.src.contract.before_insert"
+    # },
     "Employee Checkin": {
         "before_insert": "custom_kcs.src.before_insert_checkin.before_insert_checkin"
     },
