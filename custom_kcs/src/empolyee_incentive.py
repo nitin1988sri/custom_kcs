@@ -1,6 +1,7 @@
 import frappe
 from frappe.utils import flt
 
+
 @frappe.whitelist()
 def calculate_incentive_for_employee(employee, start_date):
     if not start_date:

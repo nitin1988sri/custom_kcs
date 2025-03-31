@@ -26,13 +26,6 @@ def create_custom_fields_for_branch():
             "reqd": 1
         },
         {
-            "fieldname": "linked_client",
-            "label": "Linked Client",
-            "fieldtype": "Link",
-            "options": "Customer",
-            "insert_after": "state"
-        },
-        {
             "fieldname": "contact_name",
             "label": "Contact Name",
             "fieldtype": "Data",

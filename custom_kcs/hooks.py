@@ -19,7 +19,7 @@ after_migrate = ["custom_kcs.src.custom_fields.add_fields_employee_checkIn.run_a
                  "custom_kcs.src.custom_fields.add_fields_employee.run_all",	
 
                  "custom_kcs.src.custom_fields.add_fields_employee_attendance.add_fields_to_employee_attendance",
-                 
+
                  "custom_kcs.src.custom_fields.add_fields_branch.create_custom_fields_for_branch",
 
                  "custom_kcs.src.custom_fields.create_employee_child_table.create_employee_child_table",
@@ -184,25 +184,14 @@ override_doctype_class = {
 # ---------------
 
 doc_events = {
-    # "Contract": {
-    #     "before_save": "custom_kcs.src.contract.update_personnel_count",
-    #     "before_insert": "custom_kcs.src.contract.before_insert"
-    # },
     "Employee Checkin": {
         "before_insert": "custom_kcs.src.before_insert_checkin.before_insert_checkin"
     },
     "Attendance": {
         "before_insert": "custom_kcs.src.attendance_customization.validate_duplicate_attendance"
     },
-    "Salary Slip": {
-        "before_save": "custom_kcs.src.custom_salary_slip.get_employee_attendance_data_on_save",
-        "before_submit": "custom_kcs.src.custom_salary_slip.get_employee_attendance_data_on_save"
-    },
     "Employee": {
         "validate": "custom_kcs.src.employee.validate_employee"
-    },
-    "Salary Structure": {
-        "validate": "custom_kcs.src.salary_structure.validate"
     }
 }
 
@@ -223,6 +212,11 @@ scheduler_events = {
 	"monthly": [
 		"custom_kcs.src.cron.generate_salary_slip.generate_salary_slip"
 	],
+    "cron": {
+        "* * * * *": [ 
+            "custom_kcs.src.cron.employee_Incentive.generate_employee_incentives_for_all"
+        ]
+    }
 }
 
 # Testing
