@@ -31,7 +31,7 @@ override_query_reports = {
     "Monthly Attendance Sheet": "custom_kcs.src.custom_reports.monthly_attendance_sheet.monthly_attendance_sheet"
 }
 
-fixtures = ["Salary Structure", "Salary Component"]
+fixtures = ["User"]
 # Each item in the list will be shown as an app in the apps page
 # add_to_apps_screen = [
 # 	{
