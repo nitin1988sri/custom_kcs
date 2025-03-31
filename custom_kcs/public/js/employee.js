@@ -43,12 +43,4 @@ frappe.ui.form.on('Employee', {
             };
         });
     },
-
-    client: function(frm) {
-        frm.set_value("contract", null);
-    },
-
-    branch: function(frm) {
-        frm.set_value("contract", null);
-    }
 });
