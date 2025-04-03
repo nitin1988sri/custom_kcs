@@ -7,7 +7,7 @@ def generate_employee_incentives_for_all(start_date=None):
     if not start_date:
         start_date = get_first_day(getdate())
 
-    employees = frappe.get_all("Employee", filters={"status": "Active","name":"HR-EMP-00033"}, pluck="name")
+    employees = frappe.get_all("Employee", filters={"status": "Active"}, pluck="name")
     created_incentives = []
 
     for emp in employees:

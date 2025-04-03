@@ -27,11 +27,13 @@ after_migrate = ["custom_kcs.src.custom_fields.add_fields_employee_checkIn.run_a
                  "custom_kcs.src.custom_fields.add_fields_employee_incentive.add_incentive_days_field",
                 ]   
 
-override_query_reports = {
-    "Monthly Attendance Sheet": "custom_kcs.src.custom_reports.monthly_attendance_sheet.monthly_attendance_sheet"
-}
 
-fixtures = ["User"]
+# override_report = {
+#     "HR": {
+#         "Monthly Attendance Sheet": "custom_kcs.src.custom_reports.monthly_attendance_sheet"
+#     }
+# }
+
 # Each item in the list will be shown as an app in the apps page
 # add_to_apps_screen = [
 # 	{
@@ -48,8 +50,10 @@ fixtures = ["User"]
 
 # include js, css files in header of desk.html
 # app_include_css = "/assets/custom_kcs/css/custom_kcs.css"
-# app_include_js = "/assets/custom_kcs/js/custom_kcs.js"
-
+app_include_js = [
+    "/assets/custom_kcs/js/payroll_entry.js",
+    "/assets/custom_kcs/js/monthly_attendance_sheet.js"
+]
 # include js, css files in header of web template
 # web_include_css = "/assets/custom_kcs/css/custom_kcs.css"
 # web_include_js = "/assets/custom_kcs/js/custom_kcs.js"
@@ -66,7 +70,6 @@ fixtures = ["User"]
 
 # include js in doctype views
 doctype_js = {"Branch": "public/js/branch.js", 
-            #   "Salary Slip":"public/js/salary_slip.js",
               "Employee":"public/js/employee.js",
               "Employee Grade": "public/js/employee_grade.js",
               "Salary Structure Assignment": "public/js/salary_structure_assignment.js",
@@ -76,7 +79,15 @@ doctype_js = {"Branch": "public/js/branch.js",
             }
 
 
-# doctype_list_js = {"doctype" : "public/js/doctype_list.js"}
+ooverride_report = {
+    "HR": {
+        "Monthly Attendance Sheet": "custom_kcs.src.report.monthly_attendance_sheet"
+    }
+}
+
+override_report_js = {
+    "Monthly Attendance Sheet": "custom_kcs/src/report/monthly_attendance_sheet.js"
+}
 # doctype_tree_js = {"doctype" : "public/js/doctype_tree.js"}
 # doctype_calendar_js = {"doctype" : "public/js/doctype_calendar.js"}
 
