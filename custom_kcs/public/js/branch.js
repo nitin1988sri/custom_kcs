@@ -6,17 +6,17 @@ frappe.ui.form.on("Branch", {
     }
 });
 
-// frappe.ui.form.on("Contract Role", {
-//     role: function(frm, cdt, cdn) {
-//         let row = locals[cdt][cdn];
-//         if (row.role) {
-//             fetchPersonnelCount(frm, cdt, cdn, row.role, frm.doc.client);
-//         }
-//     },
-//     branch: function(frm) {
-//         frm.refresh_field("roles");  
-//     }
-// });
+frappe.ui.form.on("Contract Role", {
+    role: function(frm, cdt, cdn) {
+        let row = locals[cdt][cdn];
+        if (row.role) {
+            fetchPersonnelCount(frm, cdt, cdn, row.role, frm.doc.client);
+        }
+    },
+    branch: function(frm) {
+        frm.refresh_field("roles");  
+    }
+});
 
 function fetchPersonnelCount(frm, cdt, cdn, role, client) {
     frappe.call({
