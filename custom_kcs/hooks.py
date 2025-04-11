@@ -30,7 +30,8 @@ after_migrate = ["custom_kcs.src.custom_fields.add_fields_employee_checkIn.run_a
                  
                  "custom_kcs.src.custom_fields.add_fields_payroll_entry.add_storage_fields",
 
-                "custom_kcs.src.custom_fields.create_mega_contract_doctype.run_all",
+                "custom_kcs.src.custom_fields.create_salary_paid_status_report.create_salary_paid_status_report",
+
                 ]   
 
 
@@ -64,6 +65,8 @@ after_migrate = ["custom_kcs.src.custom_fields.add_fields_employee_checkIn.run_a
 app_include_js = [
     "/assets/custom_kcs/js/payroll_entry.js",
     "/assets/custom_kcs/js/monthly_attendance_sheet.js"
+    "/assets/custom_kcs/js/salary_paid_status.js"
+
 ]
 # include js, css files in header of web template
 # web_include_css = "/assets/custom_kcs/css/custom_kcs.css"
