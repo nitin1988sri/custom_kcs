@@ -78,10 +78,53 @@ def add_field_esic_number_and_aadhaar_number_emp_salary_tab():
 
     frappe.msgprint("✅ ESIC and Aadhaar fields added to Employee.")
 
+def add_contract_series_to_job_offer():
+    try:
+        # Get the property setter for naming_series options in Employee
+        prop = frappe.db.get_value(
+            "Property Setter",
+            {"doc_type": "Employee", "property": "options", "field_name": "naming_series"},
+            "name"
+        )
+
+        # Fetch current options from Property Setter (or fallback to DocField)
+        options = ""
+        if prop:
+            options = frappe.db.get_value("Property Setter", prop, "value")
+        else:
+            options = frappe.db.get_value("DocField", {"parent": "Employee", "fieldname": "naming_series"}, "options")
+
+        series_list = options.split("\n")
+        if "HR-CONT-.###" not in series_list:
+            series_list.append("HR-CONT-.###")
+            updated_options = "\n".join(series_list)
+
+            if prop:
+                frappe.db.set_value("Property Setter", prop, "value", updated_options)
+            else:
+                # Create new property setter if not exist
+                frappe.get_doc({
+                    "doctype": "Property Setter",
+                    "doc_type": "Employee",
+                    "field_name": "naming_series",
+                    "property": "options",
+                    "value": updated_options,
+                    "property_type": "Text",
+                }).insert()
+
+            frappe.db.commit()
+            print("✅ HR-CONT-.### added to Employee naming_series")
+        else:
+            print("ℹ️ HR-CONT-.### already present")
+
+    except Exception as e:
+        frappe.log_error(frappe.get_traceback(), "Error in add_contract_series_to_employee")
+
 def run_all():
     add_client_field_to_employee()
     add_shift_field()
     add_field_esic_number_and_aadhaar_number_emp_salary_tab()
+    add_contract_series_to_job_offer()
 
 run_all()        
 

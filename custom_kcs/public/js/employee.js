@@ -54,5 +54,32 @@ frappe.ui.form.on('Employee', {
                 frappe.throw(`${frappe.meta.get_docfield("Employee", field).label} is mandatory.`);
             }
         });
+    },
+    naming_series: function (frm) {
+        if (frm.doc.naming_series && frm.doc.naming_series.startsWith("HR-CONT")) {
+            frm.set_value("employment_type", "Contract");
+        }
+    },
+
+    onload: function (frm) {
+        if (frm.doc.naming_series && frm.doc.naming_series.startsWith("HR-CONT")) {
+            frm.set_value("employment_type", "Contract");
+        }else{
+            frm.set_value("employment_type", "");
+        }
+    },
+    naming_series: function (frm) {
+        if (frm.doc.naming_series && frm.doc.naming_series.startsWith("HR-CONT")) {
+            frm.set_value("employment_type", "Contract");
+        }
+        else{
+            frm.set_value("employment_type", "");
+        }
+    },
+
+    onload: function (frm) {
+        if (frm.doc.naming_series && frm.doc.naming_series.startsWith("HR-CONT")) {
+            frm.set_value("employment_type", "Contract");
+        }
     }
 });
