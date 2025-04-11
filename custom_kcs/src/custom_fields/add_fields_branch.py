@@ -88,5 +88,22 @@ def create_custom_fields_for_branch():
     frappe.db.commit()
     print("✅ Fields created with single bottom section for Roles & Employees")
 
-# Run
-create_custom_fields_for_branch()
+def add_linked_contract_field():
+    if not frappe.db.exists("Custom Field", "Branch-linked_contract"):
+        doc = frappe.new_doc("Custom Field")
+        doc.dt = "Branch"
+        doc.label = "Linked Contract"
+        doc.fieldname = "linked_contract"
+        doc.fieldtype = "Link"
+        doc.options = "Contract"
+        doc.read_only = 1
+        doc.insert_after = "status"  
+        doc.save()
+        frappe.db.commit()
+
+
+def run_all():
+    create_custom_fields_for_branch()
+    add_linked_contract_field()
+
+run_all()

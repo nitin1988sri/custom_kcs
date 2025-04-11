@@ -18,8 +18,8 @@ def update_personnel_count(doc, method):
         )
 
 @frappe.whitelist()
-def get_employee_count(role, client):
-    count = frappe.db.count("Employee", filters={"client":client, "designation": role})
+def get_employee_count(role, branch):
+    count = frappe.db.count("Employee", filters={"branch":branch, "designation": role})
     return count
 
 
@@ -48,3 +48,31 @@ def get_employees_for_branch(client):
         },
         fields=["name", "employee_name", "designation", "branch","shift", "date_of_joining"]
     )
+
+@frappe.whitelist()
+def fetch_employees_for_branch(branch_name):
+    branch_doc = frappe.get_doc("Branch", branch_name)
+
+    # Clear old employees
+    branch_doc.set("employees_list", [])
+
+    employees = frappe.get_all("Employee", 
+        filters={
+            "branch": branch_doc.name,
+            "client": branch_doc.client  # assuming you have this Link field
+        },
+        fields=["name", "employee_name", "designation", "shift", "branch", "date_of_joining"]
+    )
+
+    for emp in employees:
+        branch_doc.append("employees_list", {
+            "employee": emp.name,
+            "employee_name": emp.employee_name,
+            "designation": emp.designation,
+            "shift": emp.shift,
+            "branch": emp.branch,
+            "date_of_joining": emp.date_of_joining
+        })
+
+    branch_doc.save()
+    return f"{len(employees)} employee(s) added to Employees List"

@@ -1,5 +1,6 @@
 import frappe
 from frappe.model.document import Document
+from frappe.custom.doctype.custom_field.custom_field import create_custom_fields
 
 def create_contract_branch_doctype():
     if not frappe.db.exists("DocType", "Contract Branch"):
@@ -64,7 +65,7 @@ def create_contract_addendum_doctype():
 
 
 # 🔹 Step 3: Add custom fields to Contract
-def create_custom_fields():
+def create_contract_custom_fields():
     custom_fields = {
         "Contract": [
             {
@@ -141,14 +142,28 @@ def create_custom_fields():
         ]
     }
 
-    from frappe.custom.doctype.custom_field.custom_field import create_custom_fields
     create_custom_fields(custom_fields)
     print("✅ Custom fields for Contract added.")
 
+def add_mega_contract_field_to_contract():
+    custom_fields = {
+        "Contract": [
+            {
+                "fieldname": "mega_contract",
+                "label": "Mega Contract",
+                "fieldtype": "Link",
+                "options": "Mega Contract",
+                "insert_after": "contract_code"
+            }
+        ]
+    }
+    create_custom_fields(custom_fields)
+    print("✅ Mega Contract field added to Contract")
 
 def run_all():
     create_contract_branch_doctype()
     create_contract_addendum_doctype()
-    create_custom_fields()
+    create_contract_custom_fields()
+    add_mega_contract_field_to_contract()
 
 run_all()

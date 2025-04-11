@@ -49,3 +49,24 @@ def get_employees_for_contract(client, branch):
         },
         fields=["name", "employee_name", "designation", "branch","shift", "date_of_joining"]
     )
+
+
+@frappe.whitelist()
+def on_contract_submit(doc, method):
+    for row in doc.contract_branches:
+        frappe.db.set_value("Branch", row.branch, "linked_contract", doc.name)
+
+def clear_linked_contract(doc, method):
+    for row in doc.contract_branches:
+        frappe.db.set_value("Branch", row.branch, "linked_contract", "")
+
+def update_mega_contract_links(doc, method):
+    if doc.mega_contract:
+        mega = frappe.get_doc("Mega Contract", doc.mega_contract)
+        already = [d.name for d in mega.get("linked_contracts")]
+
+        if doc.name not in already:
+            row = mega.append("linked_contracts", {})
+            row.name = doc.name  
+            mega.save(ignore_permissions=True)
+

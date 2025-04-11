@@ -20,14 +20,23 @@ after_migrate = ["custom_kcs.src.custom_fields.add_fields_employee_checkIn.run_a
 
                  "custom_kcs.src.custom_fields.add_fields_employee_attendance.add_fields_to_employee_attendance",
 
-                 "custom_kcs.src.custom_fields.add_fields_branch.create_custom_fields_for_branch",
+                 "custom_kcs.src.custom_fields.add_fields_branch.run_all",
 
                  "custom_kcs.src.custom_fields.create_employee_child_table.create_employee_child_table",
 
                  "custom_kcs.src.custom_fields.add_fields_employee_incentive.add_incentive_days_field",
+                 
+                 "custom_kcs.src.custom_fields.create_customer_branch_filter_doctype.run_all",
+                 
+                 "custom_kcs.src.custom_fields.add_fields_payroll_entry.add_storage_fields",
+
+                "custom_kcs.src.custom_fields.create_mega_contract_doctype.run_all",
                 ]   
 
 
+# override_doctype_class = {
+#     "Payroll Entry": "custom_kcs.src.payroll_entry.PayrollEntry"
+# }
 # override_report = {
 #     "HR": {
 #         "Monthly Attendance Sheet": "custom_kcs.src.custom_reports.monthly_attendance_sheet"
@@ -47,6 +56,8 @@ after_migrate = ["custom_kcs.src.custom_fields.add_fields_employee_checkIn.run_a
 
 # Includes in <head>
 # ------------------
+
+
 
 # include js, css files in header of desk.html
 # app_include_css = "/assets/custom_kcs/css/custom_kcs.css"
@@ -177,7 +188,9 @@ override_report_js = {
 # }
 
 override_doctype_class = {
-    "Attendance": "custom_kcs.src.overrides.custom_attendance.CustomAttendance"
+    "Attendance": "custom_kcs.src.overrides.custom_attendance.CustomAttendance",
+    "Payroll Entry": "custom_kcs.src.payroll_entry.PayrollEntry"
+
 }
 
 # Document Events
@@ -203,6 +216,11 @@ doc_events = {
     },
     "Employee": {
         "validate": "custom_kcs.src.employee.validate_employee"
+    },
+     "Contract": {
+        "on_submit": "custom_kcs.src.contract.on_contract_submit",
+        "on_cancel": "custom_kcs.src.contract.clear_linked_contract",
+        "after_insert": "custom_kcs.src.contract.update_mega_contract_links"
     }
 }
 
