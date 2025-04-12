@@ -78,21 +78,25 @@ def add_field_esic_number_and_aadhaar_number_emp_salary_tab():
 
     frappe.msgprint("✅ ESIC and Aadhaar fields added to Employee.")
 
-def add_contract_series_to_job_offer():
+def add_contract_series():
     try:
-        # Get the property setter for naming_series options in Employee
+        print("▶️ Running: add_contract_series")
+
         prop = frappe.db.get_value(
             "Property Setter",
             {"doc_type": "Employee", "property": "options", "field_name": "naming_series"},
             "name"
         )
 
-        # Fetch current options from Property Setter (or fallback to DocField)
         options = ""
         if prop:
+            print(f"✅ Found Property Setter: {prop}")
             options = frappe.db.get_value("Property Setter", prop, "value")
         else:
+            print("ℹ️ No Property Setter found, using DocField...")
             options = frappe.db.get_value("DocField", {"parent": "Employee", "fieldname": "naming_series"}, "options")
+
+        print(f"📌 Current Options:\n{options}")
 
         series_list = options.split("\n")
         if "HR-CONT-.###" not in series_list:
@@ -101,8 +105,8 @@ def add_contract_series_to_job_offer():
 
             if prop:
                 frappe.db.set_value("Property Setter", prop, "value", updated_options)
+                print("📝 Updated existing Property Setter")
             else:
-                # Create new property setter if not exist
                 frappe.get_doc({
                     "doctype": "Property Setter",
                     "doc_type": "Employee",
@@ -111,20 +115,22 @@ def add_contract_series_to_job_offer():
                     "value": updated_options,
                     "property_type": "Text",
                 }).insert()
+                print("🆕 Created new Property Setter")
 
             frappe.db.commit()
             print("✅ HR-CONT-.### added to Employee naming_series")
         else:
-            print("ℹ️ HR-CONT-.### already present")
+            print("ℹ️ HR-CONT-.### already exists in naming_series")
 
     except Exception as e:
-        frappe.log_error(frappe.get_traceback(), "Error in add_contract_series_to_employee")
+        print("❌ Error in add_contract_series_to_job_offer:", e)
+        frappe.log_error(frappe.get_traceback(), "Error in add_contract_series_to_job_offer")
 
 def run_all():
     add_client_field_to_employee()
     add_shift_field()
     add_field_esic_number_and_aadhaar_number_emp_salary_tab()
-    add_contract_series_to_job_offer()
+    add_contract_series()
 
 run_all()        
 
