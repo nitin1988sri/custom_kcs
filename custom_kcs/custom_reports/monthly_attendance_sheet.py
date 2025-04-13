@@ -28,6 +28,7 @@ day_abbr = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
 
 def execute(filters: Filters | None = None) -> tuple:
 	filters = frappe._dict(filters or {})
+	print("🔁 Monthly Attendance Sheet (Custom KCS) executed")
 
 	if not (filters.month and filters.year):
 		frappe.throw(_("Please select month and year."))
@@ -303,6 +304,7 @@ def get_employee_related_details(filters: Filters) -> tuple[dict, list]:
 
 	if filters.employee:
 		query = query.where(Employee.name == filters.employee)
+
 
 	if filters.branch:
 		query = query.where(Employee.branch == filters.branch)
@@ -601,7 +603,6 @@ def get_entry_exits_summary(employee: str, filters: Filters) -> dict[str, float]
 
 @frappe.whitelist()
 def get_attendance_years() -> str:
-	"""Returns all the years for which attendance records exist"""
 	Attendance = frappe.qb.DocType("Attendance")
 	year_list = (
 		frappe.qb.from_(Attendance).select(Extract("year", Attendance.attendance_date).as_("year")).distinct()

@@ -1,5 +1,3 @@
-// Copyright (c) 2015, Frappe Technologies Pvt. Ltd. and Contributors
-// License: GNU General Public License v3. See license.txt
 frappe.query_reports["Monthly Attendance Sheet"] = {
 	filters: [
 		{
@@ -79,13 +77,21 @@ frappe.query_reports["Monthly Attendance Sheet"] = {
 	],
 	onload: function () {
 		return frappe.call({
-			method: "custom_kcs.src.custom_reports.monthly_attendance_sheet.get_attendance_years",
+			method: "custom_kcs.custom_reports.monthly_attendance_sheet.get_attendance_years",
 			callback: function (r) {
-				var year_filter = frappe.query_report.get_filter("year");
-				year_filter.df.options = r.message;
-				year_filter.df.default = r.message.split("\n")[0];
-				year_filter.refresh();
-				year_filter.set_input(year_filter.df.default);
+				frappe.after_ajax(() => {
+					const year_filter = frappe.query_report.get_filter("year");
+					console.log("Year Filter", r.message);
+	
+					if (year_filter && r.message) {
+						year_filter.df.options = r.message;
+						year_filter.df.default = r.message.split("\n")[0];
+						year_filter.refresh();
+						year_filter.set_input(year_filter.df.default);
+					} else {
+						console.warn("⚠️ 'year' filter not found or empty response.", { year_filter, message: r.message });
+					}
+				});
 			},
 		});
 	},

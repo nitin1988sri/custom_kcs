@@ -34,6 +34,8 @@ after_migrate = ["custom_kcs.src.custom_fields.add_fields_employee_checkIn.run_a
 
                 ]   
 
+boot_session = "custom_kcs.src.patches.override_monthly_attendance.boot"
+
 
 # override_doctype_class = {
 #     "Payroll Entry": "custom_kcs.src.payroll_entry.PayrollEntry"
@@ -64,7 +66,7 @@ after_migrate = ["custom_kcs.src.custom_fields.add_fields_employee_checkIn.run_a
 # app_include_css = "/assets/custom_kcs/css/custom_kcs.css"
 app_include_js = [
     "/assets/custom_kcs/js/payroll_entry.js",
-    "/assets/custom_kcs/js/monthly_attendance_sheet.js"
+    "/assets/custom_kcs/js/monthly_attendance_sheet.js",
     "/assets/custom_kcs/js/salary_paid_status.js"
 
 ]
@@ -93,15 +95,15 @@ doctype_js = {"Branch": "public/js/branch.js",
             }
 
 
-ooverride_report = {
-    "HR": {
-        "Monthly Attendance Sheet": "custom_kcs.src.report.monthly_attendance_sheet"
-    }
-}
+# override_report = {
+#     "HR": {
+#         "Monthly Attendance Sheet": "custom_kcs.custom_reports.monthly_attendance_sheet"
+#     }
+# }
 
-override_report_js = {
-    "Monthly Attendance Sheet": "custom_kcs/src/report/monthly_attendance_sheet.js"
-}
+# override_report_js = {
+#     "Monthly Attendance Sheet": "custom_kcs/public/js/monthly_attendance_sheet.js"
+# }
 # doctype_tree_js = {"doctype" : "public/js/doctype_tree.js"}
 # doctype_calendar_js = {"doctype" : "public/js/doctype_calendar.js"}
 

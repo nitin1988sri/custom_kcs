@@ -1,7 +1,6 @@
 frappe.ui.form.on('Payroll Entry', {
 
     before_save: function(frm) {
-        // store selected data
         const selected_customers = [];
         const selected_branches = [];
 
@@ -22,7 +21,6 @@ frappe.ui.form.on('Payroll Entry', {
         render_customer_branch_section(frm);
     },
     refresh: function(frm) {
-
          frappe.ui.form.off('Payroll Entry', 'get_employee_details');
          frappe.ui.form.on('Payroll Entry', {
              get_employee_details: function (frm) {
@@ -87,9 +85,10 @@ function render_customer_branch_section(frm) {
             fields: ["name"]
         },
         callback: function(res) {
-            frm.reload_doc().then(() => {
-                render_customer_branch_section(frm); // <- UI refresh again
-            });
+            frm.reload_doc();
+            setTimeout(() => {
+                render_customer_branch_section(frm);
+            }, 1000);
             
             const customers = res.message;
             let html = `<label><b>Select Customers:</b></label><br/>`;
