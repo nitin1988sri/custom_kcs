@@ -35,7 +35,10 @@ after_migrate = ["custom_kcs.src.custom_fields.add_fields_employee_checkIn.run_a
                 "custom_kcs.src.custom_fields.create_shift_log_doctype.run_all",
                 
                 "custom_kcs.src.custom_fields.add_fields_salary_slip.run_all",
+
                 "custom_kcs.src.custom_fields.create_mega_contract_doctype.run_all",
+
+                "custom_kcs.src.custom_fields.create_equipment_doctype.run_all",
                 ]   
 
 boot_session = "custom_kcs.src.patches.override_monthly_attendance.boot"
