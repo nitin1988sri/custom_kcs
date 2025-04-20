@@ -1,7 +1,7 @@
 import frappe
 from frappe import _
 
-@frappe.whitelist(allow_guest=True)
+@frappe.whitelist()
 def get_allocated_equipment(employee):
     equipment_list = frappe.get_all("Equipment Master", fields=["name", "equipment_name", "description"])
 
