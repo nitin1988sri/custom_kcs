@@ -1,4 +1,5 @@
 import frappe
+from frappe.custom.doctype.custom_field.custom_field import create_custom_fields
 
 def add_client_field_to_employee():
     if not frappe.db.exists("DocType", "Employee"):
@@ -117,11 +118,87 @@ def add_contract_series():
         frappe.log_error(frappe.get_traceback(), "Error in add_contract_series_to_employee")
         print(f"❌ Error: {str(e)}")
 
+def add_bank_passbook_attachment_field():
+    custom_fields = {
+        "Employee": [
+            {
+                "fieldname": "bank_passbook",
+                "label": "Bank Passbook",
+                "fieldtype": "Attach",
+                "insert_after": "salary_mode",  # or any fieldname in 'Salary' section
+                "depends_on": "",
+                "read_only": 0,
+                "reqd": 0
+            }
+        ]
+    }
+
+    create_custom_fields(custom_fields, update=True)
+
+def add_some_more_fields():
+    custom_fields = {
+        "Employee": [
+            {
+                "fieldname": "fathers_name",
+                "label": "Father's Name",
+                "fieldtype": "Data",
+                "insert_after": "full_name"
+            },
+            {
+                "fieldname": "mothers_name",
+                "label": "Mother's Name",
+                "fieldtype": "Data",
+                "insert_after": "fathers_name"
+            },
+            {
+                "fieldname": "spouse_name",
+                "label": "Spouse Name",
+                "fieldtype": "Data",
+                "depends_on": "eval:doc.marital_status == 'Married'",
+                "insert_after": "marital_status"
+            },
+            {
+                "fieldname": "aadhaar_card_front",
+                "label": "Aadhar Details (Side 1)",
+                "fieldtype": "Attach Image",
+                "insert_after": "aadhaar_number"
+            },
+            {
+                "fieldname": "aadhaar_card_back",
+                "label": "Aadhar Details (Side 2)",
+                "fieldtype": "Attach Image",
+                "insert_after": "aadhaar_card_front"
+            },
+            {
+                "fieldname": "pan_card",
+                "label": "PAN Details",
+                "fieldtype": "Attach Image",
+                "insert_after": "pan_number"
+            },
+            {
+                "fieldname": "uan_number",
+                "label": "UAN Number",
+                "fieldtype": "Data",
+                "insert_after": "pan_card"
+            },
+            {
+                "fieldname": "full_length_photo",
+                "label": "Full Length Photo",
+                "fieldtype": "Attach Image",
+                "insert_after": "status"
+            },
+        ]
+    }
+
+    create_custom_fields(custom_fields)
+
 def run_all():
     add_client_field_to_employee()
     add_shift_field()
     add_field_esic_number_and_aadhaar_number_emp_salary_tab()
     add_contract_series()
+    add_bank_passbook_attachment_field()
+    add_some_more_fields()
 
 run_all()        
 

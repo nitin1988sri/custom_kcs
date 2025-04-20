@@ -93,7 +93,7 @@ function setup_role_filters(frm) {
         };
     };
 
-    frm.fields_dict["roles"].grid.get_field("contract_cost_structure").get_query = function(doc, cdt, cdn) {
+    frm.fields_dict["roles"].grid.get_field("client_cost_structure").get_query = function(doc, cdt, cdn) {
         return {
             filters: [
                 ["customer", "=", frm.doc.client],

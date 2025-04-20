@@ -28,15 +28,23 @@ after_migrate = ["custom_kcs.src.custom_fields.add_fields_employee_checkIn.run_a
                  
                  "custom_kcs.src.custom_fields.create_customer_branch_filter_doctype.run_all",
                  
-                 "custom_kcs.src.custom_fields.add_fields_payroll_entry.add_storage_fields",
+                 "custom_kcs.src.custom_fields.add_fields_payroll_entry.run_all",
 
                 "custom_kcs.src.custom_fields.create_salary_paid_status_report.create_salary_paid_status_report",
 
+                "custom_kcs.src.custom_fields.create_shift_log_doctype.run_all",
+                
+                "custom_kcs.src.custom_fields.add_fields_salary_slip.run_all",
                 ]   
 
 boot_session = "custom_kcs.src.patches.override_monthly_attendance.boot"
 
 
+# override_report = {
+#     "HR": {
+#         "Salary Paid Status": "custom_kcs.src.salary_paid_status"
+#     }
+# }
 # override_doctype_class = {
 #     "Payroll Entry": "custom_kcs.src.payroll_entry.PayrollEntry"
 # }
@@ -67,9 +75,13 @@ boot_session = "custom_kcs.src.patches.override_monthly_attendance.boot"
 app_include_js = [
     "/assets/custom_kcs/js/payroll_entry.js",
     "/assets/custom_kcs/js/monthly_attendance_sheet.js",
-    "/assets/custom_kcs/js/salary_paid_status.js"
-
+    "/assets/custom_kcs/js/salary_paid_status.js",
+     "/assets/custom_kcs/js/contract.js"
 ]
+
+# query_reports = [
+#     "Client Salary Report"
+# ]
 # include js, css files in header of web template
 # web_include_css = "/assets/custom_kcs/css/custom_kcs.css"
 # web_include_js = "/assets/custom_kcs/js/custom_kcs.js"
@@ -194,8 +206,8 @@ doctype_js = {"Branch": "public/js/branch.js",
 
 override_doctype_class = {
     "Attendance": "custom_kcs.src.overrides.custom_attendance.CustomAttendance",
-    "Payroll Entry": "custom_kcs.src.payroll_entry.PayrollEntry"
-
+    "Payroll Entry": "custom_kcs.src.payroll_entry.PayrollEntry",
+    "Salary Slip": "custom_kcs.src.overrides.salary_slip.SalarySlip",
 }
 
 # Document Events
@@ -226,9 +238,13 @@ doc_events = {
         "on_submit": "custom_kcs.src.contract.on_contract_submit",
         "on_cancel": "custom_kcs.src.contract.clear_linked_contract",
         "after_insert": "custom_kcs.src.contract.update_mega_contract_links"
+    },
+    "Salary Slip": {
+        "on_submit": [
+              "custom_kcs.src.create_client_salary.create"
+            ]         
     }
 }
-
 
 scheduler_events = {
 	"all": [

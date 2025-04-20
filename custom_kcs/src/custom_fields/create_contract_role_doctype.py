@@ -34,10 +34,10 @@ def create_contract_role_doctype():
                     "insert_after": "minimum_required_personnel",  
                 },
                 {
-                    "fieldname": "contract_cost_structure",
+                    "fieldname": "client_cost_structure",
                     "fieldtype": "Link",
                     "options": "Salary Structure",
-                    "label": "Contract Cost Structure"
+                    "label": "Client Cost Structure"
                 }
             ],
             "engine": "InnoDB"

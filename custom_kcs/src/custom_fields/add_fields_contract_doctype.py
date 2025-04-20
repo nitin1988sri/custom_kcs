@@ -40,8 +40,14 @@ def create_contract_addendum_doctype():
             "reqd": 1
         })
         doc.append("fields", {
-            "label": "Date",
-            "fieldname": "date",
+            "label": "Start Date",
+            "fieldname": "start_date",
+            "fieldtype": "Date",
+            "reqd": 1
+        })
+        doc.append("fields", {
+            "label": "End Date",
+            "fieldname": "end_date",
             "fieldtype": "Date",
             "reqd": 1
         })

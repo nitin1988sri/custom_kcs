@@ -15,3 +15,8 @@ def add_storage_fields():
             cf.insert_after = "employees"
             cf.save()
             frappe.db.commit()
+
+def run_all():
+    add_storage_fields()
+
+run_all()

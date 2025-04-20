@@ -12,3 +12,8 @@ def add_customer_to_salary_structure():
             }
         ]
     })
+
+def run_all():
+    add_customer_to_salary_structure()
+
+run_all()

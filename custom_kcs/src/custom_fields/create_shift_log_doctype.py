@@ -58,3 +58,9 @@ def create_shift_log_doctype():
         print("✅ Shift Log Doctype Created Successfully!")
     else:
         print("⚠️ Shift Log Doctype Already Exists!")
+
+
+
+def run_all():
+    create_shift_log_doctype()
+run_all()  
