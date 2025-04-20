@@ -1,4 +1,5 @@
 import frappe
+from frappe.custom.doctype.custom_field.custom_field import create_custom_fields
 
 def create_equipment_master():
     if not frappe.db.exists("DocType", "Equipment Master"):
@@ -98,9 +99,26 @@ def create_equipment_allocation():
         frappe.db.commit()
         print("✅ Created Equipment Allocation Doctype.")
 
+def equipment_allocated():
+    custom_fields = {
+        "Equipment Allocation": [
+            {
+                "fieldname": "status",
+                "label": "Status",
+                "fieldtype": "Select",
+                "options": "Requested\nAllocated\nReturned",
+                "insert_after": "return_date",
+                "reqd": 1,
+                "default": "Allocated"
+            }
+        ]
+    }
+    create_custom_fields(custom_fields)
+
 def execute():
     create_equipment_master()
     create_equipment_allocation()
+    equipment_allocated()
 
 def run_all():
     execute()

@@ -1,17 +1,23 @@
 import frappe
 from frappe import _
 
-@frappe.whitelist()
+@frappe.whitelist(allow_guest= True)
 def get_allocated_equipment(employee):
+    def get_equipment_list(employee):
     equipment_list = frappe.get_all("Equipment Master", fields=["name", "equipment_name", "description"])
 
+    # Step 1: Filter allocations for this employee where status = "Allocated"
     allocated_items = frappe.get_all(
         "Equipment Allocation",
-        filters={"employee": employee},
+        filters={
+            "employee": employee,
+            "status": "Allocated"
+        },
         fields=["equipment", "allocation_date"]
     )
     allocated_map = {item["equipment"]: item for item in allocated_items}
 
+    # Step 2: Prepare merged response
     final_list = []
     for eq in equipment_list:
         allocated_info = allocated_map.get(eq["name"])
@@ -24,7 +30,7 @@ def get_allocated_equipment(employee):
 
     return final_list
 
-@frappe.whitelist()
+@frappe.whitelist(allow_guest=True)
 def request_equipment(employee, equipment):
     if frappe.db.exists("Equipment Allocation", {"employee": employee, "equipment": equipment}):
         return {"message": _("Already requested or assigned.")}
