@@ -115,10 +115,30 @@ def equipment_allocated():
     }
     create_custom_fields(custom_fields)
 
+def allocation_naming_series():
+    # Step 1: Update autoname to naming_series:
+    if frappe.db.exists("DocType", "Equipment Allocation"):
+        frappe.db.set_value("DocType", "Equipment Allocation", "autoname", "naming_series:")
+
+    # Step 2: Add 'naming_series' field if not already present
+    if not frappe.db.exists("Custom Field", "Equipment Allocation-naming_series"):
+        frappe.get_doc({
+            "doctype": "Custom Field",
+            "dt": "Equipment Allocation",
+            "fieldname": "naming_series",
+            "fieldtype": "Data",
+            "label": "Naming Series",
+            "insert_after": "employee",
+            "default": "EQA-.####",
+            "reqd": 1
+        }).insert()
+
+    frappe.clear_cache(doctype="Equipment Allocation")
 def execute():
     create_equipment_master()
     create_equipment_allocation()
     equipment_allocated()
+    allocation_naming_series()
 
 def run_all():
     execute()
