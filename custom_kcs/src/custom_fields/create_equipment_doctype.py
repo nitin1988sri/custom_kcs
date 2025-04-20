@@ -134,18 +134,29 @@ def allocation_naming_series():
     frappe.clear_cache(doctype="Equipment Allocation")
 
 def remove_unique_from_employee_field():
-    field = frappe.db.get_value("DocField", {
-        "parent": "Equipment Allocation",
-        "fieldname": "employee"
-    }, "name")
+    field_name = "employee"
+    doctype = "Equipment Allocation"
+
+    # Check if the field exists in Meta
+    meta = frappe.get_meta(doctype)
+    field = next((f for f in meta.fields if f.fieldname == field_name), None)
 
     if field:
-        frappe.db.set_value("DocField", field, "unique", 0)
+        # Remove unique constraint from field property
+        frappe.db.set_value(
+            "Custom Field", f"{doctype}-{field_name}",
+            "unique", 0
+        )
         frappe.db.commit()
-        frappe.clear_cache(doctype="Equipment Allocation")
-        print("✅ Unique constraint removed from standard employee field.")
-    else:
-        print("❌ Field not found.")
+        print(f"✅ Unique constraint removed from {field_name} in {doctype}")
+
+    # Optional: Drop Unique Index from database (if it still exists)
+    index_name = f"{field_name}_UNIQUE"
+    try:
+        frappe.db.sql(f"ALTER TABLE `tab{doctype}` DROP INDEX `{index_name}`")
+        print(f"✅ MySQL UNIQUE index `{index_name}` dropped from tab{doctype}")
+    except Exception as e:
+        print(f"⚠️ Could not drop index {index_name}: {str(e)}")
 
 # Run it
 remove_unique_from_employee_field()    
