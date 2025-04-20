@@ -49,7 +49,8 @@ def create_mega_contract_doctype():
                     "label": "Contracts",
                     "fieldname": "linked_contracts",
                     "fieldtype": "Table",
-                    "options": "Linked Contract"
+                    "options": "Linked Contract",
+                    "read_only": 1
                 }
             ],
             "permissions": [{
@@ -66,7 +67,20 @@ def create_mega_contract_doctype():
     else:
         print("ℹ️ Mega Contract already exists.")
 
+def set_naming_by_title_for_mega_contract():
+    # Ensure the field exists first
+    if frappe.db.exists("DocType", "Mega Contract"):
+        frappe.db.set_value(
+            "DocType",
+            "Mega Contract",
+            "autoname",
+            "field:title"
+        )
+        print("✅ Mega Contract autoname set to field:title")
+    else:
+        print("❌ Mega Contract Doctype not found.")
 def run_all():
     create_linked_contract_child_table()
     create_mega_contract_doctype()
+    set_naming_by_title_for_mega_contract()
 run_all()    
