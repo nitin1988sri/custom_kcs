@@ -134,17 +134,18 @@ def allocation_naming_series():
     frappe.clear_cache(doctype="Equipment Allocation")
 
 def remove_unique_from_employee_field():
-    # Custom Field ID — fieldname format: {doctype}-{fieldname}
-    field_id = "Equipment Allocation-employee"
+    field = frappe.db.get_value("DocField", {
+        "parent": "Equipment Allocation",
+        "fieldname": "employee"
+    }, "name")
 
-    # Check if the custom field exists
-    if frappe.db.exists("Custom Field", field_id):
-        frappe.db.set_value("Custom Field", field_id, "unique", 0)
+    if field:
+        frappe.db.set_value("DocField", field, "unique", 0)
         frappe.db.commit()
         frappe.clear_cache(doctype="Equipment Allocation")
-        print("✅ Unique constraint removed from employee field in Equipment Allocation.")
+        print("✅ Unique constraint removed from standard employee field.")
     else:
-        print("❌ Custom Field not found.")
+        print("❌ Field not found.")
 
 # Run it
 remove_unique_from_employee_field()    
