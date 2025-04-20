@@ -116,11 +116,9 @@ def equipment_allocated():
     create_custom_fields(custom_fields)
 
 def allocation_naming_series():
-    # Step 1: Update autoname to naming_series:
     if frappe.db.exists("DocType", "Equipment Allocation"):
         frappe.db.set_value("DocType", "Equipment Allocation", "autoname", "naming_series:")
 
-    # Step 2: Add 'naming_series' field if not already present
     if not frappe.db.exists("Custom Field", "Equipment Allocation-naming_series"):
         frappe.get_doc({
             "doctype": "Custom Field",
@@ -134,11 +132,28 @@ def allocation_naming_series():
         }).insert()
 
     frappe.clear_cache(doctype="Equipment Allocation")
+
+def remove_unique_from_employee_field():
+    # Custom Field ID — fieldname format: {doctype}-{fieldname}
+    field_id = "Equipment Allocation-employee"
+
+    # Check if the custom field exists
+    if frappe.db.exists("Custom Field", field_id):
+        frappe.db.set_value("Custom Field", field_id, "unique", 0)
+        frappe.db.commit()
+        frappe.clear_cache(doctype="Equipment Allocation")
+        print("✅ Unique constraint removed from employee field in Equipment Allocation.")
+    else:
+        print("❌ Custom Field not found.")
+
+# Run it
+remove_unique_from_employee_field()    
 def execute():
     create_equipment_master()
     create_equipment_allocation()
     equipment_allocated()
     allocation_naming_series()
+    remove_unique_from_employee_field()
 
 def run_all():
     execute()
