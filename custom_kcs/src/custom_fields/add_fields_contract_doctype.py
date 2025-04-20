@@ -14,7 +14,6 @@ def create_contract_branch_doctype():
             "fieldname": "branch",
             "fieldtype": "Link",
             "options": "Branch",
-            "reqd": 1
         })
 
         doc.save()
@@ -37,19 +36,16 @@ def create_contract_addendum_doctype():
             "label": "Title",
             "fieldname": "title",
             "fieldtype": "Data",
-            "reqd": 1
         })
         doc.append("fields", {
             "label": "Start Date",
             "fieldname": "start_date",
             "fieldtype": "Date",
-            "reqd": 1
         })
         doc.append("fields", {
             "label": "End Date",
             "fieldname": "end_date",
             "fieldtype": "Date",
-            "reqd": 1
         })
         doc.append("fields", {
             "label": "Description",
@@ -60,7 +56,6 @@ def create_contract_addendum_doctype():
             "label": "Document",
             "fieldname": "document",
             "fieldtype": "Attach",
-            "reqd": 1
         })
 
         doc.save()
@@ -99,8 +94,7 @@ def create_contract_custom_fields():
                 "label": "Branches",
                 "fieldtype": "Table",
                 "options": "Contract Branch",  
-                "insert_after": "branches_section",
-                "reqd": 1
+                "insert_after": "branches_section"
             },
             {
                 "fieldname": "work_location",
