@@ -231,9 +231,9 @@ override_doctype_class = {
 # ---------------
 
 doc_events = {
-    "Employee Checkin": {
-        "before_insert": "custom_kcs.src.before_insert_checkin.before_insert_checkin"
-    },
+    # "Employee Checkin": {
+    #     "before_insert": "custom_kcs.src.before_insert_checkin.before_insert_checkin"
+    # },
     "Attendance": {
         "before_insert": "custom_kcs.src.attendance_customization.validate_duplicate_attendance"
     },

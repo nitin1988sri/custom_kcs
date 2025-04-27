@@ -9,9 +9,7 @@ def before_insert_checkin(doc, event):
    # Ensure required fields are provided via the form (do not pull from Employee doctype)
     if not doc.branch:
         frappe.throw("Branch must be provided in the form!")
-    if not doc.work_location:
-        frappe.throw("Work Location must be provided in the form!")
-    
+   
     if doc.log_type == "IN":
         # ----- For Check-In -----
         # Extract current time (as a string) to match Shift Type records
@@ -49,7 +47,6 @@ def before_insert_checkin(doc, event):
             "doctype": "Shift Log",
             "employee": doc.employee,
             "branch": doc.branch,
-            "work_location": doc.work_location,
             "shift_type": shift_type_name,
             "check_in_time": now()
         })

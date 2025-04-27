@@ -97,16 +97,10 @@ def create_contract_custom_fields():
                 "insert_after": "branches_section"
             },
             {
-                "fieldname": "work_location",
-                "label": "Work Location",
-                "fieldtype": "Data",
-                "insert_after": "contract_branches"
-            },
-            {
                 "fieldname": "contract_document",
                 "label": "Contract Document",
                 "fieldtype": "Attach",
-                "insert_after": "work_location"
+                "insert_after": "branches_section"
             },
             {
                 "fieldname": "monthly_contract_value",

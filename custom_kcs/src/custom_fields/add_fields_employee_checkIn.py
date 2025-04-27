@@ -11,20 +11,14 @@ def add_fields_to_employee_checkin():
                 "reqd": 1,
                 "insert_after": "employee",
             },
-            {
-                "fieldname": "work_location",
-                "label": "Work Location",
-                "fieldtype": "Data",
-                "reqd": 1,
-                "insert_after": "branch",
-            },
+           
             {
                 "fieldname": "shift_type",
                 "label": "Shift Type",
                 "fieldtype": "Link",
                 "options": "Shift Type",
                 "reqd": 1,
-                "insert_after": "work_location",
+                "insert_after": "branch",
             }
         ]
     }

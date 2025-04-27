@@ -10,12 +10,6 @@ def add_fields_to_employee_attendance():
                 "options": "Branch",
                 "reqd": 1,
                 "insert_after": "employee",
-            },
-            {
-                "fieldname": "work_location",
-                "label": "Work Location",
-                "fieldtype": "Data",
-                "insert_after": "branch",
             }
         ]
     }

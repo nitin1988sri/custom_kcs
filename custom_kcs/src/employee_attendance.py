@@ -3,92 +3,33 @@ from custom_kcs.src.utils.base64_utils import decode_base64
 import os
 from frappe.utils import now, get_time, today
 
-def attendance_bkp(employee, 
-               status, 
-               base64_image=None, 
-               filename=None, 
-               branch=None, 
-               work_location=None, 
-               shift_type="Day"):
-    try:
-        file_url = None
-        if status != "OUT" and base64_image and filename:
-            image_data = decode_base64(base64_image)
-            if not image_data:
-                return {"status": "error", "message": "Invalid base64 data"}
 
-            folder_path = frappe.utils.get_files_path("attendance", is_private=False)
-            if not os.path.exists(folder_path):
-                os.makedirs(folder_path)
-            file_path = os.path.join(folder_path, filename)
+@frappe.whitelist()
+def bulk_attendance(data):
+    data = frappe.parse_json(data)
+    responses = []
+    for entry in data:
+        res = attendance(
+            employee = entry.get("employee"),
+            status = entry.get("status"),
+            attendance_date= entry.get("attendance_date"),
+            shift_type = entry.get("shift_type"),
+            branch = entry.get("branch")
+        )
+        responses.append(res)
 
-            with open(file_path, "wb") as f:
-                f.write(image_data)
-
-            file_url = f"/files/attendance/{filename}"
-
-            file_doc = frappe.get_doc({
-                "doctype": "File",
-                "file_name": filename,
-                "file_url": file_url,
-                "is_private": 0,
-            })
-            file_doc.insert(ignore_permissions=True)
-            frappe.db.commit()
-
-        if status == "IN":
-            response = check_in_employee_for_shift(employee, branch, work_location, shift_type)
-        elif status == "OUT":
-            response = check_out_employee_for_shift(employee)
-
-        checkin = frappe.get_doc({
-            "doctype": "Employee Checkin",
-            "employee": employee,
-            "log_type": status,
-            "employee_image": file_url,
-            "branch": branch,
-            "shift_type": shift_type,
-            "work_location": work_location,
-        })
-        checkin.flags.ignore_hooks = True
-        checkin.insert(ignore_permissions=True)
-        frappe.db.commit()
-
-        if status == "IN":
-            attendance = frappe.get_doc({
-                "doctype": "Attendance",
-                "employee": employee,
-                "attendance_date": today(),
-                "status": "Present",
-                "branch": branch,
-                "employee_image": file_url,
-                "shift_type": shift_type,
-                "in_time": now(),
-            })
-            attendance.insert(ignore_permissions=True)
-            attendance.submit()
-            frappe.db.commit()
-
-        return {
-            "status": response.get("status"),
-            "message": response.get("message"),
-            "image_url": file_url,
-        }
-
-    except Exception as e:
-        frappe.log_error(title="Employee Checkin Error", message=frappe.get_traceback())
-        return {"status": "error", "message": str(e)}
-
+    return responses
 
 
 @frappe.whitelist()
 def attendance(employee, 
                status, 
-               base64_image=None, 
-               filename=None, 
+               attendance_date=None,
+               shift_type=None,
                branch=None, 
-               work_location=None, 
-               shift_type="Day"):
+               base64_image=None, 
+               filename=None,
+               ):
     try:
         file_url = None
 
@@ -119,7 +60,7 @@ def attendance(employee,
         attendance_doc = frappe.get_doc({
             "doctype": "Attendance",
             "employee": employee,
-            "attendance_date": today(),
+            "attendance_date": attendance_date if attendance_date else today(),
             "status": status,
             "branch": branch,
             "employee_image": file_url,
@@ -131,7 +72,7 @@ def attendance(employee,
         frappe.db.commit()
 
         if status in ["Present", "Half Day", "Work From Home"]:
-            response = check_in_employee_for_shift(employee, branch, work_location, shift_type)
+            response = check_in_employee_for_shift(employee, branch, shift_type)
 
             checkin = frappe.get_doc({
                 "doctype": "Employee Checkin",
@@ -139,8 +80,7 @@ def attendance(employee,
                 "log_type": "IN",
                 "employee_image": file_url,
                 "branch": branch,
-                "shift_type": shift_type,
-                "work_location": work_location,
+                "shift_type": shift_type
             })
             checkin.flags.ignore_hooks = True
             checkin.insert(ignore_permissions=True)
@@ -159,11 +99,8 @@ def attendance(employee,
         return {"status": "error", "message": str(e)}
 
 
-def check_in_employee_for_shift(employee, branch, work_location, shift_type):
+def check_in_employee_for_shift(employee, branch, shift_type):
     
-    if not branch or not work_location:
-        return {"status": "error", "message": "Employee must have a Branch and Work Location!"}
-
     shift_count = frappe.db.count("Shift Log", {
         "employee": employee,
         "check_in_time": [">=", today()]
@@ -176,7 +113,6 @@ def check_in_employee_for_shift(employee, branch, work_location, shift_type):
         "doctype": "Shift Log",
         "employee": employee,
         "branch": branch,
-        "work_location": work_location,
         "shift_type": shift_type,
         "check_in_time": now()
     })

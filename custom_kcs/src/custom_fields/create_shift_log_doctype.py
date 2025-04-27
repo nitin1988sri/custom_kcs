@@ -23,12 +23,6 @@ def create_shift_log_doctype():
                     "reqd": 1
                 },
                 {
-                    "fieldname": "work_location",
-                    "label": "Work Location",
-                    "fieldtype": "Data",
-                    "reqd": 0
-                },
-                {
                     "fieldname": "shift_type",
                     "label": "Shift Type",
                     "fieldtype": "Link",

@@ -1,0 +1,26 @@
+{% extends "templates/web.html" %}
+{% block page_content %}
+<div class="page-container">
+    <div class="card">
+        <h2>Overtime Attendance</h2>
+
+        <div class="frappe-control">
+            <label for="branch_filter">Select Branch:</label>
+            <select id="branch_filter" class="form-control" onchange="loadOvertimeEmployees()">
+                <option value="">Select Branch</option>
+            </select>
+        </div>
+
+        <div id="overtime_employee_container" class="mt-4"></div>
+
+        <div id="mark_btn_container" class="mt-3 text-end">
+            <button class="btn btn-primary" onclick="submitOvertimeAttendance()">Mark Attendance</button>
+        </div>
+
+        <div id="response" class="mt-3 text-success text-center"></div>
+    </div>
+</div>
+
+<script src="/assets/custom_kcs/js/overtime_attendance.js"></script>
+<link rel="stylesheet" href="/assets/custom_kcs/css/app.css">
+{% endblock %}

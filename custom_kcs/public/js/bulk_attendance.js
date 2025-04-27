@@ -149,8 +149,7 @@ function markBulkAttendance() {
             employee: emp_id,
             branch: document.getElementById(`branch_${emp_id}`).value,
             shift_type: document.getElementById(`shift_${emp_id}`).value,
-            status: document.getElementById(`status_${emp_id}`).value,
-            work_location: document.getElementById(`branch_${emp_id}`).value
+            status: document.getElementById(`status_${emp_id}`).value
         });
     });
 
@@ -162,7 +161,7 @@ function markBulkAttendance() {
                 successCount++;
                 console.log(`Attendance marked for ${emp.employee}: ${res.message}`);
                 if (successCount === selected.length) {
-                    frappe.msgprint("✅ Bulk Attendance Marked Successfully!");
+                    frappe.msgprint("Bulk Attendance Marked Successfully!");
                 }
             }
         });
