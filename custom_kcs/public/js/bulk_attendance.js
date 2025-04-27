@@ -4,7 +4,6 @@ function showLoader() {
 function hideLoader() {
     document.getElementById('loader').style.display = 'none';
 }
-let shiftOptionsGlobal = '';
 let statusOptions = '';
 document.addEventListener('DOMContentLoaded', function() {
 
@@ -48,7 +47,6 @@ Promise.all([
     })
 ]).then(res => {
     const status_res = res[0].message;
-    const shift_res = res[1].message;
 
     if (status_res.length) {
         status_res.forEach(st => {
@@ -56,15 +54,6 @@ Promise.all([
         });
     } else {
         document.getElementById('employee_table_container').innerHTML = `<div class="alert alert-warning text-center">No Attendance Status Found!</div>`;
-        hideLoader();
-        return;
-    }
-    if (shift_res.length) {
-        shift_res.forEach(shift => {
-            shiftOptionsGlobal += `<option value="${shift.name}">${shift.name}</option>`;
-        });
-    } else {
-        document.getElementById('employee_table_container').innerHTML = `<div class="alert alert-warning text-center">No Shift Types Defined!</div>`;
         hideLoader();
         return;
     }
@@ -82,7 +71,19 @@ function loadEmployees() {
         method: 'custom_kcs.src.employee_attendance.get_employees_for_bulk_attendance',
         args: { branch: selectedBranch }, 
         callback: function(r) {
-            console.log(r);
+           if (r.message.error) {
+                document.getElementById('employee_table_container').innerHTML = `<div class="alert alert-danger text-center">${r.message.error}</div>`;
+                document.getElementById('mark_btn_container').innerHTML = "";
+                hideLoader();
+                return;
+            }
+            if (r.message.length === 0) {
+                document.getElementById('employee_table_container').innerHTML = `<div class="alert alert-warning text-center">All attendance marked</div>`;
+                document.getElementById('mark_btn_container').innerHTML = "";
+                hideLoader();
+                return;
+            }
+
             let employees = r.message;
             let html = `<table class="table">
                 <thead>
@@ -106,26 +107,17 @@ function loadEmployees() {
                 <button class="btn btn-primary" onclick="markBulkAttendance()">Mark Attendance</button>`;
 
                 employees.forEach(emp => {
-
-                let shiftOptions = shiftOptionsGlobal.replace(`value="${emp.shift}"`, `value="${emp.shift}" selected`);
-
                 html += `<tr>
-                    <td><input type="checkbox" class="emp-check" value="${emp.name}" checked></td>
-                    <td>${emp.employee_name} (${emp.name})</td>
-                    <td>
-                            ${emp.branch}
-                    </td>
-                    <td>
-                        <select id="shift_${emp.name}">
-                            ${shiftOptions}
-                        </select>
-                    </td>
-                    <td>
-                        <select id="status_${emp.name}">
-                            ${statusOptions}
-                        </select>
-                    </td>
-                </tr>`;
+                <td><input type="checkbox" class="emp-check" value="${emp.name}" checked></td>
+                <td>${emp.employee_name} (${emp.name})</td>
+                <td data-branch="${emp.branch}">${emp.branch}</td>
+                <td data-shift="${emp.shift}">${emp.shift}</td>
+                <td>
+                    <select id="status_${emp.name}">
+                        ${statusOptions}
+                    </select>
+                </td>
+            </tr>`;
             });
 
             html += `</tbody></table>`;
@@ -144,11 +136,13 @@ function markBulkAttendance() {
 
     let selected = [];
     document.querySelectorAll('.emp-check:checked').forEach(box => {
-        let emp_id = box.value;
+        const emp_id = box.value;
+        const branch = box.closest('tr').querySelector('td[data-branch]').getAttribute('data-branch');
+        const shift_type = box.closest('tr').querySelector('td[data-shift]').getAttribute('data-shift');
         selected.push({
             employee: emp_id,
-            branch: document.getElementById(`branch_${emp_id}`).value,
-            shift_type: document.getElementById(`shift_${emp_id}`).value,
+            branch: branch,
+            shift_type: shift_type,
             status: document.getElementById(`status_${emp_id}`).value
         });
     });

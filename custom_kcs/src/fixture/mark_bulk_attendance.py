@@ -55,14 +55,13 @@ def mark_bulk_attendance(month=None, year=None):
                         "employee": employee_id,
                         "attendance_date": attendance_date,
                         "status": "Absent",
-                        "branch": random_branch,
-                        "work_location": work_location
+                        "branch": random_branch
                     })
                     attendance.insert(ignore_permissions=True)
                     attendance.submit()
                     attendance_entries.append(attendance.name)
 
-                    frappe.logger().info(f"❌ Marked Absent for {employee_id} on {attendance_date} (Branch: {random_branch}, Location: {work_location})")
+                    frappe.logger().info(f"❌ Marked Absent for {employee_id} on {attendance_date} (Branch: {random_branch})")
                 except Exception as e:
                     frappe.logger().error(f"⚠ Failed to add attendance: {str(e)}")
             else:
@@ -77,8 +76,7 @@ def mark_bulk_attendance(month=None, year=None):
                         "status": shift_status,
                         "shift": shift,
                         "in_time": now(),
-                        "branch": random_branch,
-                        "work_location": work_location
+                        "branch": random_branch
                     })
                     attendance.insert(ignore_permissions=True)
                     attendance.submit()
@@ -98,8 +96,7 @@ def mark_bulk_attendance(month=None, year=None):
                             "status": night_shift_status,
                             "shift": "Night shift",
                             "in_time": now(),
-                            "branch": random_branch,
-                            "work_location": work_location
+                            "branch": random_branch
                         })
                         night_attendance.insert(ignore_permissions=True)
                         night_attendance.submit()

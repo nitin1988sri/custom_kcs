@@ -154,6 +154,43 @@ def get_employees_for_bulk_attendance(branch=None):
     if not branches:
         return {"error": "No branches assigned"}
 
+    if branch:
+        branches = [branch]
+
+    placeholders = ','.join(['%s'] * len(branches))
+
+    today = frappe.utils.today()
+
+    query = f"""
+        SELECT e.name, e.employee_name, e.designation, e.shift, e.branch
+        FROM `tabEmployee` e
+        WHERE e.branch IN ({placeholders})
+        AND NOT EXISTS (
+            SELECT 1 FROM `tabAttendance` a
+            WHERE a.employee = e.name
+            AND a.attendance_date = %s
+        )
+        ORDER BY e.employee_name ASC
+    """
+
+    params = branches + [today]
+
+    employees = frappe.db.sql(query, params, as_dict=True)
+
+    return employees
+# def get_employees_for_bulk_attendance(branch=None):
+    user = frappe.session.user
+    employee_id = frappe.db.get_value("Employee", {"user_id": user}, "name")
+
+    branches = frappe.get_all(
+        "Branch",
+        filters={"branch_manager": employee_id},
+        pluck="name"
+    )
+
+    if not branches:
+        return {"error": "No branches assigned"}
+
     filters = {"branch": ["in", branches]}
     if branch:
         filters["branch"] = branch
