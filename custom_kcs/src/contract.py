@@ -35,10 +35,6 @@ def generate_contract_code(party_name):
 
     return contract_code
 
-def before_insert(doc, method):
-    if not doc.contract_code:
-        doc.contract_code = generate_contract_code(doc.party_name)
-
 @frappe.whitelist()
 def get_employees_for_contract(client, branch):
     return frappe.get_all("Employee",

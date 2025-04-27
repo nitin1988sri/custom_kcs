@@ -4,14 +4,6 @@ from frappe.custom.doctype.custom_field.custom_field import create_custom_field
 def create_custom_fields_for_branch():
     fields = [
         {
-            "fieldname": "client",
-            "label": "Client",
-            "fieldtype": "Link",
-            "options": "Customer",
-            "insert_after": "branch_name",
-            "reqd": 1
-        },
-        {
             "fieldname": "city",
             "label": "City",
             "fieldtype": "Data",

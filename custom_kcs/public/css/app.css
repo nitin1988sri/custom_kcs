@@ -1,0 +1,42 @@
+.page-container {
+    max-width: 90%;
+    margin: auto;
+    padding: 20px;
+}
+.card {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+.table {
+    width: 100%;
+}
+select, .btn {
+    min-width: 120px;
+}
+
+#mark_btn_container {
+    display: flex;
+    justify-content: flex-end;   /* Right Align */
+    margin-top: 20px;
+}
+
+#mark_btn_container .btn {
+    margin-top: 23px;
+    padding: 7px 22px;
+    font-size: 13px;
+    border-radius: 6px;
+    background-color: #007bff;
+    border: none;
+    color: #fff;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+}
+
+#mark_btn_container .btn:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+}
+

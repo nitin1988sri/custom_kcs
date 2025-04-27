@@ -1,0 +1,122 @@
+.page-container {
+    max-width: 700px;
+    margin: 40px auto;
+    padding: 25px;
+}
+
+.card {
+    background: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.card:hover {
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+}
+
+h2 {
+    text-align: center;
+    font-weight: bold;
+    margin-bottom: 25px;
+    color: #333;
+}
+
+/* Input Fields Styling */
+input[type="text"],
+input[type="date"],
+select {
+    width: 100%;
+    padding: 10px 12px;
+    margin: 10px 0 20px 0;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    transition: border-color 0.3s ease;
+}
+
+input[type="text"]:focus,
+input[type="date"]:focus,
+select:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+/* Button Styling */
+.btn-primary {
+    width: 100%;
+    background-color: #007bff;
+    border: none;
+    padding: 12px;
+    border-radius: 6px;
+    color: #fff;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px);
+}
+
+/* Suggestions Box */
+.suggestions {
+    border: 1px solid #ddd;
+    max-height: 200px;
+    overflow-y: auto;
+    background: #fff;
+    z-index: 1000;
+}
+
+.suggestion-item {
+    padding: 10px;
+    font-size: 15px;
+    cursor: pointer;
+    background-color: #fff;
+    transition: background 0.2s ease;
+}
+
+.suggestion-item:hover {
+    background-color: #f8f9fa;
+    font-weight: 500;
+}
+
+/* Selection highlight */
+#employee_input::selection {
+    background: #cce5ff;
+    color: #000;
+}
+
+#employee_input::-moz-selection {
+    background: #cce5ff;
+    color: #000;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .page-container {
+        padding: 15px;
+    }
+
+    .card {
+        padding: 20px;
+    }
+}
+/* Make entire date input clickable */
+input[type="date"] {
+    position: relative;
+    cursor: pointer;
+}
+
+/* Expand the clickable calendar icon */
+input[type="date"]::-webkit-calendar-picker-indicator {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    cursor: pointer;
+    opacity: 0;  /* Hide default icon but keep functionality */
+}

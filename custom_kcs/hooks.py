@@ -14,7 +14,7 @@ after_migrate = ["custom_kcs.src.custom_fields.add_fields_employee_checkIn.run_a
 
                  "custom_kcs.src.custom_fields.create_contract_role_doctype.create_contract_role_doctype",
 
-                 "custom_kcs.src.custom_fields.create_temporary_transfer_doctype.create_temporary_transfer_doctype",
+                 "custom_kcs.src.custom_fields.create_overtime_doctype.run_all",
 
                  "custom_kcs.src.custom_fields.add_fields_employee.run_all",	
 
@@ -39,6 +39,8 @@ after_migrate = ["custom_kcs.src.custom_fields.add_fields_employee_checkIn.run_a
                 "custom_kcs.src.custom_fields.create_mega_contract_doctype.run_all",
 
                 "custom_kcs.src.custom_fields.create_equipment_doctype.run_all",
+                
+                "custom_kcs.src.custom_fields.attendance_status_doctype.run_all",
                 ]   
 
 boot_session = "custom_kcs.src.patches.override_monthly_attendance.boot"
@@ -80,8 +82,8 @@ app_include_js = [
     "/assets/custom_kcs/js/payroll_entry.js",
     "/assets/custom_kcs/js/monthly_attendance_sheet.js",
     "/assets/custom_kcs/js/salary_paid_status.js",
-     "/assets/custom_kcs/js/contract.js"
-]
+    "/assets/custom_kcs/js/contract.js"
+    ]
 
 # query_reports = [
 #     "Client Salary Report"
@@ -249,6 +251,11 @@ doc_events = {
             ]         
     }
 }
+
+# override_whitelisted_methods = {
+#     'custom_kcs.src.attendance_utils.get_employees_for_logged_in_manager': 'custom_kcs.src.attendance_utils.get_employees_for_logged_in_manager',
+#     'custom_kcs.src.attendance_utils.mark_bulk_attendance': 'custom_kcs.src.attendance_utils.mark_bulk_attendance'
+# }
 
 scheduler_events = {
 	"all": [

@@ -1,0 +1,42 @@
+{% extends "templates/web.html" %}
+{% block page_content %}
+    <div class="page-container">
+        <div class="card">
+            <h2>Security guard overtime</h2>
+            <div id="shift_info"></div>
+
+            <div class="frappe-control autocomplete-container">
+                <label for="employee_input">Select Employee:</label>
+                <input type="text" id="employee_input" class="form-control" placeholder="Search by EmpID or Emp Name" />
+                <div id="employee_suggestions" class="suggestions"></div>
+            </div>
+
+            <div class="frappe-control">
+                <label for="temp_branch">Select Temporary Branch:</label>
+                <select id="overtime_branch" class="form-control"></select>
+            </div>
+            <div class="frappe-control">
+                <label for="overtime_shift">Select Overtime Shift:</label>
+                <select id="overtime_shift" class="form-control">
+                    <option value="">Select Shift</option>
+                </select>
+            </div>
+            <div class="frappe-control">
+                <label for="start_date">Start Date:</label>
+                <input type="date" id="start_date" class="form-control">
+            </div>
+
+            <div class="frappe-control">
+                <label for="end_date">End Date:</label>
+                <input type="date" id="end_date" class="form-control">
+            </div>
+
+            <button class="btn btn-primary" onclick="create_overtime()">
+              Transfer
+            </button>
+            <div id="response" class="mt-3 text-center text-success"></div>
+        </div>
+    </div>
+    <script src="/assets/custom_kcs/js/overtime.js"></script>
+    <link rel="stylesheet" href="/assets/custom_kcs/css/overtime.css">
+{% endblock %}

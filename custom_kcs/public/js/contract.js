@@ -12,6 +12,21 @@ frappe.ui.form.on('Contract', {
                 }
             };
         };
+    },
+    party_name(frm) {
+        if (frm.doc.party_name) {
+            frappe.call({
+                method: "custom_kcs.src.contract.generate_contract_code",
+                args: {
+                    party_name: frm.doc.party_name
+                },
+                callback: function(r) {
+                    if (r.message) {
+                        frm.set_value("contract_code", r.message);
+                    }
+                }
+            });
+        }
     }
 });
 
@@ -28,6 +43,9 @@ frappe.ui.form.on("Contract Addendum", {
         }, 300);
     }
 });
+
+   
+
 
 
 
