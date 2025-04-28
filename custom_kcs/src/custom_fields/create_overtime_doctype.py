@@ -26,7 +26,7 @@ def create_overtime_doctype():
     print("Overtime Doctype created successfully!")
 
 create_overtime_doctype()
-def rul_all():
+def run_all():
     create_overtime_doctype()
 
-rul_all()    
+run_all()    
