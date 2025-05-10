@@ -274,8 +274,13 @@ def get_attendance_records(filters: Filters) -> list[dict]:
 		)
 	)
 
+
 	if filters.employee:
 		query = query.where(Attendance.employee == filters.employee)
+
+	if filters.shift_type:
+		query = query.where(Attendance.shift == filters.shift_type)
+
 	query = query.orderby(Attendance.employee, Attendance.attendance_date)
 
 	return query.run(as_dict=1)
