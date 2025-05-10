@@ -141,7 +141,7 @@ def check_out_employee_for_shift(employee):
 
 
 @frappe.whitelist()
-def get_employees_for_bulk_attendance(branch=None):
+def get_employees_for_bulk_attendance_bkp(branch=None):
     user = frappe.session.user
     employee_id = frappe.db.get_value("Employee", {"user_id": user}, "name")
 
@@ -178,7 +178,9 @@ def get_employees_for_bulk_attendance(branch=None):
     employees = frappe.db.sql(query, params, as_dict=True)
 
     return employees
-# def get_employees_for_bulk_attendance(branch=None):
+
+@frappe.whitelist()
+def get_employees_for_bulk_attendance(branch=None, shift_type=None):
     user = frappe.session.user
     employee_id = frappe.db.get_value("Employee", {"user_id": user}, "name")
 
@@ -191,18 +193,40 @@ def get_employees_for_bulk_attendance(branch=None):
     if not branches:
         return {"error": "No branches assigned"}
 
-    filters = {"branch": ["in", branches]}
     if branch:
-        filters["branch"] = branch
+        branches = [branch]
 
-    employees = frappe.get_all(
-        "Employee",
-        filters=filters,
-        fields=["name", "employee_name", "designation","shift", "branch"],
-        order_by="employee_name asc",
-    )
+    placeholders = ','.join(['%s'] * len(branches))
+    today = frappe.utils.today()
+
+    # Prepare base query and conditions
+    query = f"""
+        SELECT e.name, e.employee_name, e.designation, e.shift, e.branch
+        FROM `tabEmployee` e
+        WHERE e.branch IN ({placeholders})
+    """
+
+    params = branches
+
+    if shift_type:
+        query += " AND e.shift = %s"
+        params.append(shift_type)
+
+    query += """
+        AND NOT EXISTS (
+            SELECT 1 FROM `tabAttendance` a
+            WHERE a.employee = e.name
+            AND a.attendance_date = %s
+        )
+        ORDER BY e.employee_name ASC
+    """
+
+    params.append(today)
+
+    employees = frappe.db.sql(query, params, as_dict=True)
 
     return employees
+
 
 @frappe.whitelist()
 def get_branches_for_manager():

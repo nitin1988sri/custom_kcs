@@ -1,7 +1,6 @@
 document.addEventListener("DOMContentLoaded", function() {
     fetchEmployees();
     fetchBranches();
-    fetchShiftTypes();  
     setupEmployeeSearch();
 });
 
@@ -137,7 +136,7 @@ function create_overtime() {
     let overtime_branch = document.getElementById("overtime_branch").value;
     let overtime_shift = document.getElementById("overtime_shift").value;
     let start_date = document.getElementById("start_date").value;
-    let end_date = document.getElementById("end_date").value;
+    let end_date = document.getElementById("start_date").value;
 
     if (!overtime_shift) {
         frappe.msgprint("Please select an Overtime Shift.");
@@ -153,16 +152,3 @@ function create_overtime() {
     });
 }
 
-
-
-// frappe.ready(function () {
-//     frappe.call({
-//         method: "custom_kcs.src.assign_temporary_transfer.validate_admin_access",
-//         callback: function (response) {
-//             if (!response.message) {  
-//                 frappe.msgprint(__("You are not authorized to access this page."));
-//                 window.location.href = "/app"; 
-//             }
-//         }
-//     });
-// });

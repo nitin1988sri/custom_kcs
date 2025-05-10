@@ -28,19 +28,16 @@ after_migrate = ["custom_kcs.src.custom_fields.add_fields_employee_checkIn.run_a
                  
                  "custom_kcs.src.custom_fields.create_customer_branch_filter_doctype.run_all",
                  
-                 "custom_kcs.src.custom_fields.add_fields_payroll_entry.run_all",
-
-                "custom_kcs.src.custom_fields.create_salary_paid_status_report.create_salary_paid_status_report",
-
-                "custom_kcs.src.custom_fields.create_shift_log_doctype.run_all",
-                
-                "custom_kcs.src.custom_fields.add_fields_salary_slip.run_all",
-
-                "custom_kcs.src.custom_fields.create_mega_contract_doctype.run_all",
-
-                "custom_kcs.src.custom_fields.create_equipment_doctype.run_all",
-                
-                "custom_kcs.src.custom_fields.attendance_status_doctype.run_all",
+                    "custom_kcs.src.custom_fields.add_fields_payroll_entry.run_all",
+                    "custom_kcs.src.custom_fields.create_salary_paid_status_report.create_salary_paid_status_report",
+                    "custom_kcs.src.custom_fields.create_shift_log_doctype.run_all",
+                    "custom_kcs.src.custom_fields.add_fields_salary_slip.run_all",
+                    "custom_kcs.src.custom_fields.create_mega_contract_doctype.run_all",
+                    "custom_kcs.src.custom_fields.create_equipment_doctype.run_all",
+                    "custom_kcs.src.custom_fields.attendance_status_doctype.run_all",
+                    "custom_kcs.src.custom_fields.create_unit_doctype.run_all",
+                    "custom_kcs.src.custom_fields.create_unit_costing_doctype.run_all",
+                    "custom_kcs.src.custom_fields.create_minimum_wage_doctype.run_all",                
                 ]   
 
 boot_session = "custom_kcs.src.patches.override_monthly_attendance.boot"

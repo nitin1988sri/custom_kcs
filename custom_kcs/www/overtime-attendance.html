@@ -3,11 +3,13 @@
 <div class="page-container">
     <div class="card">
         <h2>Overtime Attendance</h2>
-
-        <div class="frappe-control">
+        <div class="d-flex justify-content-between align-items-center mb-2">
             <label for="branch_filter">Select Branch:</label>
-            <select id="branch_filter" class="form-control" onchange="loadOvertimeEmployees()">
+            <select id="branch_filter" class="form-select" onchange="loadOvertimeEmployees()">
                 <option value="">Select Branch</option>
+            </select>
+            <select id="shift_filter" class="form-select " onchange="loadOvertimeEmployees()">
+                <option value="">All Shifts</option>
             </select>
         </div>
 

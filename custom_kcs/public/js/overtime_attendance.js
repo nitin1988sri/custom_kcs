@@ -5,6 +5,7 @@ let statusOptions = '';
 
 document.addEventListener("DOMContentLoaded", () => {
     loadBranches();
+    loadShiftTypes(); 
     loadOvertimeEmployees();
 });
 
@@ -19,6 +20,23 @@ function loadBranches() {
                 branchFilter.innerHTML += `<option value="${branch}">${branch}</option>`;
         });
     }
+    });
+}
+
+function loadShiftTypes() {
+    frappe.call({
+        method: 'frappe.client.get_list',
+        args: {
+            doctype: 'Shift Type',
+            fields: ['name']
+        },
+        callback: function(res) {
+            const shiftFilter = document.getElementById("shift_filter");
+            shiftFilter.innerHTML = `<option value="">All Shifts</option>`;
+            res.message.forEach(shift => {
+                shiftFilter.innerHTML += `<option value="${shift.name}">${shift.name}</option>`;
+            });
+        }
     });
 }
 
@@ -42,9 +60,11 @@ frappe.call({
 function loadOvertimeEmployees() {
     loadStatus()
     const branch = document.getElementById("branch_filter").value;
+    const shift_type = document.getElementById("shift_filter").value;
+
     frappe.call({
         method: "custom_kcs.src.overtime.get_overtime_employees_for_branch",
-        args: { branch },
+        args: { branch, shift_type },
         callback: (res) => {
             const container = document.getElementById("overtime_employee_container");
             let data = res.message;

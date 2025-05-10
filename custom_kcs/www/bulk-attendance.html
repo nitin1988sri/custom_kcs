@@ -4,8 +4,11 @@
         <div class="card">
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <h4 class="mb-0">Mark Attendance</h4>
-                <select id="branch_filter" class="form-select" style="display:inline-block; width:auto;margin-top: auto;margin-right: 33%;" onchange="loadEmployees()">
+                <select id="branch_filter" class="form-select" style="display:inline-block;" onchange="loadEmployees()">
                     <option value="">All Branches</option>
+                </select>
+                <select id="shift_filter" class="form-select d-inline-block me-2" style="width:auto;" onchange="loadEmployees()">
+                    <option value="">All Shifts</option>
                 </select>
                 <div id="mark_btn_container"></div>
             </div>

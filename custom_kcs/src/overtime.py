@@ -125,7 +125,7 @@ def get_last_two_shifts(employee_id):
     }
 
 @frappe.whitelist()
-def get_overtime_employees_for_branch(branch=None):
+def get_overtime_employees_for_branch(branch=None, shift_type=None):
     if not branch:
         branches = get_branches_for_manager()
         if not branches:
@@ -134,6 +134,13 @@ def get_overtime_employees_for_branch(branch=None):
         branches = [branch]
 
     placeholders = ','.join(['%s'] * len(branches))
+    query_conditions = [f"ot.overtime_branch IN ({placeholders})", "ot.status = 'Active'"]
+    params = branches
+
+    # Add shift_type condition if provided
+    if shift_type:
+        query_conditions.append("ot.shift_type = %s")
+        params.append(shift_type)
 
     query = f"""
         SELECT 
@@ -145,8 +152,7 @@ def get_overtime_employees_for_branch(branch=None):
             ot.end_date
         FROM `tabOvertime` ot
         LEFT JOIN `tabEmployee` e ON ot.employee = e.name
-        WHERE ot.status = 'Active'
-        AND ot.overtime_branch IN ({placeholders})
+        WHERE {' AND '.join(query_conditions)}
         AND NOT EXISTS (
             SELECT 1 FROM `tabAttendance` att
             WHERE att.employee = ot.employee
@@ -154,13 +160,8 @@ def get_overtime_employees_for_branch(branch=None):
         )
     """
 
-    params = branches
-
     overtime_employees = frappe.db.sql(query, params, as_dict=True)
-
     return overtime_employees
-
-
 
 @frappe.whitelist()
 def get_branches_for_manager():

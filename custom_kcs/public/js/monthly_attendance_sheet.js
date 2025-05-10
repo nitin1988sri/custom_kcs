@@ -117,3 +117,4 @@ frappe.query_reports["Monthly Attendance Sheet"] = {
 		return value;
 	},
 };
+

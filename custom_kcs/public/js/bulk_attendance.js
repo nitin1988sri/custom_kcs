@@ -48,6 +48,13 @@ Promise.all([
 ]).then(res => {
     const status_res = res[0].message;
 
+    const shiftTypes = res[2].message;
+    let shiftFilter = document.getElementById('shift_filter');
+    shiftFilter.innerHTML = `<option value="">All Shifts</option>`;
+    shiftTypes.forEach(shift => {
+        shiftFilter.innerHTML += `<option value="${shift.name}">${shift.name}</option>`;
+    });
+
     if (status_res.length) {
         status_res.forEach(st => {
             statusOptions += `<option value="${st.status_name}" ${st.is_default ? 'selected' : ''}>${st.status_name}</option>`;
@@ -66,10 +73,13 @@ Promise.all([
 
 function loadEmployees() {
     let selectedBranch = document.getElementById('branch_filter').value;
+    let selectedShift = document.getElementById('shift_filter').value;
 
     frappe.call({
         method: 'custom_kcs.src.employee_attendance.get_employees_for_bulk_attendance',
-        args: { branch: selectedBranch }, 
+        args: { branch: selectedBranch,
+                shift_type: selectedShift
+              }, 
         callback: function(r) {
            if (r.message.error) {
                 document.getElementById('employee_table_container').innerHTML = `<div class="alert alert-danger text-center">${r.message.error}</div>`;
