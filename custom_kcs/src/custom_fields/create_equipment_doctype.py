@@ -142,7 +142,6 @@ def remove_unique_from_employee_field():
         print(f"⚠️ Could not drop index {index_name}: {str(e)}")
 
 # Run it
-remove_unique_from_employee_field()    
 def execute():
     create_equipment_master()
     create_equipment_allocation()
