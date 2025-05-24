@@ -267,9 +267,9 @@ scheduler_events = {
 	# "weekly": [
 	# 	"custom_kcs.tasks.weekly"
 	# ],
-	"monthly": [
-		"custom_kcs.src.cron.generate_salary_slip.generate_salary_slip"
-	],
+	# "monthly": [
+	# 	"custom_kcs.src.cron.generate_salary_slip.generate_salary_slip"
+	# ],
     "cron": {
         "* * * * *": [ 
             "custom_kcs.src.cron.employee_Incentive.generate_employee_incentives_for_all"
