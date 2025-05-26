@@ -37,11 +37,17 @@ after_migrate = ["custom_kcs.src.custom_fields.add_fields_employee_checkIn.run_a
                     "custom_kcs.src.custom_fields.attendance_status_doctype.run_all",
                     "custom_kcs.src.custom_fields.create_unit_doctype.run_all",
                     "custom_kcs.src.custom_fields.create_unit_costing_doctype.run_all",
-                    "custom_kcs.src.custom_fields.create_minimum_wage_doctype.run_all",                
+                    "custom_kcs.src.custom_fields.create_minimum_wage_doctype.run_all",  
+                    "custom_kcs.src.custom_fields.create_state_doctype.run_all",
+                    "custom_kcs.src.custom_fields.create_city_doctype.run_all",    
+                    #"custom_kcs.src.patches.city_state_bulk_insert.run"          
                 ]   
 
 boot_session = "custom_kcs.src.patches.override_monthly_attendance.boot"
 
+# patches = [
+#     "custom_kcs.patches.city_state_bulk_insert.run"
+# ]
 
 # override_report = {
 #     "HR": {

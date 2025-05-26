@@ -192,6 +192,45 @@ def add_some_more_fields():
 
     create_custom_fields(custom_fields)
 
+def add_custom_old_empcode_and_fathername_fields_to_employee():
+    if not frappe.db.exists("DocType", "Employee"):
+        print("Employee doctype does not exist!")
+        return
+
+    # Add Old Empcode
+    if not frappe.db.exists("Custom Field", {"dt": "Employee", "fieldname": "old_empcode"}):
+        old_empcode_field = frappe.get_doc({
+            "doctype": "Custom Field",
+            "dt": "Employee",
+            "fieldname": "old_empcode",
+            "fieldtype": "Data",
+            "label": "Old Empcode",
+            "insert_after": "series",
+            "reqd": 0
+        })
+        old_empcode_field.insert()
+        print("Old Empcode field added.")
+    else:
+        print("Old Empcode field already exists.")
+
+    # Add Father Name
+    if not frappe.db.exists("Custom Field", {"dt": "Employee", "fieldname": "father_name"}):
+        father_name_field = frappe.get_doc({
+            "doctype": "Custom Field",
+            "dt": "Employee",
+            "fieldname": "father_name",
+            "fieldtype": "Data",
+            "label": "Father Name",
+            "insert_after": "middle_name",
+            "reqd": 0
+        })
+        father_name_field.insert()
+        print("Father Name field added.")
+    else:
+        print("Father Name field already exists.")
+
+    frappe.db.commit()
+
 def run_all():
     add_client_field_to_employee()
     add_shift_field()
@@ -199,6 +238,7 @@ def run_all():
     add_contract_series()
     add_bank_passbook_attachment_field()
     add_some_more_fields()
+    add_custom_old_empcode_and_fathername_fields_to_employee()
 
 run_all()        
 

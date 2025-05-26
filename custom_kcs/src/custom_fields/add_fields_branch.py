@@ -93,9 +93,24 @@ def add_linked_contract_field():
         doc.save()
         frappe.db.commit()
 
+def add_old_branch_code_field():
+    if not frappe.db.exists("Custom Field", "Branch-old_branch_code"):
+        field = {
+            "fieldname": "old_branch_code",
+            "label": "Old Branch Code",
+            "fieldtype": "Data",
+            "insert_after": "branch_name",  # आप इसको अपनी ज़रूरत के अनुसार बदल सकते हैं
+            "reqd": 0
+        }
+        create_custom_field("Branch", field)
+        frappe.db.commit()
+        print("✅ Old Branch Code field added.")
+    else:
+        print("⚠️ Old Branch Code field already exists.")
 
 def run_all():
     create_custom_fields_for_branch()
     add_linked_contract_field()
+    add_old_branch_code_field()
 
 run_all()
