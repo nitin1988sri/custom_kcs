@@ -1,0 +1,122 @@
+[
+ {
+  "country": "India",
+  "docstatus": 0,
+  "doctype": "State",
+  "modified": "2025-05-26 09:46:36.591456",
+  "name": "Delhi",
+  "state_name": "Delhi"
+ },
+ {
+  "country": "India",
+  "docstatus": 0,
+  "doctype": "State",
+  "modified": "2025-05-26 09:48:59.787571",
+  "name": "Uttar Pradesh",
+  "state_name": "Uttar Pradesh"
+ },
+ {
+  "country": "India",
+  "docstatus": 0,
+  "doctype": "State",
+  "modified": "2025-05-26 09:49:00.002724",
+  "name": "Haryana",
+  "state_name": "Haryana"
+ },
+ {
+  "country": "India",
+  "docstatus": 0,
+  "doctype": "State",
+  "modified": "2025-05-26 09:49:00.295850",
+  "name": "Karnataka",
+  "state_name": "Karnataka"
+ },
+ {
+  "country": "India",
+  "docstatus": 0,
+  "doctype": "State",
+  "modified": "2025-05-26 09:49:00.540750",
+  "name": "Telangana",
+  "state_name": "Telangana"
+ },
+ {
+  "country": "India",
+  "docstatus": 0,
+  "doctype": "State",
+  "modified": "2025-05-26 09:49:00.755404",
+  "name": "Jammu and Kashmir",
+  "state_name": "Jammu and Kashmir"
+ },
+ {
+  "country": "India",
+  "docstatus": 0,
+  "doctype": "State",
+  "modified": "2025-05-26 09:49:00.965399",
+  "name": "Punjab",
+  "state_name": "Punjab"
+ },
+ {
+  "country": "India",
+  "docstatus": 0,
+  "doctype": "State",
+  "modified": "2025-05-26 09:49:01.210989",
+  "name": "Gujarat",
+  "state_name": "Gujarat"
+ },
+ {
+  "country": "India",
+  "docstatus": 0,
+  "doctype": "State",
+  "modified": "2025-05-26 09:49:01.416696",
+  "name": "Maharashtra",
+  "state_name": "Maharashtra"
+ },
+ {
+  "country": "India",
+  "docstatus": 0,
+  "doctype": "State",
+  "modified": "2025-05-26 09:49:01.618984",
+  "name": "Madhya Pradesh",
+  "state_name": "Madhya Pradesh"
+ },
+ {
+  "country": "India",
+  "docstatus": 0,
+  "doctype": "State",
+  "modified": "2025-05-26 09:49:01.827311",
+  "name": "Chhattisgarh",
+  "state_name": "Chhattisgarh"
+ },
+ {
+  "country": "India",
+  "docstatus": 0,
+  "doctype": "State",
+  "modified": "2025-05-26 09:49:02.023508",
+  "name": "Andhra Pradesh",
+  "state_name": "Andhra Pradesh"
+ },
+ {
+  "country": "India",
+  "docstatus": 0,
+  "doctype": "State",
+  "modified": "2025-05-26 09:49:02.276302",
+  "name": "Himachal Pradesh",
+  "state_name": "Himachal Pradesh"
+ },
+ {
+  "country": "India",
+  "docstatus": 0,
+  "doctype": "State",
+  "modified": "2025-05-26 09:49:02.539989",
+  "name": "West Bengal",
+  "state_name": "West Bengal"
+ },
+ {
+  "country": "India",
+  "docstatus": 0,
+  "doctype": "State",
+  "modified": "2025-05-26 09:49:02.742881",
+  "name": "Rajasthan",
+  "state_name": "Rajasthan"
+ }
+]

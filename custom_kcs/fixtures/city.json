@@ -1,0 +1,898 @@
+[
+ {
+  "city_name": "New Delhi",
+  "docstatus": 0,
+  "doctype": "City",
+  "modified": "2025-05-26 09:46:36.732082",
+  "name": "ci6djksp6k",
+  "state": "Delhi"
+ },
+ {
+  "city_name": "Greator Noida",
+  "docstatus": 0,
+  "doctype": "City",
+  "modified": "2025-05-26 09:48:59.926345",
+  "name": "Greator Noida",
+  "state": "Uttar Pradesh"
+ },
+ {
+  "city_name": "Gurgaon",
+  "docstatus": 0,
+  "doctype": "City",
+  "modified": "2025-05-26 09:49:00.132282",
+  "name": "Gurgaon",
+  "state": "Haryana"
+ },
+ {
+  "city_name": "Mundkati Hodal",
+  "docstatus": 0,
+  "doctype": "City",
+  "modified": "2025-05-26 09:49:00.183770",
+  "name": "Mundkati Hodal",
+  "state": "Haryana"
+ },
+ {
+  "city_name": "Baghpat Baghpat",
+  "docstatus": 0,
+  "doctype": "City",
+  "modified": "2025-05-26 09:49:00.188427",
+  "name": "Baghpat Baghpat",
+  "state": "Uttar Pradesh"
+ },
+ {
+  "city_name": "s Wear house Meerabagh",
+  "docstatus": 0,
+  "doctype": "City",
+  "modified": "2025-05-26 09:49:00.195355",
+  "name": "s Wear house Meerabagh",
+  "state": "Delhi"
+ },
+ {
+  "city_name": "s Wear house Rohini",
+  "docstatus": 0,
+  "doctype": "City",
+  "modified": "2025-05-26 09:49:00.200409",
+  "name": "s Wear house Rohini",
+  "state": "Delhi"
+ },
+ {
+  "city_name": "s Wear house Tikri Border",
+  "docstatus": 0,
+  "doctype": "City",
+  "modified": "2025-05-26 09:49:00.205445",
+  "name": "s Wear house Tikri Border",
+  "state": "Delhi"
+ },
+ {
+  "city_name": "s Wear house Samalkha",
+  "docstatus": 0,
+  "doctype": "City",
+  "modified": "2025-05-26 09:49:00.212432",
+  "name": "s Wear house Samalkha",
+  "state": "Delhi"
+ },
+ {
+  "city_name": "s Wear house Rangpuri",
+  "docstatus": 0,
+  "doctype": "City",
+  "modified": "2025-05-26 09:49:00.217439",
+  "name": "s Wear house Rangpuri",
+  "state": "Delhi"
+ },
+ {
+  "city_name": "Noida",
+  "docstatus": 0,
+  "doctype": "City",
+  "modified": "2025-05-26 09:49:00.222536",
+  "name": "Noida",
+  "state": "Uttar Pradesh"
+ },
+ {
+  "city_name": "Dharuhera",
+  "docstatus": 0,
+  "doctype": "City",
+  "modified": "2025-05-26 09:49:00.229089",
+  "name": "Dharuhera",
+  "state": "Haryana"
+ },
+ {
+  "city_name": "s Wear house Durgapuri",
+  "docstatus": 0,
+  "doctype": "City",
+  "modified": "2025-05-26 09:49:00.234140",
+  "name": "s Wear house Durgapuri",
+  "state": "Delhi"
+ },
+ {
+  "city_name": "Hero Honda",
+  "docstatus": 0,
+  "doctype": "City",
+  "modified": "2025-05-26 09:49:00.239244",
+  "name": "Hero Honda",
+  "state": "Haryana"
+ },
+ {
+  "city_name": "Gurgaon Maruti",
+  "docstatus": 0,
+  "doctype": "City",
+  "modified": "2025-05-26 09:49:00.244489",
+  "name": "Gurgaon Maruti",
+  "state": "Haryana"
+ },
+ {
+  "city_name": "-Noida",
+  "docstatus": 0,
+  "doctype": "City",
+  "modified": "2025-05-26 09:49:00.251181",
+  "name": "-Noida",
+  "state": "Uttar Pradesh"
+ },
+ {
+  "city_name": "s Wear house Daryaganj",
+  "docstatus": 0,
+  "doctype": "City",
+  "modified": "2025-05-26 09:49:00.257648",
+  "name": "s Wear house Daryaganj",
+  "state": "Delhi"
+ },
+ {
+  "city_name": "Gurgaon Faridabad",
+  "docstatus": 0,
+  "doctype": "City",
+  "modified": "2025-05-26 09:49:00.263354",
+  "name": "Gurgaon Faridabad",
+  "state": "Haryana"
+ },
+ {
+  "city_name": "s Wear house Khirki Extension",
+  "docstatus": 0,
+  "doctype": "City",
+  "modified": "2025-05-26 09:49:00.268103",
+  "name": "s Wear house Khirki Extension",
+  "state": "Delhi"
+ },
+ {
+  "city_name": "Sohna Road",
+  "docstatus": 0,
+  "doctype": "City",
+  "modified": "2025-05-26 09:49:00.273192",
+  "name": "Sohna Road",
+  "state": "Haryana"
+ },
+ {
+  "city_name": "Bangalore",
+  "docstatus": 0,
+  "doctype": "City",
+  "modified": "2025-05-26 09:49:00.420050",
+  "name": "Bangalore",
+  "state": "Karnataka"
+ },
+ {
+  "city_name": "Bamnauli",
+  "docstatus": 0,
+  "doctype": "City",
+  "modified": "2025-05-26 09:49:00.481034",
+  "name": "Bamnauli",
+  "state": "Delhi"
+ },
+ {
+  "city_name": "Okhla",
+  "docstatus": 0,
+  "doctype": "City",
+  "modified": "2025-05-26 09:49:00.486216",
+  "name": "Okhla",
+  "state": "Delhi"
+ },
+ {
+  "city_name": "Dwarka",
+  "docstatus": 0,
+  "doctype": "City",
+  "modified": "2025-05-26 09:49:00.492236",
+  "name": "Dwarka",
+  "state": "Delhi"
+ },
+ {
+  "city_name": "Nanglipoona Near Ashok Leyland Work Shop Delhi",
+  "docstatus": 0,
+  "doctype": "City",
+  "modified": "2025-05-26 09:49:00.499907",
+  "name": "Nanglipoona Near Ashok Leyland Work Shop Delhi",
+  "state": "Delhi"
+ },
+ {
+  "city_name": "Ghaziabad",
+  "docstatus": 0,
+  "doctype": "City",
+  "modified": "2025-05-26 09:49:00.505518",
+  "name": "Ghaziabad",
+  "state": "Uttar Pradesh"
+ },
+ {
+  "city_name": "HOTEL HARMONY INN JANTA NAGAR GARH ROAD MEERUT",
+  "docstatus": 0,
+  "doctype": "City",
+  "modified": "2025-05-26 09:49:00.512358",
+  "name": "HOTEL HARMONY INN JANTA NAGAR GARH ROAD MEERUT",
+  "state": "Uttar Pradesh"
+ },
+ {
+  "city_name": "Janakpuri Aligarh",
+  "docstatus": 0,
+  "doctype": "City",
+  "modified": "2025-05-26 09:49:00.517379",
+  "name": "Janakpuri Aligarh",
+  "state": "Uttar Pradesh"
+ },
+ {
+  "city_name": "Chandrapuri Colony",
+  "docstatus": 0,
+  "doctype": "City",
+  "modified": "2025-05-26 09:49:00.665103",
+  "name": "Chandrapuri Colony",
+  "state": "Telangana"
+ },
+ {
+  "city_name": "Back Side Tower Cross Road Moosarambagh",
+  "docstatus": 0,
+  "doctype": "City",
+  "modified": "2025-05-26 09:49:00.726576",
+  "name": "Back Side Tower Cross Road Moosarambagh",
+  "state": "Telangana"
+ },
+ {
+  "city_name": "Tolichowki Main Road",
+  "docstatus": 0,
+  "doctype": "City",
+  "modified": "2025-05-26 09:49:00.733208",
+  "name": "Tolichowki Main Road",
+  "state": "Telangana"
+ },
+ {
+  "city_name": "Jammu",
+  "docstatus": 0,
+  "doctype": "City",
+  "modified": "2025-05-26 09:49:00.878009",
+  "name": "Jammu",
+  "state": "Jammu and Kashmir"
+ },
+ {
+  "city_name": "Trimulgherry Secundrabad",
+  "docstatus": 0,
+  "doctype": "City",
+  "modified": "2025-05-26 09:49:00.937091",
+  "name": "Trimulgherry Secundrabad",
+  "state": "Telangana"
+ },
+ {
+  "city_name": "Hari Nagar Tilak Nagar",
+  "docstatus": 0,
+  "doctype": "City",
+  "modified": "2025-05-26 09:49:00.942570",
+  "name": "Hari Nagar Tilak Nagar",
+  "state": "Delhi"
+ },
+ {
+  "city_name": "GT Road Amritsar",
+  "docstatus": 0,
+  "doctype": "City",
+  "modified": "2025-05-26 09:49:01.089623",
+  "name": "GT Road Amritsar",
+  "state": "Punjab"
+ },
+ {
+  "city_name": "Noida Noida",
+  "docstatus": 0,
+  "doctype": "City",
+  "modified": "2025-05-26 09:49:01.146190",
+  "name": "Noida Noida",
+  "state": "Uttar Pradesh"
+ },
+ {
+  "city_name": "Urban Estate Gurgaon",
+  "docstatus": 0,
+  "doctype": "City",
+  "modified": "2025-05-26 09:49:01.152308",
+  "name": "Urban Estate Gurgaon",
+  "state": "Haryana"
+ },
+ {
+  "city_name": "Canal road",
+  "docstatus": 0,
+  "doctype": "City",
+  "modified": "2025-05-26 09:49:01.162443",
+  "name": "Canal road",
+  "state": "Jammu and Kashmir"
+ },
+ {
+  "city_name": "Aliganj",
+  "docstatus": 0,
+  "doctype": "City",
+  "modified": "2025-05-26 09:49:01.167829",
+  "name": "Aliganj",
+  "state": "Uttar Pradesh"
+ },
+ {
+  "city_name": "Pitampura",
+  "docstatus": 0,
+  "doctype": "City",
+  "modified": "2025-05-26 09:49:01.173142",
+  "name": "Pitampura",
+  "state": "Delhi"
+ },
+ {
+  "city_name": "ABDUL FAZAL ENCLAVE PART II",
+  "docstatus": 0,
+  "doctype": "City",
+  "modified": "2025-05-26 09:49:01.178973",
+  "name": "ABDUL FAZAL ENCLAVE PART II",
+  "state": "Delhi"
+ },
+ {
+  "city_name": "Haryana Gurgaon",
+  "docstatus": 0,
+  "doctype": "City",
+  "modified": "2025-05-26 09:49:01.184102",
+  "name": "Haryana Gurgaon",
+  "state": "Haryana"
+ },
+ {
+  "city_name": "Varanasi",
+  "docstatus": 0,
+  "doctype": "City",
+  "modified": "2025-05-26 09:49:01.188946",
+  "name": "Varanasi",
+  "state": "Uttar Pradesh"
+ },
+ {
+  "city_name": "Ahmedabad",
+  "docstatus": 0,
+  "doctype": "City",
+  "modified": "2025-05-26 09:49:01.340364",
+  "name": "Ahmedabad",
+  "state": "Gujarat"
+ },
+ {
+  "city_name": "Bhandup",
+  "docstatus": 0,
+  "doctype": "City",
+  "modified": "2025-05-26 09:49:01.535222",
+  "name": "Bhandup",
+  "state": "Maharashtra"
+ },
+ {
+  "city_name": "Bengaluru Rural",
+  "docstatus": 0,
+  "doctype": "City",
+  "modified": "2025-05-26 09:49:01.592938",
+  "name": "Bengaluru Rural",
+  "state": "Karnataka"
+ },
+ {
+  "city_name": "Rajendra Place New Delhi",
+  "docstatus": 0,
+  "doctype": "City",
+  "modified": "2025-05-26 09:49:01.597905",
+  "name": "Rajendra Place New Delhi",
+  "state": "Delhi"
+ },
+ {
+  "city_name": "Indore",
+  "docstatus": 0,
+  "doctype": "City",
+  "modified": "2025-05-26 09:49:01.741828",
+  "name": "Indore",
+  "state": "Madhya Pradesh"
+ },
+ {
+  "city_name": "Main Road New Rajendra Nagar Raipur",
+  "docstatus": 0,
+  "doctype": "City",
+  "modified": "2025-05-26 09:49:01.950527",
+  "name": "Main Road New Rajendra Nagar Raipur",
+  "state": "Chhattisgarh"
+ },
+ {
+  "city_name": "Hyderabad",
+  "docstatus": 0,
+  "doctype": "City",
+  "modified": "2025-05-26 09:49:02.000820",
+  "name": "Hyderabad",
+  "state": "Telangana"
+ },
+ {
+  "city_name": "Vijayawada Vijayawada",
+  "docstatus": 0,
+  "doctype": "City",
+  "modified": "2025-05-26 09:49:02.147596",
+  "name": "Vijayawada Vijayawada",
+  "state": "Andhra Pradesh"
+ },
+ {
+  "city_name": "Vishakhpatnam",
+  "docstatus": 0,
+  "doctype": "City",
+  "modified": "2025-05-26 09:49:02.206172",
+  "name": "Vishakhpatnam",
+  "state": "Andhra Pradesh"
+ },
+ {
+  "city_name": "Mahipalpur",
+  "docstatus": 0,
+  "doctype": "City",
+  "modified": "2025-05-26 09:49:02.212560",
+  "name": "Mahipalpur",
+  "state": "Delhi"
+ },
+ {
+  "city_name": "Amritsar Mall Road",
+  "docstatus": 0,
+  "doctype": "City",
+  "modified": "2025-05-26 09:49:02.224536",
+  "name": "Amritsar Mall Road",
+  "state": "Punjab"
+ },
+ {
+  "city_name": "Highway Ludhiana",
+  "docstatus": 0,
+  "doctype": "City",
+  "modified": "2025-05-26 09:49:02.229350",
+  "name": "Highway Ludhiana",
+  "state": "Punjab"
+ },
+ {
+  "city_name": "Karol Bagh",
+  "docstatus": 0,
+  "doctype": "City",
+  "modified": "2025-05-26 09:49:02.236223",
+  "name": "Karol Bagh",
+  "state": "Delhi"
+ },
+ {
+  "city_name": "Gurgaon Haryana Gurugram",
+  "docstatus": 0,
+  "doctype": "City",
+  "modified": "2025-05-26 09:49:02.243466",
+  "name": "Gurgaon Haryana Gurugram",
+  "state": "Haryana"
+ },
+ {
+  "city_name": "GURUGRAM",
+  "docstatus": 0,
+  "doctype": "City",
+  "modified": "2025-05-26 09:49:02.249083",
+  "name": "GURUGRAM",
+  "state": "Haryana"
+ },
+ {
+  "city_name": "Near Willow Bank The Mall Shimla",
+  "docstatus": 0,
+  "doctype": "City",
+  "modified": "2025-05-26 09:49:02.399842",
+  "name": "Near Willow Bank The Mall Shimla",
+  "state": "Himachal Pradesh"
+ },
+ {
+  "city_name": "Kotakpura Road Sri Muktsar Sahib",
+  "docstatus": 0,
+  "doctype": "City",
+  "modified": "2025-05-26 09:49:02.458063",
+  "name": "Kotakpura Road Sri Muktsar Sahib",
+  "state": "Punjab"
+ },
+ {
+  "city_name": "Zirakpur",
+  "docstatus": 0,
+  "doctype": "City",
+  "modified": "2025-05-26 09:49:02.463032",
+  "name": "Zirakpur",
+  "state": "Punjab"
+ },
+ {
+  "city_name": "Kangra",
+  "docstatus": 0,
+  "doctype": "City",
+  "modified": "2025-05-26 09:49:02.471403",
+  "name": "Kangra",
+  "state": "Himachal Pradesh"
+ },
+ {
+  "city_name": "Court Road Hoshiarpur",
+  "docstatus": 0,
+  "doctype": "City",
+  "modified": "2025-05-26 09:49:02.478051",
+  "name": "Court Road Hoshiarpur",
+  "state": "Punjab"
+ },
+ {
+  "city_name": "Palwal",
+  "docstatus": 0,
+  "doctype": "City",
+  "modified": "2025-05-26 09:49:02.482742",
+  "name": "Palwal",
+  "state": "Haryana"
+ },
+ {
+  "city_name": "Bulkland UPSIDC Industrial Area Unnao Bypass Unnao",
+  "docstatus": 0,
+  "doctype": "City",
+  "modified": "2025-05-26 09:49:02.487862",
+  "name": "Bulkland UPSIDC Industrial Area Unnao Bypass Unnao",
+  "state": "Uttar Pradesh"
+ },
+ {
+  "city_name": "Mumbai Nasik Road Thane",
+  "docstatus": 0,
+  "doctype": "City",
+  "modified": "2025-05-26 09:49:02.493399",
+  "name": "Mumbai Nasik Road Thane",
+  "state": "Maharashtra"
+ },
+ {
+  "city_name": "Near Mori Gate Faridkot",
+  "docstatus": 0,
+  "doctype": "City",
+  "modified": "2025-05-26 09:49:02.497923",
+  "name": "Near Mori Gate Faridkot",
+  "state": "Punjab"
+ },
+ {
+  "city_name": "Kanpur",
+  "docstatus": 0,
+  "doctype": "City",
+  "modified": "2025-05-26 09:49:02.503481",
+  "name": "Kanpur",
+  "state": "Uttar Pradesh"
+ },
+ {
+  "city_name": "Mysore",
+  "docstatus": 0,
+  "doctype": "City",
+  "modified": "2025-05-26 09:49:02.508838",
+  "name": "Mysore",
+  "state": "Karnataka"
+ },
+ {
+  "city_name": "Shamshabad",
+  "docstatus": 0,
+  "doctype": "City",
+  "modified": "2025-05-26 09:49:02.513948",
+  "name": "Shamshabad",
+  "state": "Telangana"
+ },
+ {
+  "city_name": "Hissar",
+  "docstatus": 0,
+  "doctype": "City",
+  "modified": "2025-05-26 09:49:02.519208",
+  "name": "Hissar",
+  "state": "Haryana"
+ },
+ {
+  "city_name": "Kolkata",
+  "docstatus": 0,
+  "doctype": "City",
+  "modified": "2025-05-26 09:49:02.666566",
+  "name": "Kolkata",
+  "state": "West Bengal"
+ },
+ {
+  "city_name": "Parsvanath Colony Near Satyam Diagnostic Centre Veshali Nagar Ajmer",
+  "docstatus": 0,
+  "doctype": "City",
+  "modified": "2025-05-26 09:49:02.870517",
+  "name": "Parsvanath Colony Near Satyam Diagnostic Centre Veshali Nagar Ajmer",
+  "state": "Rajasthan"
+ },
+ {
+  "city_name": "Tikri Kalan New Delhi",
+  "docstatus": 0,
+  "doctype": "City",
+  "modified": "2025-05-26 09:49:02.927508",
+  "name": "Tikri Kalan New Delhi",
+  "state": "Delhi"
+ },
+ {
+  "city_name": "Gurgaon Gurgaon",
+  "docstatus": 0,
+  "doctype": "City",
+  "modified": "2025-05-26 09:49:02.933545",
+  "name": "Gurgaon Gurgaon",
+  "state": "Haryana"
+ },
+ {
+  "city_name": "VARANASHI",
+  "docstatus": 0,
+  "doctype": "City",
+  "modified": "2025-05-26 09:49:02.943426",
+  "name": "VARANASHI",
+  "state": "Uttar Pradesh"
+ },
+ {
+  "city_name": "Faridabad",
+  "docstatus": 0,
+  "doctype": "City",
+  "modified": "2025-05-26 09:49:02.948695",
+  "name": "Faridabad",
+  "state": "Haryana"
+ },
+ {
+  "city_name": "Connaught Place",
+  "docstatus": 0,
+  "doctype": "City",
+  "modified": "2025-05-26 09:49:02.953457",
+  "name": "Connaught Place",
+  "state": "Delhi"
+ },
+ {
+  "city_name": "Mahatma Gandhi Marg Hazrat Ganj Lucknow",
+  "docstatus": 0,
+  "doctype": "City",
+  "modified": "2025-05-26 09:49:02.960187",
+  "name": "Mahatma Gandhi Marg Hazrat Ganj Lucknow",
+  "state": "Uttar Pradesh"
+ },
+ {
+  "city_name": "Abdul Fazal Enclave Part II Jamia Nagar Okhla",
+  "docstatus": 0,
+  "doctype": "City",
+  "modified": "2025-05-26 09:49:02.966521",
+  "name": "Abdul Fazal Enclave Part II Jamia Nagar Okhla",
+  "state": "Delhi"
+ },
+ {
+  "city_name": "T ROAD MANAWALA",
+  "docstatus": 0,
+  "doctype": "City",
+  "modified": "2025-05-26 09:49:02.971192",
+  "name": "T ROAD MANAWALA",
+  "state": "Punjab"
+ },
+ {
+  "city_name": "Shamshabad Mandal Rangareddy",
+  "docstatus": 0,
+  "doctype": "City",
+  "modified": "2025-05-26 09:49:02.976902",
+  "name": "Shamshabad Mandal Rangareddy",
+  "state": "Telangana"
+ },
+ {
+  "city_name": "SONEPAT",
+  "docstatus": 0,
+  "doctype": "City",
+  "modified": "2025-05-26 09:49:02.981638",
+  "name": "SONEPAT",
+  "state": "Haryana"
+ },
+ {
+  "city_name": "Ground Floor Paschim Vihar",
+  "docstatus": 0,
+  "doctype": "City",
+  "modified": "2025-05-26 09:49:02.987883",
+  "name": "Ground Floor Paschim Vihar",
+  "state": "Delhi"
+ },
+ {
+  "city_name": "Agra Agra",
+  "docstatus": 0,
+  "doctype": "City",
+  "modified": "2025-05-26 09:49:02.994537",
+  "name": "Agra Agra",
+  "state": "Uttar Pradesh"
+ },
+ {
+  "city_name": "Wadi Nagpur",
+  "docstatus": 0,
+  "doctype": "City",
+  "modified": "2025-05-26 09:49:03.000682",
+  "name": "Wadi Nagpur",
+  "state": "Maharashtra"
+ },
+ {
+  "city_name": "Ground Floor Block C Wazirpur Industrial Area",
+  "docstatus": 0,
+  "doctype": "City",
+  "modified": "2025-05-26 09:49:03.006833",
+  "name": "Ground Floor Block C Wazirpur Industrial Area",
+  "state": "Delhi"
+ },
+ {
+  "city_name": "A Gurugram",
+  "docstatus": 0,
+  "doctype": "City",
+  "modified": "2025-05-26 09:49:03.011856",
+  "name": "A Gurugram",
+  "state": "Haryana"
+ },
+ {
+  "city_name": "Site II Bypass Unnao",
+  "docstatus": 0,
+  "doctype": "City",
+  "modified": "2025-05-26 09:49:03.017743",
+  "name": "Site II Bypass Unnao",
+  "state": "Uttar Pradesh"
+ },
+ {
+  "city_name": "Main Lal Kaun Chowk Ghaziabad",
+  "docstatus": 0,
+  "doctype": "City",
+  "modified": "2025-05-26 09:49:03.025317",
+  "name": "Main Lal Kaun Chowk Ghaziabad",
+  "state": "Uttar Pradesh"
+ },
+ {
+  "city_name": "B NAGAR",
+  "docstatus": 0,
+  "doctype": "City",
+  "modified": "2025-05-26 09:49:03.030271",
+  "name": "B NAGAR",
+  "state": "Uttar Pradesh"
+ },
+ {
+  "city_name": "GROUND FLOOR SAKET",
+  "docstatus": 0,
+  "doctype": "City",
+  "modified": "2025-05-26 09:49:03.035137",
+  "name": "GROUND FLOOR SAKET",
+  "state": "Delhi"
+ },
+ {
+  "city_name": "ADJUST TO NATIONAL ELECTRONIC NARAYANPURI GATE COURT ROAD SAHARANPUR",
+  "docstatus": 0,
+  "doctype": "City",
+  "modified": "2025-05-26 09:49:03.041509",
+  "name": "ADJUST TO NATIONAL ELECTRONIC NARAYANPURI GATE COURT ROAD SAHARANPUR",
+  "state": "Uttar Pradesh"
+ },
+ {
+  "city_name": "BASEMENT GROUND FLOOR FIRST FLOOR & SECOND FLOOR BLOCK-D RAJOUR GARDEN",
+  "docstatus": 0,
+  "doctype": "City",
+  "modified": "2025-05-26 09:49:03.046280",
+  "name": "BASEMENT GROUND FLOOR FIRST FLOOR & SECOND FLOOR BLOCK-D RAJOUR GARDEN",
+  "state": "Delhi"
+ },
+ {
+  "city_name": "Shop at Ground & First Floor Near Tayal Air Conditioning opp Gov ITI Ludhiana Road Moga",
+  "docstatus": 0,
+  "doctype": "City",
+  "modified": "2025-05-26 09:49:03.051561",
+  "name": "Shop at Ground & First Floor Near Tayal Air Conditioning opp Gov ITI Ludhiana Road Moga",
+  "state": "Punjab"
+ },
+ {
+  "city_name": "SARASWATI GREATOR NOIDA TIGARI GB NAGAR",
+  "docstatus": 0,
+  "doctype": "City",
+  "modified": "2025-05-26 09:49:03.058322",
+  "name": "SARASWATI GREATOR NOIDA TIGARI GB NAGAR",
+  "state": "Uttar Pradesh"
+ },
+ {
+  "city_name": "Noida GB Nagar",
+  "docstatus": 0,
+  "doctype": "City",
+  "modified": "2025-05-26 09:49:03.063723",
+  "name": "Noida GB Nagar",
+  "state": "Uttar Pradesh"
+ },
+ {
+  "city_name": "Thane",
+  "docstatus": 0,
+  "doctype": "City",
+  "modified": "2025-05-26 09:49:03.069884",
+  "name": "Thane",
+  "state": "Maharashtra"
+ },
+ {
+  "city_name": "Sidhwa Canal Road Ludhiana",
+  "docstatus": 0,
+  "doctype": "City",
+  "modified": "2025-05-26 09:49:03.076018",
+  "name": "Sidhwa Canal Road Ludhiana",
+  "state": "Punjab"
+ },
+ {
+  "city_name": "Sigra Varanasi",
+  "docstatus": 0,
+  "doctype": "City",
+  "modified": "2025-05-26 09:49:03.080804",
+  "name": "Sigra Varanasi",
+  "state": "Uttar Pradesh"
+ },
+ {
+  "city_name": "GROUND AND FIRST FLOOR RAJ NAGAR DISTRICT CENTRE GHAZIABAD",
+  "docstatus": 0,
+  "doctype": "City",
+  "modified": "2025-05-26 09:49:03.086558",
+  "name": "GROUND AND FIRST FLOOR RAJ NAGAR DISTRICT CENTRE GHAZIABAD",
+  "state": "Uttar Pradesh"
+ },
+ {
+  "city_name": "VILLAGE KHERKI DAULA Gurgaon",
+  "docstatus": 0,
+  "doctype": "City",
+  "modified": "2025-05-26 09:49:03.092407",
+  "name": "VILLAGE KHERKI DAULA Gurgaon",
+  "state": "Haryana"
+ },
+ {
+  "city_name": "Gunjal Patil Complex Kaveri Hotel Compound Dwaraka Circle Nasik",
+  "docstatus": 0,
+  "doctype": "City",
+  "modified": "2025-05-26 09:49:03.097371",
+  "name": "Gunjal Patil Complex Kaveri Hotel Compound Dwaraka Circle Nasik",
+  "state": "Maharashtra"
+ },
+ {
+  "city_name": "Ans Metro Mall Upper Ground Floor Tughlakabad Metro Station New Delhi",
+  "docstatus": 0,
+  "doctype": "City",
+  "modified": "2025-05-26 09:49:03.103482",
+  "name": "Ans Metro Mall Upper Ground Floor Tughlakabad Metro Station New Delhi",
+  "state": "Delhi"
+ },
+ {
+  "city_name": "Upper G F & F F Roop Nagar Kamla Nagar",
+  "docstatus": 0,
+  "doctype": "City",
+  "modified": "2025-05-26 09:49:03.110032",
+  "name": "Upper G F & F F Roop Nagar Kamla Nagar",
+  "state": "Delhi"
+ },
+ {
+  "city_name": "Basement & Ground Floor Village Bhangel Begumpur Near Maharishi Ashram GB Nagar",
+  "docstatus": 0,
+  "doctype": "City",
+  "modified": "2025-05-26 09:49:03.114950",
+  "name": "Basement & Ground Floor Village Bhangel Begumpur Near Maharishi Ashram GB Nagar",
+  "state": "Uttar Pradesh"
+ },
+ {
+  "city_name": "GZB",
+  "docstatus": 0,
+  "doctype": "City",
+  "modified": "2025-05-26 09:49:03.122924",
+  "name": "GZB",
+  "state": "Uttar Pradesh"
+ },
+ {
+  "city_name": "Tehsil - Sarojni Nagar Lucknow",
+  "docstatus": 0,
+  "doctype": "City",
+  "modified": "2025-05-26 09:49:03.128257",
+  "name": "Tehsil - Sarojni Nagar Lucknow",
+  "state": "Uttar Pradesh"
+ },
+ {
+  "city_name": "Adjusting Punjab & Sindh Bank Shukla Ganj Unnao",
+  "docstatus": 0,
+  "doctype": "City",
+  "modified": "2025-05-26 09:49:03.133481",
+  "name": "Adjusting Punjab & Sindh Bank Shukla Ganj Unnao",
+  "state": "Uttar Pradesh"
+ },
+ {
+  "city_name": "A Ground Floor & First Floor Golden Palace ITI Road Fatehpur",
+  "docstatus": 0,
+  "doctype": "City",
+  "modified": "2025-05-26 09:49:03.141030",
+  "name": "A Ground Floor & First Floor Golden Palace ITI Road Fatehpur",
+  "state": "Uttar Pradesh"
+ },
+ {
+  "city_name": "FIT ROAD JANKIPURAM LUCKNOW",
+  "docstatus": 0,
+  "doctype": "City",
+  "modified": "2025-05-26 09:49:03.145996",
+  "name": "FIT ROAD JANKIPURAM LUCKNOW",
+  "state": "Uttar Pradesh"
+ },
+ {
+  "city_name": "MOHADDIPUR GORAKHPUR",
+  "docstatus": 0,
+  "doctype": "City",
+  "modified": "2025-05-26 09:49:03.152879",
+  "name": "MOHADDIPUR GORAKHPUR",
+  "state": "Uttar Pradesh"
+ }
+]
