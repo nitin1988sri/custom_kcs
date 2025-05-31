@@ -32,26 +32,25 @@ frappe.ui.form.on('Employee', {
         });
     },
     validate: function(frm) {
-        // Aadhaar Validation (12-digit)
         if (!/^\d{12}$/.test(frm.doc.aadhaar_number || '')) {
-            frappe.throw("❌ Aadhaar Number must be a 12-digit number");
+            frappe.throw("Aadhaar Number must be a 12-digit number");
         }
 
-        // ESIC Validation (10-digit)
         if (!/^\d{10}$/.test(frm.doc.esic_number || '')) {
-            frappe.throw("❌ ESIC Number must be a 10-digit number");
+            frappe.throw("ESIC Number must be a 10-digit number");
         }
 
-        // PAN Validation (ABCDE1234F format)
         if (!/^[A-Z]{5}[0-9]{4}[A-Z]{1}$/.test(frm.doc.pan_number || '')) {
-            frappe.throw("❌ Invalid PAN Number format. Example: ABCDE1234F");
+            frappe.throw("Invalid PAN Number format. Example: ABCDE1234F");
         }
 
-        let required_fields = ["company", "designation", "grade", "client", "branch", "shift", "department", "employment_type"];
+        let required_fields = ["company", "designation", "client", "branch", "shift", "department", "employment_type"];
         
         required_fields.forEach(field => {
-            if (!frm.doc[field]) {
-                frappe.throw(`${frappe.meta.get_docfield("Employee", field).label} is mandatory.`);
+           if (!frm.doc[field]) {
+                const docfield = frappe.meta.get_docfield("Employee", field);
+                const label = docfield ? docfield.label : field;
+                frappe.throw(`${label} is mandatory.`);
             }
         });
     },

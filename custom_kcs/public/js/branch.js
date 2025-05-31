@@ -1,4 +1,3 @@
-
 frappe.ui.form.on('Contract Role', {
 	roles_add: function(frm, cdt, cdn) {
 		calculateMonthlyContractValue(frm);

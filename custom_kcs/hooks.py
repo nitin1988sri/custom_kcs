@@ -9,46 +9,32 @@ app_license = "mit"
 # Apps
 # ------------------
 after_migrate = ["custom_kcs.src.custom_fields.add_fields_employee_checkIn.run_all",
-                 
                  "custom_kcs.src.custom_fields.add_fields_contract_doctype.run_all",
-
                  "custom_kcs.src.custom_fields.create_contract_role_doctype.create_contract_role_doctype",
-
                  "custom_kcs.src.custom_fields.create_overtime_doctype.run_all",
-
                  "custom_kcs.src.custom_fields.add_fields_employee.run_all",	
-
                  "custom_kcs.src.custom_fields.add_fields_employee_attendance.add_fields_to_employee_attendance",
-
                  "custom_kcs.src.custom_fields.add_fields_branch.run_all",
-
                  "custom_kcs.src.custom_fields.create_employee_child_table.create_employee_child_table",
-
                  "custom_kcs.src.custom_fields.add_fields_employee_incentive.add_incentive_days_field",
-                 
                  "custom_kcs.src.custom_fields.create_customer_branch_filter_doctype.run_all",
-                 
-                    "custom_kcs.src.custom_fields.add_fields_payroll_entry.run_all",
-                    "custom_kcs.src.custom_fields.create_salary_paid_status_report.create_salary_paid_status_report",
-                    "custom_kcs.src.custom_fields.create_shift_log_doctype.run_all",
-                    "custom_kcs.src.custom_fields.add_fields_salary_slip.run_all",
-                    "custom_kcs.src.custom_fields.create_mega_contract_doctype.run_all",
-                    "custom_kcs.src.custom_fields.create_equipment_doctype.run_all",
-                    "custom_kcs.src.custom_fields.attendance_status_doctype.run_all",
-                    "custom_kcs.src.custom_fields.create_unit_doctype.run_all",
-                    "custom_kcs.src.custom_fields.create_unit_costing_doctype.run_all",
-                    "custom_kcs.src.custom_fields.create_minimum_wage_doctype.run_all",  
-                    "custom_kcs.src.custom_fields.create_state_doctype.run_all",
-                    "custom_kcs.src.custom_fields.create_city_doctype.run_all",    
+                 "custom_kcs.src.custom_fields.add_fields_payroll_entry.run_all",
+                 "custom_kcs.src.custom_fields.create_salary_paid_status_report.create_salary_paid_status_report",
+                 "custom_kcs.src.custom_fields.create_shift_log_doctype.run_all",
+                 "custom_kcs.src.custom_fields.add_fields_salary_slip.run_all",
+                 "custom_kcs.src.custom_fields.create_mega_contract_doctype.run_all",
+                 "custom_kcs.src.custom_fields.create_equipment_doctype.run_all",
+                 "custom_kcs.src.custom_fields.attendance_status_doctype.run_all",
+                 "custom_kcs.src.custom_fields.create_unit_doctype.run_all",
+                 "custom_kcs.src.custom_fields.create_unit_costing_doctype.run_all",
+                 "custom_kcs.src.custom_fields.create_minimum_wage_doctype.run_all",  
+                 "custom_kcs.src.custom_fields.create_state_doctype.run_all",
+                 #"custom_kcs.src.patches.employee_import.run",   
                 ]   
 
 boot_session = "custom_kcs.src.patches.override_monthly_attendance.boot"
 
-fixtures = ["State", "City"]
 
-# patches = [
-#     "custom_kcs.patches.city_state_bulk_insert.run"
-# ]
 
 # override_report = {
 #     "HR": {
