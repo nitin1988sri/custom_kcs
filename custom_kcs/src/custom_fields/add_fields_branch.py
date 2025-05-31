@@ -243,7 +243,7 @@ def rename_branch_doctype_for_backup():
     print(f"✅ Renamed Doctype '{old_name}' to '{backup_name}'")
 
 def run_all():
-    rename_branch_doctype_for_backup()
+    #rename_branch_doctype_for_backup()
     create_branch_doctype()
     add_linked_contract_field()
 

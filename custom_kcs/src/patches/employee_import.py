@@ -168,7 +168,7 @@ def truncateDataFirst():
 
 
 def run():
-    #truncateDataFirst()
+    truncateDataFirst()
     from frappe.core.doctype.user import user
     user.throttle_user_creation = lambda: None
     csv_path = frappe.get_site_path("public", "files", "new_data_to_import.csv")
