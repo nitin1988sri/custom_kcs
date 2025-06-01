@@ -37,7 +37,7 @@ def get_employees():
 
 @frappe.whitelist()
 def get_branches():
-    branches = frappe.get_all("Branch", fields=["branch"])
+    branches = frappe.get_all("Branch", fields=["branch_name"])
     return branches
 
 @frappe.whitelist()

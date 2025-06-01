@@ -73,6 +73,5 @@ def fetch_employees_for_branch(branch_name):
             "branch": emp.branch,
             "date_of_joining": emp.date_of_joining
         })
-
     branch_doc.save()
     return f"{len(employees)} employee(s) added to Employees List"

@@ -2,6 +2,7 @@ document.addEventListener("DOMContentLoaded", function() {
     fetchEmployees();
     fetchBranches();
     setupEmployeeSearch();
+    fetchShiftTypes();
 });
 
 function fetchEmployees() {
@@ -39,8 +40,8 @@ function fetchBranches() {
             branchSelect.innerHTML = "";
             response.message.forEach(branch => {
                 let option = document.createElement("option");
-                option.value = branch.branch;
-                option.text = branch.branch;
+                option.value = branch.branch_name;
+                option.text = branch.branch_name;
                 branchSelect.appendChild(option);
             });
         }
