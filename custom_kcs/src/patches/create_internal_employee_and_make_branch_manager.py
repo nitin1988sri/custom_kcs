@@ -19,6 +19,9 @@ def create_user_if_not_exists(user_name, email=None):
         doc.flags.ignore_email_queue = True
         doc.insert(ignore_permissions=True)
         frappe.db.commit()
+        print(f"👤 Created User: {user_id}")
+    else:
+        print(f"👤 User already exists: {user_id}")
     return user_id
 
 def parse_name(full_name):
@@ -30,7 +33,9 @@ def parse_name(full_name):
 
 def create_dummy_employee(emp_name, user_id):
     if frappe.db.exists("Employee", {"employee_name": emp_name}):
-        return frappe.db.get_value("Employee", {"employee_name": emp_name}, "name")
+        emp_docname = frappe.db.get_value("Employee", {"employee_name": emp_name}, "name")
+        print(f"👨‍💼 Employee already exists: {emp_docname}")
+        return emp_docname
 
     first_name, middle_name, last_name = parse_name(emp_name)
     doc = frappe.get_doc({
@@ -47,22 +52,26 @@ def create_dummy_employee(emp_name, user_id):
         "user_id": user_id,
         "status": "Active",
         "gender": "Male",
-        'grade': 'A',
+        "grade": 'A',
         "aadhaar_number": frappe.generate_hash(length=12),
-        "esic_number":frappe.generate_hash(length=10),
+        "esic_number": frappe.generate_hash(length=10),
         "employment_type": "Full-time",
     })
     doc.insert(ignore_permissions=True)
     frappe.db.commit()
+    print(f"👨‍💼 Created Employee: {doc.name}")
     return doc.name
 
 def assign_branch_manager(employee_name, branch_name):
+    if not frappe.db.exists("Branch", branch_name):
+        print(f"❌ Branch not found: {branch_name}")
+        return
     try:
         branch_doc = frappe.get_doc("Branch", branch_name)
         branch_doc.branch_manager = employee_name
         branch_doc.save(ignore_permissions=True)
         frappe.db.commit()
-        print(f"🔗 Assigned {employee_name} as manager to branch: {branch_name}")
+        print(f"✅ Assigned {employee_name} as manager to branch: {branch_name}")
     except Exception as e:
         print(f"❌ Failed to assign manager for branch {branch_name}: {str(e)}")
 
@@ -72,14 +81,16 @@ def run():
         reader = csv.DictReader(csvfile)
         for row in reader:
             try:
-                emp_name = row["EMPLOYEENAME"].strip()
-                branch_name = row["UNITNAME"].strip()
+                emp_name = row.get("EMPLOYEENAME", "").strip()
+                branch_name = row.get("UNITNAME", "").strip()
+
+                if not emp_name or not branch_name:
+                    print(f"⚠️ Skipped row due to missing data: {row}")
+                    continue
 
                 user_id = create_user_if_not_exists(emp_name)
                 employee_docname = create_dummy_employee(emp_name, user_id)
-
                 assign_branch_manager(employee_docname, branch_name)
-                print(f"✅ Done: {emp_name} -> {branch_name}")
 
             except Exception as e:
-                print(f"❌ Error for {row}: {str(e)}")
+                print(f"❌ Error for row {row}: {str(e)}")
