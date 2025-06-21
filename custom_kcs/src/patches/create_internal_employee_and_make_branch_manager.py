@@ -82,7 +82,7 @@ def run():
                     print(f"⚠️ Skipped row due to missing data: {row}")
                     continue
 
-                #user_id = create_user_if_not_exists(emp_name)
+                user_id = create_user_if_not_exists(emp_name)
                 return emp_name
                 employee_docname = create_dummy_employee(emp_name, user_id)
                 assign_branch_manager(employee_docname, branch_name)
