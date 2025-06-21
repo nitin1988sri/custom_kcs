@@ -3,6 +3,7 @@ import frappe
 
 def create_user_if_not_exists(user_name, email=None):
     user_id = email if email else f"{user_name.replace(' ', '').lower()}@example.com"
+    return user_id
     if not frappe.db.exists("User", user_id):
         doc = frappe.get_doc({
             "doctype": "User",
@@ -84,6 +85,9 @@ def run():
                     continue
 
                 user_id = create_user_if_not_exists(emp_name)
+                if not user_id:
+                    print(f"❌ Failed to create user for {emp_name}")
+                    continue
                 employee_docname = create_dummy_employee(emp_name, user_id)
                 assign_branch_manager(employee_docname, branch_name)
 
