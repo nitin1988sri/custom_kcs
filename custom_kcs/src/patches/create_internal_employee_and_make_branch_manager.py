@@ -1,7 +1,6 @@
 import csv
 import frappe
 
-frappe.local.conf.rate_limit = False
 def create_user_if_not_exists(user_name, email=None):
     user_id = email if email else f"{user_name.replace(' ', '').lower()}@example.com"
     if not frappe.db.exists("User", user_id):
