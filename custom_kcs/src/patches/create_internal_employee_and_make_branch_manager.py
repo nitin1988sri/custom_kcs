@@ -1,12 +1,7 @@
 import csv
 import frappe
-from frappe.utils import getdate
 
-# Optional: disable rate limiting if needed
 frappe.local.conf.rate_limit = False
-# from frappe.core.doctype.user.user import throttle_user_creation
-# throttle_user_creation = lambda: None
-
 def create_user_if_not_exists(user_name, email=None):
     user_id = email if email else f"{user_name.replace(' ', '').lower()}@example.com"
     if not frappe.db.exists("User", user_id):
@@ -45,8 +40,8 @@ def create_dummy_employee(emp_name, user_id):
         "first_name": first_name,
         "middle_name": middle_name,
         "last_name": last_name,
-        "date_of_birth": getdate("1990-01-01"),
-        "date_of_joining": getdate("2024-01-01"),
+        "date_of_birth": "1990-01-01",
+        "date_of_joining": "2024-01-01",
         "branch": 'KCS internal branch',
         "designation": "Manager",
         "company": "KCS",
