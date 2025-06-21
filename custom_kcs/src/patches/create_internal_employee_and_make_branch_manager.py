@@ -1,10 +1,11 @@
 import csv
 import frappe
 from frappe.utils import getdate
-from frappe.core.doctype.user import user
 
+# Optional: disable rate limiting if needed
 frappe.local.conf.rate_limit = False
-user.throttle_user_creation = lambda: None
+# from frappe.core.doctype.user.user import throttle_user_creation
+# throttle_user_creation = lambda: None
 
 def create_user_if_not_exists(user_name, email=None):
     user_id = email if email else f"{user_name.replace(' ', '').lower()}@example.com"
