@@ -10,9 +10,7 @@ def create_user_if_not_exists(user_name, email=None):
             "first_name": user_name.strip().title(),
             "send_welcome_email": 0
         })
-        doc.flags.ignore_permissions = True
-        doc.flags.ignore_email_queue = True
-        doc.insert(ignore_permissions=True)
+        doc.insert()
         frappe.db.commit()
         print(f"👤 Created User: {user_id}")
     else:
@@ -52,7 +50,7 @@ def create_dummy_employee(emp_name, user_id):
         "esic_number": frappe.generate_hash(length=10),
         "employment_type": "Full-time",
     })
-    doc.insert(ignore_permissions=True)
+    doc.insert()
     frappe.db.commit()
     print(f"👨‍💼 Created Employee: {doc.name}")
     return doc.name
