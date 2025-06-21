@@ -28,7 +28,7 @@ def parse_name(full_name):
     last = parts[-1] if len(parts) > 1 else "Last"
     return first, middle, last
 
-def create_dummy_employee(emp_name, branch_name, user_id):
+def create_dummy_employee(emp_name, user_id):
     if frappe.db.exists("Employee", {"employee_name": emp_name}):
         return frappe.db.get_value("Employee", {"employee_name": emp_name}, "name")
 
@@ -36,18 +36,21 @@ def create_dummy_employee(emp_name, branch_name, user_id):
     doc = frappe.get_doc({
         "doctype": "Employee",
         "employee_number": frappe.generate_hash(length=8),
-        "employee_name": emp_name,
         "first_name": first_name,
         "middle_name": middle_name,
         "last_name": last_name,
         "date_of_birth": getdate("1990-01-01"),
         "date_of_joining": getdate("2024-01-01"),
-        "branch": branch_name,
-        "designation": "Security Guard",
+        "branch": 'KCS internal branch',
+        "designation": "Manager",
         "company": "KCS",
         "user_id": user_id,
         "status": "Active",
         "gender": "Male",
+        'grade': 'A',
+        "aadhaar_number": frappe.generate_hash(length=12),
+        "esic_number":frappe.generate_hash(length=10),
+        "employment_type": "Full-time",
     })
     doc.insert(ignore_permissions=True)
     frappe.db.commit()
@@ -73,7 +76,7 @@ def run():
                 branch_name = row["UNITNAME"].strip()
 
                 user_id = create_user_if_not_exists(emp_name)
-                employee_docname = create_dummy_employee(emp_name, branch_name, user_id)
+                employee_docname = create_dummy_employee(emp_name, user_id)
 
                 assign_branch_manager(employee_docname, branch_name)
                 print(f"✅ Done: {emp_name} -> {branch_name}")
