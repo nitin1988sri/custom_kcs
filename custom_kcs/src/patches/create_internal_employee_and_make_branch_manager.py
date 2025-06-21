@@ -4,6 +4,7 @@ import frappe
 def create_user_if_not_exists(user_name, email=None):
     user_id = email if email else f"{user_name.replace(' ', '').lower()}@example.com"
     if not frappe.db.exists("User", user_id):
+        return user_id
         doc = frappe.get_doc({
             "doctype": "User",
             "email": user_id,
