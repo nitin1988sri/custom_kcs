@@ -81,7 +81,7 @@ def create_employee(row):
         "employment_type": "Full-time",
         "department": "Operations",
         "shift": "Day Shift",
-        "Grade": "A",
+        "grade": "A",
     })
 
     doc.insert()
