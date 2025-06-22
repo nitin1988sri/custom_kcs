@@ -69,7 +69,7 @@ def create_employee(row):
         "date_of_birth": dob,
         "date_of_joining": doj,
         "gender": "Male",
-        "client": "KCS",
+        "client": "KCS internal",
         "branch": "KCS internal branch",
         "status": "Active",
         "designation": designation,
@@ -89,7 +89,7 @@ def create_employee(row):
     print(f"✅ Created Employee: {emp_id} - {name}")
 
 def run():
-    csv_path = frappe.get_site_path("public", "files", "internal_emp.csv")  
+    csv_path = frappe.get_site_path("public", "files", "internal_emp.csv")
     with open(csv_path, newline='', encoding='utf-8') as f:
         reader = csv.DictReader(f)
         for row in reader:
