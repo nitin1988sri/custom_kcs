@@ -3,6 +3,11 @@ import frappe
 import random
 from frappe.utils import getdate
 
+def sanitize(value, default):
+    if not value or value.strip() in ("#FMT", "###", "nan", "NaN"):
+        return default
+    return value.strip()
+
 def create_user_if_not_exists(name, email):
     user_id = email if email and email.strip() else f"{name.replace(' ', '').lower()}@example.com"
     if not frappe.db.exists("User", user_id):
@@ -12,7 +17,7 @@ def create_user_if_not_exists(name, email):
             "first_name": name.strip().title(),
             "send_welcome_email": 0
         })
-        doc.insert()
+        doc.insert(ignore_permissions=True)
         frappe.db.commit()
         print(f"✅ Created User: {user_id}")
     else:
@@ -25,15 +30,10 @@ def create_designation_if_not_exists(designation):
             "doctype": "Designation",
             "designation_name": designation
         })
-        doc.insert()
+        doc.insert(ignore_permissions=True)
         frappe.db.commit()
         print(f"🎯 Created Designation: {designation}")
     return designation
-
-def sanitize(value, default):
-    if not value or value.strip() == "#FMT" or str(value).lower() == "nan":
-        return default
-    return value
 
 def create_employee(row):
     emp_id = row.get("Emp Id", "").strip()
@@ -84,9 +84,47 @@ def create_employee(row):
         "grade": "A",
     })
 
-    doc.insert()
+    doc.insert(ignore_permissions=True)
     frappe.db.commit()
     print(f"✅ Created Employee: {emp_id} - {name}")
+
+def cleanup_previous_data():
+    import os
+
+    csv_path = frappe.get_site_path("public", "files", "internal_emp.csv")
+    if not os.path.exists(csv_path):
+        print("❌ CSV file not found at:", csv_path)
+        return
+
+    deleted_users, deleted_emps = [], []
+
+    with open(csv_path, newline='', encoding='utf-8') as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            emp_id = row.get("Emp Id", "").strip()
+            email = sanitize(row.get("Email", ""), f"{emp_id.lower()}@example.com")
+            name = row.get("Name", "").strip()
+            user_id = email if email.strip() else f"{name.replace(' ', '').lower()}@example.com"
+
+            # Delete Employee
+            if frappe.db.exists("Employee", emp_id):
+                try:
+                    frappe.delete_doc("Employee", emp_id, force=True)
+                    deleted_emps.append(emp_id)
+                except Exception as e:
+                    print(f"❌ Failed to delete Employee {emp_id}: {e}")
+
+            # Delete User
+            if frappe.db.exists("User", user_id):
+                try:
+                    frappe.delete_doc("User", user_id, force=True)
+                    deleted_users.append(user_id)
+                except Exception as e:
+                    print(f"❌ Failed to delete User {user_id}: {e}")
+
+    frappe.db.commit()
+    print(f"🧹 Deleted Employees: {deleted_emps}")
+    print(f"🧹 Deleted Users: {deleted_users}")
 
 def run():
     csv_path = frappe.get_site_path("public", "files", "internal_emp.csv")
@@ -97,3 +135,7 @@ def run():
                 create_employee(row)
             except Exception as e:
                 print(f"❌ Error while processing {row.get('Emp Id')}: {str(e)}")
+
+def full_import():
+    cleanup_previous_data()
+    run()
