@@ -2,7 +2,7 @@ import csv
 import frappe
 
 def run():
-    csv_path = frappe.get_site_path("public", "files", "branch_managers.csv")
+    csv_path = frappe.get_site_path("public", "files", "epm-branch.csv")
 
     with open(csv_path, newline='', encoding='utf-8') as f:
         reader = csv.DictReader(f)
