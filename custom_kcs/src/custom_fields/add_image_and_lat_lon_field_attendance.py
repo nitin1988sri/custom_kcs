@@ -6,47 +6,32 @@ def add_image_lat_lon_attendance_fields():
             "label": "Latitude",
             "fieldname": "latitude",
             "fieldtype": "Float",
-            "insert_after": "status"
+            "insert_after": "status",
         },
         {
             "label": "Longitude",
             "fieldname": "longitude",
             "fieldtype": "Float",
-            "insert_after": "latitude"
+            "insert_after": "latitude",
         },
-        # {
-        #     "label": "Branch Latitude",
-        #     "fieldname": "branch_lat",
-        #     "fieldtype": "Float",
-        #     "insert_after": "longitude"
-        # },
-        # {
-        #     "label": "Branch Longitude",
-        #     "fieldname": "branch_lng",
-        #     "fieldtype": "Float",
-        #     "insert_after": "branch_lat"
-        # },
-        # {
-        #     "label": "Distance (Meters)",
-        #     "fieldname": "distance_m",
-        #     "fieldtype": "Float",
-        #     "insert_after": "branch_lng"
-        # },
         {
             "label": "Photo",
             "fieldname": "image",
             "fieldtype": "Attach Image",
-            "insert_after": "distance_m"
-        }
+            # don't insert after a field that doesn't exist
+            "insert_after": "longitude",
+        },
     ]
 
     for field in fields:
         if not frappe.db.exists("Custom Field", {"dt": "Attendance", "fieldname": field["fieldname"]}):
-            frappe.get_doc({
+            doc = frappe.get_doc({
                 "doctype": "Custom Field",
                 "dt": "Attendance",
                 **field
-            }).insert()
+            })
+            doc.insert(ignore_permissions=True)
+            frappe.db.commit()
             print(f"Created field: {field['fieldname']}")
         else:
             print(f"Field already exists: {field['fieldname']}")
