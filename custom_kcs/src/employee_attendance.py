@@ -23,19 +23,78 @@ def bulk_attendance(data):
     return responses
 
 
+def haversine(lat1, lon1, lat2, lon2):
+    R = 6371000
+    p1 = math.radians(lat1); p2 = math.radians(lat2)
+    dp = math.radians(lat2 - lat1); dl = math.radians(lon2 - lon1)
+    a = math.sin(dp/2)**2 + math.cos(p1)*math.cos(p2)*math.sin(dl/2)**2
+    return 2 * R * math.atan2(math.sqrt(a), math.sqrt(1 - a))
+
+def _attach_image_to_attendance(att, base64_image, filename=None, image_fieldname="image"):
+    """Attendance पर image attach करे और 'image' फील्ड में URL सेट करे."""
+    if not base64_image:
+        return None
+
+    # 1) पुरानी फाइल (उसी field पर) हटाएँ
+    old_files = frappe.get_all(
+        "File",
+        filters={
+            "attached_to_doctype": "Attendance",
+            "attached_to_name": att.name,
+            "attached_to_field": image_fieldname,
+        },
+        pluck="name",
+    )
+    for fid in old_files:
+        frappe.delete_doc("File", fid, ignore_permissions=True)
+
+    # 2) नई फाइल बनाएँ (df पास नहीं करेंगे)
+    if not filename:
+        filename = f"attendance_{att.employee}_{now_datetime().strftime('%Y%m%d%H%M%S')}.png"
+
+    content = decode_base64(base64_image)
+    if not content:
+        frappe.throw("Invalid base64 data")
+
+    fdoc = save_file(
+        fname=filename,
+        content=content,
+        dt="Attendance",
+        dn=att.name,
+        is_private=0,
+    )
+
+    # 3) अब attached_to_field STRING से सेट करें और Attendance के field में URL भरें
+    fdoc.attached_to_field = image_fieldname
+    fdoc.save(ignore_permissions=True)
+
+    setattr(att, image_fieldname, fdoc.file_url)
+    att.save(ignore_permissions=True)
+
+    return fdoc.file_url
+
 @frappe.whitelist(methods=["POST"])
 def attendance(employee, status, attendance_date=None, shift_type=None,
                branch=None, base64_image=None, filename=None,
                latitude=None, longitude=None):
 
-    branch_row = frappe.db.get_value("Branch", branch, ["latitude","longitude","geofence_radius_m"], as_dict=True)
+    # --- Geo validations ---
+    if not (latitude and longitude):
+        return {"status": "error", "message": "Latitude and Longitude are required."}
+
+    branch_row = frappe.db.get_value(
+        "Branch", branch, ["latitude", "longitude", "geofence_radius_m"], as_dict=True
+    )
     if not branch_row or not branch_row.latitude or not branch_row.longitude:
         return {"status": "error", "message": "Branch coordinates not set"}
+
     radius_m = float(branch_row.geofence_radius_m or 50)
-    dist = haversine(float(latitude), float(longitude), float(branch_row.latitude), float(branch_row.longitude))
+    dist = haversine(float(latitude), float(longitude),
+                     float(branch_row.latitude), float(branch_row.longitude))
     if dist > radius_m:
         return {"status": "error", "message": f"You are {int(dist)} m away. Allowed {int(radius_m)} m."}
 
+    # --- Create Attendance (draft) ---
     att = frappe.get_doc({
         "doctype": "Attendance",
         "employee": employee,
@@ -49,45 +108,16 @@ def attendance(employee, status, attendance_date=None, shift_type=None,
     })
     att.insert(ignore_permissions=True)
 
+    # --- Attach image to Attendance only ---
     image_url = None
-    image_fieldname = "image"
-    df = frappe.get_meta("Attendance").get_field(image_fieldname)
-
     if base64_image:
-        content = decode_base64(base64_image)
-        if not content:
-            return {"status": "error", "message": "Invalid base64 data"}
+        image_url = _attach_image_to_attendance(att, base64_image, filename, image_fieldname="image")
 
-        if not filename:
-            filename = f"attendance_{employee}_{now_datetime().strftime('%Y%m%d%H%M%S')}.png"
-
-        file_doc = save_file(
-            filename,
-            content,
-            "Attendance",
-            att.name,
-            is_private=0,
-            df=df,                               
-        )
-        image_url = file_doc.file_url
-
-        setattr(att, image_fieldname, image_url)
-        att.save(ignore_permissions=True)
-
+    # --- Submit ---
     att.submit()
     frappe.db.commit()
 
- 
     return {"status": "success", "message": "Attendance created", "attendance_id": att.name, "image_url": image_url}
-
-def haversine(lat1, lon1, lat2, lon2):
-    R = 6371000
-    import math
-    p1=math.radians(lat1); p2=math.radians(lat2)
-    dp=math.radians(lat2-lat1); dl=math.radians(lon2-lon1)
-    a=math.sin(dp/2)**2+math.cos(p1)*math.cos(p2)*math.sin(dl/2)**2
-    return 2*R*math.atan2(math.sqrt(a), math.sqrt(1-a))
-
 
 
 @frappe.whitelist()
