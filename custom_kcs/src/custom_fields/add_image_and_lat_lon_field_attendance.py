@@ -1,40 +1,32 @@
-import frappe
+# apps/custom_kcs/custom_kcs/custom_fields/add_attendance_geo_fields.py
 
-def add_image_lat_lon_attendance_fields():
-    fields = [
-        {
-            "label": "Latitude",
-            "fieldname": "latitude",
-            "fieldtype": "Float",
-            "insert_after": "status",
-        },
-        {
-            "label": "Longitude",
-            "fieldname": "longitude",
-            "fieldtype": "Float",
-            "insert_after": "latitude",
-        },
-        {
-            "label": "Photo",
-            "fieldname": "image",
-            "fieldtype": "Attach Image",
-            # don't insert after a field that doesn't exist
-            "insert_after": "longitude",
-        },
-    ]
+from frappe.custom.doctype.custom_field.custom_field import create_custom_fields
 
-    for field in fields:
-        if not frappe.db.exists("Custom Field", {"dt": "Attendance", "fieldname": field["fieldname"]}):
-            doc = frappe.get_doc({
-                "doctype": "Custom Field",
-                "dt": "Attendance",
-                **field
-            })
-            doc.insert(ignore_permissions=True)
-            frappe.db.commit()
-            print(f"Created field: {field['fieldname']}")
-        else:
-            print(f"Field already exists: {field['fieldname']}")
+def execute():
+    custom_fields = {
+        "Attendance": [
+            {
+                "label": "Latitude",
+                "fieldname": "latitude",
+                "fieldtype": "Float",
+                "insert_after": "status",
+            },
+            {
+                "label": "Longitude",
+                "fieldname": "longitude",
+                "fieldtype": "Float",
+                "insert_after": "latitude",
+            },
+            {
+                "label": "Photo",
+                "fieldname": "image",
+                "fieldtype": "Attach Image",
+                "insert_after": "longitude",  
+            },
+        ]
+    }
+    create_custom_fields(custom_fields, ignore_validate=True)
 
 def run_all():
-    add_image_lat_lon_attendance_fields()
+    execute()
+
