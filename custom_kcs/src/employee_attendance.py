@@ -3,7 +3,7 @@ from custom_kcs.src.utils.base64_utils import decode_base64
 import os
 from frappe.utils import now, get_time, today
 import math
-from frappe.utils import now, today
+from frappe.utils import now, today, now_datetime
 
 
 @frappe.whitelist()
@@ -43,7 +43,7 @@ def attendance(employee, status, attendance_date=None, shift_type=None,
         "status": status,
         "branch": branch,
         "shift_type": shift_type,
-        "in_time": now() if status in ["Present","Half Day","Work From Home"] else None,
+        "in_time": now() if status in ["Present"] else None,
         "latitude": latitude,
         "longitude": longitude,
     })
@@ -52,18 +52,6 @@ def attendance(employee, status, attendance_date=None, shift_type=None,
     image_url = None
     image_fieldname = "image"
     df = frappe.get_meta("Attendance").get_field(image_fieldname)
-
-    old_file = frappe.db.get_value(
-        "File",
-        {
-            "attached_to_doctype": "Attendance",
-            "attached_to_name": att.name,
-            "attached_to_field": image_fieldname,
-        },
-        "name",
-    )
-    if old_file:
-        frappe.delete_doc("File", old_file, ignore_permissions=True)
 
     if base64_image:
         content = decode_base64(base64_image)
