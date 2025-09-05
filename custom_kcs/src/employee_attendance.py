@@ -35,7 +35,6 @@ def _attach_image_to_attendance(att, base64_image, filename=None, image_fieldnam
     if not base64_image:
         return None
 
-    # 1) पुरानी फाइल (उसी field पर) हटाएँ
     old_files = frappe.get_all(
         "File",
         filters={
@@ -48,7 +47,6 @@ def _attach_image_to_attendance(att, base64_image, filename=None, image_fieldnam
     for fid in old_files:
         frappe.delete_doc("File", fid, ignore_permissions=True)
 
-    # 2) नई फाइल बनाएँ (df पास नहीं करेंगे)
     if not filename:
         filename = f"attendance_{att.employee}_{now_datetime().strftime('%Y%m%d%H%M%S')}.png"
 
@@ -64,7 +62,6 @@ def _attach_image_to_attendance(att, base64_image, filename=None, image_fieldnam
         is_private=0,
     )
 
-    # 3) अब attached_to_field STRING से सेट करें और Attendance के field में URL भरें
     fdoc.attached_to_field = image_fieldname
     fdoc.save(ignore_permissions=True)
 
@@ -94,7 +91,6 @@ def attendance(employee, status, attendance_date=None, shift_type=None,
     if dist > radius_m:
         return {"status": "error", "message": f"You are {int(dist)} m away. Allowed {int(radius_m)} m."}
 
-    # --- Create Attendance (draft) ---
     att = frappe.get_doc({
         "doctype": "Attendance",
         "employee": employee,
@@ -108,76 +104,30 @@ def attendance(employee, status, attendance_date=None, shift_type=None,
     })
     att.insert(ignore_permissions=True)
 
-    # --- Attach image to Attendance only ---
-    image_url = None
-    if base64_image:
-        image_url = _attach_image_to_attendance(att, base64_image, filename, image_fieldname="image")
+    if mark_checking(employee, status, branch, shift_type):
+        image_url = None
+        if base64_image:
+            image_url = _attach_image_to_attendance(att, base64_image, filename, image_fieldname="image")
 
-    # --- Submit ---
-    att.submit()
-    frappe.db.commit()
-
-    return {"status": "success", "message": "Attendance created", "attendance_id": att.name, "image_url": image_url}
-
-
-@frappe.whitelist()
-def attendance_old(employee, 
-               status, 
-               attendance_date=None,
-               shift_type=None,
-               branch=None, 
-               base64_image=None, 
-               filename=None,
-               ):
-    try:
-        file_url = None
-
-        if base64_image and filename:
-            image_data = decode_base64(base64_image)
-            if not image_data:
-                return {"status": "error", "message": "Invalid base64 data"}
-
-            folder_path = frappe.utils.get_files_path("attendance", is_private=False)
-            if not os.path.exists(folder_path):
-                os.makedirs(folder_path)
-
-            file_path = os.path.join(folder_path, filename)
-            with open(file_path, "wb") as f:
-                f.write(image_data)
-
-            file_url = f"/files/attendance/{filename}"
-
-            file_doc = frappe.get_doc({
-                "doctype": "File",
-                "file_name": filename,
-                "file_url": file_url,
-                "is_private": 0,
-            })
-            file_doc.insert(ignore_permissions=True)
-            frappe.db.commit()
-
-        attendance_doc = frappe.get_doc({
-            "doctype": "Attendance",
-            "employee": employee,
-            "attendance_date": attendance_date if attendance_date else today(),
-            "status": status,
-            "branch": branch,
-            "employee_image": file_url,
-            "shift_type": shift_type,
-            "in_time": now() if status in ["Present", "Half Day", "Work From Home"] else None
-        })
-        attendance_doc.insert(ignore_permissions=True)
-        attendance_doc.submit()
+        att.submit()
         frappe.db.commit()
 
-        if status in ["Present", "Half Day", "Work From Home"]:
-            response = check_in_employee_for_shift(employee, branch, shift_type)
+        return {"status": "success", "message": "Attendance created", "attendance_id": att.name, "image_url": image_url}
+    else:
+        att.cancel()
+        att.delete()
+        frappe.db.commit()
+        return {"status": "error", "message": "Failed to mark checking"}
+    
 
+def mark_checking(employee, status, branch, shift_type):
+    try:
+        if status in ["Present", "Absent"]: 
+            response = check_in_employee_for_shift(employee, branch, shift_type)
             checkin = frappe.get_doc({
                 "doctype": "Employee Checkin",
                 "employee": employee,
                 "log_type": "IN",
-                "employee_image": file_url,
                 "branch": branch,
                 "shift_type": shift_type
             })
@@ -189,9 +139,8 @@ def attendance_old(employee,
 
         return {
             "status": response.get("status"),
-            "message": response.get("message")
+            "message": response.get("message"),
         }
-
     except Exception as e:
         frappe.log_error(title="Employee Attendance Error", message=frappe.get_traceback())
         return {"status": "error", "message": str(e)}
