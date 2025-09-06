@@ -83,7 +83,7 @@ def get_employee_context(employee_id=None):
             "type": "PRIMARY"
         }
 
-    branch_switch, overtime = _split_assignments(employee_id, emp.branch if emp else None, emp.shift if emp else None)
+    branch_switch, overtime = _split_assignments(employee_id, emp.shift if emp else None)
     #active = _get_active_in_log(employee_id)
 
     data = {
