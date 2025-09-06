@@ -29,7 +29,7 @@ def _validate_geofence(branch, lat, lon, max_meters=50):
 def _get_active_in_log(employee):
     rows = frappe.get_all("Employee Checkin",
         filters={"employee": employee, "log_type": "IN", "shift_actual_end": ["is","not set"]},
-        fields=["name","time","branch","shift_kind","selected_shift"],
+        fields=["name","time","branch","shift","selected_shift"],
         order_by="time desc", limit=1
     )
     return rows[0] if rows else None
@@ -40,7 +40,7 @@ def _today_in_count(employee):
         "time": [">=", _today_str() + " 00:00:00"]
     })
 
-def _split_assignments(employee, emp_primary_branch, emp_primary_shift):
+def _split_assignments(employee, emp_primary_shift):
 
     rows = frappe.get_all("Overtime",
         filters={
@@ -84,16 +84,15 @@ def get_employee_context(employee_id=None):
         }
 
     branch_switch, overtime = _split_assignments(employee_id, emp.branch if emp else None, emp.shift if emp else None)
-    active = _get_active_in_log(employee_id)
+    #active = _get_active_in_log(employee_id)
 
     data = {
-        "employee": employee_id,
         "primary_branch": primary_branch_obj,
         "branch_switch_branches": branch_switch,
         "overtime_branches": overtime,
 
-        "is_checked_in": bool(active),
-        "current_checkin": active or None,
-        "today_shifts_count": _today_in_count(employee_id)
+        # "is_checked_in": bool(active),
+        # "current_checkin": active or None,
+        # "today_shifts_count": _today_in_count(employee_id)
     }
     return {"status":"success","data":data}
