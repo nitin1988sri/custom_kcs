@@ -75,6 +75,12 @@ def attendance(employee, status, attendance_date=None, shift_type=None,
                branch=None, base64_image=None, filename=None,
                latitude=None, longitude=None):
 
+    # --- Require essentials ---
+    if not employee or not shift_type:
+        return {"status": "error", "message": "employee and shift_type are required."}
+
+    day = attendance_date or today()
+
     # --- Geo validations ---
     if not (latitude and longitude):
         return {"status": "error", "message": "Latitude and Longitude are required."}
@@ -91,10 +97,41 @@ def attendance(employee, status, attendance_date=None, shift_type=None,
     if dist > radius_m:
         return {"status": "error", "message": f"You are {int(dist)} m away. Allowed {int(radius_m)} m."}
 
+    # --- HARD RULES ---
+    # (A) same date + same shift duplicate block
+    existing = frappe.db.get_value(
+        "Attendance",
+        {
+            "employee": employee,
+            "attendance_date": day,
+            "shift_type": shift_type,
+            "docstatus": ["<", 2],  # not cancelled
+        },
+        "name",
+    )
+    if existing:
+        return {
+            "status": "error",
+            "message": f"Attendance already exists for {employee} on {day} in shift '{shift_type}'.",
+            "attendance_id": existing,
+        }
+
+    # (B) day total cap (max 2)
+    total_today = frappe.db.count(
+        "Attendance",
+        {"employee": employee, "attendance_date": day, "docstatus": ["<", 2]},
+    )
+    if total_today >= 2:
+        return {
+            "status": "error",
+            "message": f"Max 2 attendances allowed per day. Already have {total_today} on {day}.",
+        }
+
+    # --- Create draft Attendance ---
     att = frappe.get_doc({
         "doctype": "Attendance",
         "employee": employee,
-        "attendance_date": attendance_date or today(),
+        "attendance_date": day,
         "status": status,
         "branch": branch,
         "shift_type": shift_type,
@@ -104,21 +141,29 @@ def attendance(employee, status, attendance_date=None, shift_type=None,
     })
     att.insert(ignore_permissions=True)
 
-    if mark_checking(employee, status, branch, shift_type):
+    # --- Check-in side-effect (only on Present) ---
+    result = mark_checking(employee, status, branch, shift_type, day)
+
+    if result.get("status") == "success":
         image_url = None
         if base64_image:
             image_url = _attach_image_to_attendance(att, base64_image, filename, image_fieldname="image")
 
         att.submit()
         frappe.db.commit()
+        return {
+            "status": "success",
+            "message": "Attendance created",
+            "attendance_id": att.name,
+            "image_url": image_url,
+        }
 
-        return {"status": "success", "message": "Attendance created", "attendance_id": att.name, "image_url": image_url}
-    else:
-        att.cancel()
-        att.delete()
-        frappe.db.commit()
-        return {"status": "error", "message": "Failed to mark checking"}
-    
+    # rollback doc if side-effect failed
+    att.cancel()
+    att.delete()
+    frappe.db.commit()
+    return {"status": "error", "message": result.get("message") or "Failed to mark checking"}
+
 
 def mark_checking(employee, status, branch, shift_type):
     try:

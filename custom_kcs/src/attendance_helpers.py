@@ -1,7 +1,6 @@
 import frappe
 from frappe import _
 
-# --- detect "Shift" fieldname on Overtime (shift/shift_type/...) ---
 def _find_shift_field(doctype="Overtime"):
     meta = frappe.get_meta(doctype)
     candidates = ["shift_type"]
@@ -13,7 +12,7 @@ def _find_shift_field(doctype="Overtime"):
             return df.fieldname
     return None
 
-@frappe.whitelist(allow_guest=False)  # token या logged-in यूज़र से कॉल करें
+@frappe.whitelist(allow_guest=False)  
 def resolve_effective_branch_shift(employee_id: str, attendance_date: str | None = None):
    
     if not employee_id:
