@@ -87,12 +87,7 @@ def get_employee_context(employee_id=None):
     #active = _get_active_in_log(employee_id)
 
     data = {
-        "primary_branch": primary_branch_obj,
-        "branch_switch_branches": branch_switch,
-        "overtime_branches": overtime,
-
-        # "is_checked_in": bool(active),
-        # "current_checkin": active or None,
-        # "today_shifts_count": _today_in_count(employee_id)
+        "primary_branch": branch_switch[0] if branch_switch else primary_branch_obj,
+        "overtime_branches": overtime
     }
     return {"status":"success","data":data}
