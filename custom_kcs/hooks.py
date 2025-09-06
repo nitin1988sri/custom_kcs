@@ -99,6 +99,7 @@ doctype_js = {"Branch": "public/js/branch.js",
               "Contract": "public/js/contract.js",
               "Salary Structure": "public/js/salary_structure.js",
               "Employee Incentive":"public/js/employee_incentive.js",
+              "Attendance": "public/js/attendance_auto_branch.js",
             }
 
 
