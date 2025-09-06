@@ -49,7 +49,7 @@ def _split_assignments(employee, emp_primary_branch, emp_primary_shift):
             "start_date": ["<=", _today_str()],
             "end_date": [">=", _today_str()]
         },
-        fields=["name","original_branch","overtime_branch","start_date","end_date","shift"],
+        fields=["name","original_branch","overtime_branch","start_date","end_date","shift_type"],
         order_by="start_date asc"
     )
     branch_switch, overtime = [], []
@@ -67,7 +67,7 @@ def _split_assignments(employee, emp_primary_branch, emp_primary_shift):
             overtime.append(obj)             
     return branch_switch, overtime
 
-@frappe.whitelist()
+@frappe.whitelist(methods=["GET"])
 def get_employee_context(employee_id=None):
     if not employee_id:
         employee_id = frappe.db.get_value("Employee", {"user_id": frappe.session.user}, "name")
@@ -88,9 +88,9 @@ def get_employee_context(employee_id=None):
 
     data = {
         "employee": employee_id,
-        "primary_branch": primary_branch_obj,             # single object
-        "branch_switch_branches": branch_switch,          # list[{name, assignment_id, date_from, date_to, shift}]
-        "overtime_branches": overtime,                    # list[...]
+        "primary_branch": primary_branch_obj,
+        "branch_switch_branches": branch_switch,
+        "overtime_branches": overtime,
 
         "is_checked_in": bool(active),
         "current_checkin": active or None,
