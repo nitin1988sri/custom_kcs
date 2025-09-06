@@ -89,4 +89,4 @@ def get_employee_context(employee_id=None):
         "primary_branch": branch_switch[0] if branch_switch else primary_branch_obj,
         "overtime_branches": overtime
     }
-    return {"status":"success","data":data}
+    return {"data":data}
