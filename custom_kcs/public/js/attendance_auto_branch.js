@@ -7,7 +7,7 @@ frappe.ui.form.on('Attendance', {
 async function try_autofill(frm) {
   if (!frm.doc.employee || !frm.doc.attendance_date) return;
 
-  frm.toggle_display('branch', true);  // ensure visible
+  frm.toggle_display('branch', true);  
   frm.toggle_display('shift', true);
 
   frm.set_df_property('branch', 'read_only', 0);
@@ -16,7 +16,7 @@ async function try_autofill(frm) {
   frm.dashboard?.clear_headline();
 
   frappe.call({
-    method: 'custom_kcs.src.api.attendance_helpers.resolve_effective_branch_shift',
+    method: 'custom_kcs.src.attendance_helpers.resolve_effective_branch_shift',
     args: {
       employee_id: frm.doc.employee,
       attendance_date: frm.doc.attendance_date

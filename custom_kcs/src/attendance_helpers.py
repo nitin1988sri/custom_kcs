@@ -1,10 +1,21 @@
 import frappe
 from frappe import _
 
+# --- detect "Shift" fieldname on Overtime (shift/shift_type/...) ---
+def _find_shift_field(doctype="Overtime"):
+    meta = frappe.get_meta(doctype)
+    candidates = ["shift_type"]
+    for fn in candidates:
+        if meta.has_field(fn):
+            return fn
+    for df in meta.fields:
+        if (df.label or "").strip().lower() in ("shift", "shift type"):
+            return df.fieldname
+    return None
 
-@frappe.whitelist(allow_guest=False) 
+@frappe.whitelist(allow_guest=False)  # token या logged-in यूज़र से कॉल करें
 def resolve_effective_branch_shift(employee_id: str, attendance_date: str | None = None):
- 
+   
     if not employee_id:
         frappe.throw(_("Employee is required"))
 
@@ -14,8 +25,11 @@ def resolve_effective_branch_shift(employee_id: str, attendance_date: str | None
     if not emp:
         frappe.throw(_("Employee not found"))
 
-    fields = ["name", "overtime_branch", "start_date", "end_date", "shift_type"]
-   
+    # Fetch active OT rows for that date
+    shift_field = _find_shift_field("Overtime")
+    fields = ["name", "overtime_branch", "start_date", "end_date"]
+    if shift_field:
+        fields.append(shift_field)
 
     rows = frappe.get_all(
         "Overtime",
@@ -47,6 +61,7 @@ def resolve_effective_branch_shift(employee_id: str, attendance_date: str | None
             else:
                 overtime.append(obj)
         else:
+            # अगर Overtime में shift field ही नहीं है:
             if ot_branch == emp.branch:
                 overtime.append(obj)           # same branch => extra shift => OT
             else:
