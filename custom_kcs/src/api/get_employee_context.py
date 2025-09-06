@@ -79,8 +79,7 @@ def get_employee_context(employee_id=None):
     if emp and emp.branch:
         primary_branch_obj = {
             "name": emp.branch,
-            "shift": emp.shift,   
-            "type": "PRIMARY"
+            "shift": emp.shift   
         }
 
     branch_switch, overtime = _split_assignments(employee_id, emp.shift if emp else None)
