@@ -171,9 +171,6 @@ def _split_assignments(employee: str, emp_primary_shift: str | None):
     for r in rows:
         item = {
             "name": r.overtime_branch,       # branch name
-            "assignment_id": r.name,
-            "date_from": r.start_date,
-            "date_to": r.end_date,
             "shift": r.shift_type            # <-- FIXED: earlier you used r.shift (None)
         }
         if emp_primary_shift and r.shift_type == emp_primary_shift:
@@ -230,7 +227,6 @@ def get_employee_context(employee_id=None, date_str=None):
         att_id = _att_for(employee_id, day, shift_type=ot["shift"], branch=ot["name"])
         ot_list.append({
             **ot,
-            "attendance_id": att_id,
             "is_marked": bool(att_id)
         })
 
