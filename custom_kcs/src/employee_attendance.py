@@ -79,84 +79,73 @@ def _attach_image_to_attendance(att, base64_image, filename=None, image_fieldnam
 def attendance(employee, status, attendance_date=None, shift_type=None,
                branch=None, base64_image=None, filename=None,
                latitude=None, longitude=None):
-
-    # --- Require essentials ---
-    if not employee or not shift_type:
+    # basics
+    if not employee or not shift_type or not branch:
         return _bad_request("employee, shift_type and branch are required.")
-
     day = attendance_date or today()
 
-    # --- Geo validations ---
+    # geo
     if not (latitude and longitude):
         return _bad_request("Latitude and Longitude are required.")
 
-    branch_row = frappe.db.get_value(
-        "Branch", branch, ["latitude", "longitude", "geofence_radius_m"], as_dict=True
-    )
+    branch_row = frappe.db.get_value("Branch", branch, ["latitude","longitude","geofence_radius_m"], as_dict=True)
     if not branch_row or not branch_row.latitude or not branch_row.longitude:
         return _unprocessable("Branch coordinates not set")
 
     radius_m = float(branch_row.geofence_radius_m or 50)
-    dist = haversine(float(latitude), float(longitude),
-                     float(branch_row.latitude), float(branch_row.longitude))
+    dist = haversine(float(latitude), float(longitude), float(branch_row.latitude), float(branch_row.longitude))
     if dist > radius_m:
         return _forbidden(f"You are {int(dist)} m away. Allowed {int(radius_m)} m.")
 
-    existing = frappe.db.get_value(
-        "Attendance",
-        {
-            "employee": employee,
-            "attendance_date": day,
-            "shift": shift_type,
-            "docstatus": ["<", 2],  
-        },
-        "name",
-    )
+    # duplicate & cap
+    try:
+        att_shift_field = _att_shift_field()
+    except Exception as e:
+        return _server_error(str(e))
+
+    existing = frappe.db.get_value("Attendance", {
+        "employee": employee,
+        "attendance_date": day,
+        att_shift_field: shift_type,
+        "docstatus": ["<", 2],
+    }, "name")
     if existing:
         return _conflict(f"Attendance already exists for {employee} on {day} in shift '{shift_type}'.", attendance_id=existing)
 
-
-    total_today = frappe.db.count(
-        "Attendance",
-        {"employee": employee, "attendance_date": day, "docstatus": ["<", 2]},
-    )
+    total_today = frappe.db.count("Attendance", {
+        "employee": employee,
+        "attendance_date": day,
+        "docstatus": ["<", 2],
+    })
     if total_today >= 2:
         return _conflict(f"Max 2 attendances allowed per day. Already have {total_today} on {day}.")
 
+    # 👉 side-effects FIRST (so that we don't have to cancel/delete a draft)
+    result = mark_checking(employee, status, branch, shift_type, day)
+    if result.get("status") != "success":
+        return _conflict(result.get("message") or "Failed to mark checking")
 
+    # now create & submit attendance
     att = frappe.get_doc({
         "doctype": "Attendance",
         "employee": employee,
         "attendance_date": day,
         "status": status,
         "branch": branch,
-        "shift": shift_type,
-        "in_time": now() if status in ["Present"] else None,
+        att_shift_field: shift_type,
+        "in_time": now() if status == "Present" else None,
         "latitude": latitude,
         "longitude": longitude,
     })
     att.insert(ignore_permissions=True)
 
-    result = mark_checking(employee, status, branch, shift_type)
+    image_url = None
+    if base64_image:
+        image_url = _attach_image_to_attendance(att, base64_image, filename, image_fieldname="image")
 
-    if result.get("status") == "success":
-        image_url = None
-        if base64_image:
-            image_url = _attach_image_to_attendance(att, base64_image, filename, image_fieldname="image")
-
-        att.submit()
-        frappe.db.commit()
-        return {
-            "status": "success",
-            "message": "Attendance created",
-            "attendance_id": att.name,
-            "image_url": image_url,
-        }
-
-    att.cancel()
-    att.delete()
+    att.submit()
     frappe.db.commit()
-    return _conflict(result.get("message") or "Failed to mark checking")
+    return _created("Attendance created", attendance_id=att.name, image_url=image_url)
 
 
 def mark_checking(employee, status, branch, shift_type):
