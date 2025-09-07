@@ -50,15 +50,19 @@ def get_profile(employee_id: str | None = None):
 
     emp_block = None
     if employee_id:
-        fields = ["*"]
+        fields = ["name","employee_name","company","branch","department","designation",
+                  "personal_email","company_email","shift"]
         emp_block = frappe.db.get_value("Employee", employee_id, fields, as_dict=True)
 
     data = {
         "user": {
-            "user": user_doc,
+            "name": user_doc.name,
+            "full_name": user_doc.full_name,
+            "email": user_doc.email,
+            "mobile_no": getattr(user_doc, "mobile_no", None),
             "image_url": getattr(user_doc, USER_IMAGE_FIELD, None)  
         },
-        "employee": emp_block 
+        "employee": emp_block  # no image_url key here
     }
     return {"status": "success", "data": data}
 
