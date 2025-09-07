@@ -142,7 +142,7 @@ def attendance(employee, status, attendance_date=None, shift_type=None,
     att.insert(ignore_permissions=True)
 
     # --- Check-in side-effect (only on Present) ---
-    result = mark_checking(employee, status, branch, shift_type, day)
+    result = mark_checking(employee, status, branch, shift_type)
 
     if result.get("status") == "success":
         image_url = None
