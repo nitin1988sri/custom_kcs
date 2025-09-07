@@ -218,7 +218,6 @@ def get_employee_context(employee_id=None, date_str=None):
     # primary/effective
     if effective_primary:
         att_id = _att_for(employee_id, day, shift_type=effective_primary["shift"], branch=effective_primary["name"])
-        effective_primary["attendance_id"] = att_id
         effective_primary["is_marked"] = bool(att_id)
 
     # each overtime branch
