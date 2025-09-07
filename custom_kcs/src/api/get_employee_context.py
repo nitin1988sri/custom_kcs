@@ -231,7 +231,6 @@ def get_employee_context(employee_id=None):
 
     # build payload
     payload = {
-        "date": day,
         "employee": employee_id,
         "primary_branch": effective_primary,   # may be None if no Employee.branch
         "overtime_branches": ot_list
