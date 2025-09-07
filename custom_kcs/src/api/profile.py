@@ -60,7 +60,7 @@ def get_profile(employee_id: str | None = None):
             "full_name": user_doc.full_name,
             "email": user_doc.email,
             "mobile_no": getattr(user_doc, "mobile_no", None),
-            "image_url": getattr(user_doc, USER_IMAGE_FIELD, None)  # ONLY HERE
+            "image_url": getattr(user_doc, USER_IMAGE_FIELD, None)  
         },
         "employee": emp_block  # no image_url key here
     }
