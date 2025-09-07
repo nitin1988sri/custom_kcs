@@ -4,6 +4,11 @@ import os
 from frappe.utils import now, get_time, today
 from frappe.utils import now, today, now_datetime
 from frappe.utils.file_manager import save_file
+from custom_kcs.src.http_response import (
+    _respond,
+    _ok, _created, _bad_request, _forbidden,
+    _not_found, _conflict, _unprocessable, _server_error,
+)
 
 
 @frappe.whitelist()
@@ -77,57 +82,48 @@ def attendance(employee, status, attendance_date=None, shift_type=None,
 
     # --- Require essentials ---
     if not employee or not shift_type:
-        return {"status": "error", "message": "employee and shift_type are required."}
+        return _bad_request("employee, shift_type and branch are required.")
 
     day = attendance_date or today()
 
     # --- Geo validations ---
     if not (latitude and longitude):
-        return {"status": "error", "message": "Latitude and Longitude are required."}
+        return _bad_request("Latitude and Longitude are required.")
 
     branch_row = frappe.db.get_value(
         "Branch", branch, ["latitude", "longitude", "geofence_radius_m"], as_dict=True
     )
     if not branch_row or not branch_row.latitude or not branch_row.longitude:
-        return {"status": "error", "message": "Branch coordinates not set"}
+        return _unprocessable("Branch coordinates not set")
 
     radius_m = float(branch_row.geofence_radius_m or 50)
     dist = haversine(float(latitude), float(longitude),
                      float(branch_row.latitude), float(branch_row.longitude))
     if dist > radius_m:
-        return {"status": "error", "message": f"You are {int(dist)} m away. Allowed {int(radius_m)} m."}
+        return _forbidden(f"You are {int(dist)} m away. Allowed {int(radius_m)} m.")
 
-    # --- HARD RULES ---
-    # (A) same date + same shift duplicate block
     existing = frappe.db.get_value(
         "Attendance",
         {
             "employee": employee,
             "attendance_date": day,
             "shift": shift_type,
-            "docstatus": ["<", 2],  # not cancelled
+            "docstatus": ["<", 2],  
         },
         "name",
     )
     if existing:
-        return {
-            "status": "error",
-            "message": f"Attendance already exists for {employee} on {day} in shift '{shift_type}'.",
-            "attendance_id": existing,
-        }
+        return _conflict(f"Attendance already exists for {employee} on {day} in shift '{shift_type}'.", attendance_id=existing)
 
-    # (B) day total cap (max 2)
+
     total_today = frappe.db.count(
         "Attendance",
         {"employee": employee, "attendance_date": day, "docstatus": ["<", 2]},
     )
     if total_today >= 2:
-        return {
-            "status": "error",
-            "message": f"Max 2 attendances allowed per day. Already have {total_today} on {day}.",
-        }
+        return _conflict(f"Max 2 attendances allowed per day. Already have {total_today} on {day}.")
 
-    # --- Create draft Attendance ---
+
     att = frappe.get_doc({
         "doctype": "Attendance",
         "employee": employee,
@@ -141,7 +137,6 @@ def attendance(employee, status, attendance_date=None, shift_type=None,
     })
     att.insert(ignore_permissions=True)
 
-    # --- Check-in side-effect (only on Present) ---
     result = mark_checking(employee, status, branch, shift_type)
 
     if result.get("status") == "success":
@@ -158,11 +153,10 @@ def attendance(employee, status, attendance_date=None, shift_type=None,
             "image_url": image_url,
         }
 
-    # rollback doc if side-effect failed
     att.cancel()
     att.delete()
     frappe.db.commit()
-    return {"status": "error", "message": result.get("message") or "Failed to mark checking"}
+    return _conflict(result.get("message") or "Failed to mark checking")
 
 
 def mark_checking(employee, status, branch, shift_type):
