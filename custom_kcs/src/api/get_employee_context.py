@@ -101,15 +101,7 @@ from math import radians, sin, cos, asin, sqrt
 def _today_str():
     return date.today().isoformat()
 
-def _normalize_day(date_str: str | None) -> str:
-    """Return YYYY-MM-DD (server tz)."""
-    if not date_str:
-        return _today_str()
-    try:
-        return str(frappe.utils.getdate(date_str))
-    except Exception:
-        # if bad format, fall back to today
-        return _today_str()
+
 
 def haversine(lat1, lon1, lat2, lon2):
     R = 6371000.0
@@ -177,7 +169,6 @@ def _split_assignments(employee: str, emp_primary_shift: str | None):
     )
     branch_switch, overtime = [], []
     for r in rows:
-        # r.shift_type is the OT shift for that assignment
         item = {
             "name": r.overtime_branch,       # branch name
             "assignment_id": r.name,
@@ -200,7 +191,7 @@ def get_employee_context(employee_id=None, date_str=None):
         return {"status":"error","message":"Employee not linked."}
 
     # normalize date
-    day = _normalize_day(date_str)
+    day = date.today().isoformat()
 
     emp = frappe.db.get_value("Employee", employee_id, ["branch","shift"], as_dict=True)
     primary_branch_obj = None
@@ -219,19 +210,11 @@ def get_employee_context(employee_id=None, date_str=None):
         # pick first branch switch as today's effective primary
         effective_primary = {
             "name": branch_switch[0]["name"],
-            "shift": emp.shift,
-            "assignment_id": branch_switch[0]["assignment_id"],
-            "date_from": branch_switch[0]["date_from"],
-            "date_to": branch_switch[0]["date_to"],
-            "mode": "BRANCH_SWITCH"
+            "shift": emp.shift
         }
     elif primary_branch_obj:
         effective_primary = {
-            **primary_branch_obj,
-            "assignment_id": None,
-            "date_from": None,
-            "date_to": None,
-            "mode": "PRIMARY"
+            **primary_branch_obj
         }
 
     # ---- Attendance flags ----
