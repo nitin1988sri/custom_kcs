@@ -180,7 +180,7 @@ def _split_assignments(employee: str, emp_primary_shift: str | None):
     return branch_switch, overtime
 
 @frappe.whitelist(methods=["GET"])
-def get_employee_context(employee_id=None, date_str=None):
+def get_employee_context(employee_id=None):
     # resolve employee
     if not employee_id:
         employee_id = frappe.db.get_value("Employee", {"user_id": frappe.session.user}, "name")
