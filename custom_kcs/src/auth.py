@@ -19,8 +19,6 @@ def login(usr, pwd):
         "message": "Logged In",
         "sid": frappe.session.sid,
         "user_data": user,
-        "full_name": user.full_name,
-        "email": user.email,
         "empDetails": employee
     }
 
