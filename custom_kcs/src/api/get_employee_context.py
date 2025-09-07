@@ -153,7 +153,7 @@ def _att_for(employee: str, day: str, shift_type: str | None, branch: str | None
         "docstatus": ["<", 2],
     }
     if shift_type:
-        filters["shift_type"] = shift_type
+        filters["shift"] = shift_type
     if branch:
         filters["branch"] = branch
     return frappe.db.get_value("Attendance", filters, "name")
