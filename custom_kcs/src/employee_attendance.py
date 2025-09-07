@@ -146,7 +146,6 @@ def attendance(employee, status, attendance_date=None, shift_type=None,
             "status": "success",
         }
 
-    att.cancel()
     att.delete()
     frappe.db.commit()
     return _conflict(result.get("message") or "Failed to mark checking")
