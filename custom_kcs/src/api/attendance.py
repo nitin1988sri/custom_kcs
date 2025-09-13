@@ -57,24 +57,17 @@ def get_my_attendance(
         fdt = get_first_day(today_dt)
         tdt = get_last_day(today_dt)
 
-    # --- Fields --- (minimal + add if present)
     fields = [
-        "name",
-        "employee",
-        "employee_name",
+        "branch",
+        "shift",
         "attendance_date",
         "status",
-        "company",
     ]
     meta = frappe.get_meta("Attendance")
     optional_fields = [
-        "in_time",
-        "out_time",
-        "working_hours",
         "late_entry",
         "early_exit",
         "shift",
-        "image",
         "custom_latitude",
         "custom_longitude",
         "custom_address",
