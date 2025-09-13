@@ -88,9 +88,5 @@ def get_my_attendance(
 
     return {
         "success": True,
-        "employee": emp,
-        "from_date": str(fdt),
-        "to_date": str(tdt),
-        "count": len(rows),
         "data": rows,
     }
