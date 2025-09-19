@@ -4,6 +4,9 @@ import os
 from frappe.utils import now, get_time, today
 from frappe.utils import now, today, now_datetime
 from frappe.utils.file_manager import save_file
+import json
+
+
 from custom_kcs.src.http_response import (
     _respond,
     _ok, _created, _bad_request, _forbidden,
@@ -79,6 +82,31 @@ def _attach_image_to_attendance(att, base64_image, filename=None, image_fieldnam
 def attendance(employee, status, attendance_date=None, shift_type=None,
                branch=None, base64_image=None, filename=None,
                latitude=None, longitude=None):
+    
+    log_doc = frappe.get_doc({
+        "doctype": "Attendance Log",
+        "employee": employee,
+        "status": status,
+        "attendance_date": attendance_date or today(),
+        "shift_type": shift_type,
+        "branch": branch,
+        "latitude": latitude,
+        "longitude": longitude,
+        "base64_image": base64_image,
+        "filename": filename,
+        "raw_request": json.dumps({
+            "employee": employee,
+            "status": status,
+            "attendance_date": attendance_date,
+            "shift_type": shift_type,
+            "branch": branch,
+            "latitude": latitude,
+            "longitude": longitude,
+            "filename": filename,
+        })
+    })
+    log_doc.insert(ignore_permissions=True)
+    frappe.db.commit()
 
     # --- Require essentials ---
     if not employee or not shift_type:

@@ -8,16 +8,6 @@ def get_my_attendance(
     month: str | None = None,
     year: str | None = None,
 ):
-    """
-    Session user ke liye Attendance list laata hai.
-    Filters: sirf month/year (no status, no from_date/to_date, no pagination, no check-ins).
-
-    Query params:
-        month: 1-12 ya 'all' (optional). Agar na de to current month.
-        year:  4-digit year (optional). Agar month diya hai aur year na ho to current year.
-
-    Returns: dict {success, employee, from_date, to_date, count, data[]}
-    """
 
     # --- Resolve session user & employee ---
     session_user = (frappe.session.user or "Guest").lower()
