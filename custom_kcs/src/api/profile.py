@@ -41,17 +41,15 @@ def _set_user_image(user_name: str, base64_data: str, filename: str | None = Non
 
 # -------- GET PROFILE (User + Employee basics; image only on User) --------
 @frappe.whitelist()
-def get_profile(employee_id: str | None = None):
+def get_profile():
     user_id = frappe.session.user
     user_doc = frappe.get_doc("User", user_id)
-
-    if not employee_id:
-        employee_id = _my_employee()
+    employee_id = _my_employee()
 
     emp_block = None
     if employee_id:
         fields = ["name","employee_name","company","branch","department","designation",
-                  "personal_email","company_email","shift"]
+                    "personal_email","company_email","shift"]
         emp_block = frappe.db.get_value("Employee", employee_id, fields, as_dict=True)
 
     data = {
@@ -60,9 +58,9 @@ def get_profile(employee_id: str | None = None):
             "full_name": user_doc.full_name,
             "email": user_doc.email,
             "mobile_no": getattr(user_doc, "mobile_no", None),
-            "image_url": getattr(user_doc, USER_IMAGE_FIELD, None)  
+            "image_url": getattr(user_doc, USER_IMAGE_FIELD, None)
         },
-        "employee": emp_block  # no image_url key here
+        "employee": emp_block 
     }
     return {"status": "success", "data": data}
 
