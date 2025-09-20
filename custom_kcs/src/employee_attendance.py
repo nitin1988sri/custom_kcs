@@ -9,8 +9,14 @@ import json
 
 from custom_kcs.src.http_response import (
     _respond,
-    _ok, _created, _bad_request, _forbidden,
-    _not_found, _conflict, _unprocessable, _server_error,
+    _ok,
+    _created,
+    _bad_request,
+    _forbidden,
+    _not_found,
+    _conflict,
+    _unprocessable,
+    _server_error,
 )
 
 
@@ -20,11 +26,11 @@ def bulk_attendance(data):
     responses = []
     for entry in data:
         res = attendance(
-            employee = entry.get("employee"),
-            status = entry.get("status"),
-            attendance_date= entry.get("attendance_date"),
-            shift_type = entry.get("shift_type"),
-            branch = entry.get("branch")
+            employee=entry.get("employee"),
+            status=entry.get("status"),
+            attendance_date=entry.get("attendance_date"),
+            shift_type=entry.get("shift_type"),
+            branch=entry.get("branch"),
         )
         responses.append(res)
 
@@ -33,12 +39,17 @@ def bulk_attendance(data):
 
 def haversine(lat1, lon1, lat2, lon2):
     R = 6371000
-    p1 = math.radians(lat1); p2 = math.radians(lat2)
-    dp = math.radians(lat2 - lat1); dl = math.radians(lon2 - lon1)
-    a = math.sin(dp/2)**2 + math.cos(p1)*math.cos(p2)*math.sin(dl/2)**2
+    p1 = math.radians(lat1)
+    p2 = math.radians(lat2)
+    dp = math.radians(lat2 - lat1)
+    dl = math.radians(lon2 - lon1)
+    a = math.sin(dp / 2) ** 2 + math.cos(p1) * math.cos(p2) * math.sin(dl / 2) ** 2
     return 2 * R * math.atan2(math.sqrt(a), math.sqrt(1 - a))
 
-def _attach_image_to_attendance(att, base64_image, filename=None, image_fieldname="image"):
+
+def _attach_image_to_attendance(
+    att, base64_image, filename=None, image_fieldname="image"
+):
     """Attendance पर image attach करे और 'image' फील्ड में URL सेट करे."""
     if not base64_image:
         return None
@@ -56,7 +67,9 @@ def _attach_image_to_attendance(att, base64_image, filename=None, image_fieldnam
         frappe.delete_doc("File", fid, ignore_permissions=True)
 
     if not filename:
-        filename = f"attendance_{att.employee}_{now_datetime().strftime('%Y%m%d%H%M%S')}.png"
+        filename = (
+            f"attendance_{att.employee}_{now_datetime().strftime('%Y%m%d%H%M%S')}.png"
+        )
 
     content = decode_base64(base64_image)
     if not content:
@@ -78,33 +91,62 @@ def _attach_image_to_attendance(att, base64_image, filename=None, image_fieldnam
 
     return fdoc.file_url
 
+
 @frappe.whitelist(methods=["POST"])
-def attendance(employee, status, attendance_date=None, shift_type=None,
-               branch=None, base64_image=None, filename=None,
-               latitude=None, longitude=None):
-    
-    log_doc = frappe.get_doc({
-        "doctype": "Attendance Log",
-        "employee": employee,
-        "status": status,
-        "attendance_date": attendance_date or today(),
-        "shift_type": shift_type,
-        "branch": branch,
-        "latitude": latitude,
-        "longitude": longitude,
-        "base64_image": base64_image,
-        "filename": filename,
-        "raw_request": json.dumps({
+def attendance(
+    employee,
+    status,
+    attendance_date=None,
+    shift_type=None,
+    branch=None,
+    base64_image=None,
+    filename=None,
+    latitude=None,
+    longitude=None,
+):
+
+    # --- Validate employee existence ---
+    if not frappe.db.exists("Employee", employee):
+        return {"message": "emp not found"}
+
+    # --- Validate branch existence ---
+    if branch and not frappe.db.exists("Branch", branch):
+        return {"message": "branch not found"}
+
+    # --- Validate latitude/longitude ---
+    try:
+        lat = float(latitude)
+        lon = float(longitude)
+    except (TypeError, ValueError):
+        return {"message": "invalid latitude/longitude"}
+
+    # --- Create Attendance Log ---
+    log_doc = frappe.get_doc(
+        {
+            "doctype": "Attendance Log",
             "employee": employee,
             "status": status,
-            "attendance_date": attendance_date,
+            "attendance_date": attendance_date or today(),
             "shift_type": shift_type,
             "branch": branch,
-            "latitude": latitude,
-            "longitude": longitude,
+            "latitude": lat,
+            "longitude": lon,
+            "base64_image": base64_image,
             "filename": filename,
-        })
-    })
+            "raw_request": json.dumps(
+                {
+                    "employee": employee,
+                    "status": status,
+                    "attendance_date": attendance_date,
+                    "shift_type": shift_type,
+                    "branch": branch,
+                    "latitude": latitude,
+                    "longitude": longitude,
+                    "filename": filename,
+                }
+            ),
+        }
+    )
     log_doc.insert(ignore_permissions=True)
     frappe.db.commit()
 
@@ -115,9 +157,6 @@ def attendance(employee, status, attendance_date=None, shift_type=None,
     day = attendance_date or today()
 
     # --- Geo validations ---
-    if not (latitude and longitude):
-        return _bad_request("Latitude and Longitude are required.")
-
     branch_row = frappe.db.get_value(
         "Branch", branch, ["latitude", "longitude", "geofence_radius_m"], as_dict=True
     )
@@ -125,44 +164,50 @@ def attendance(employee, status, attendance_date=None, shift_type=None,
         return _unprocessable("Branch coordinates not set")
 
     radius_m = float(branch_row.geofence_radius_m or 50)
-    dist = haversine(float(latitude), float(longitude),
-                     float(branch_row.latitude), float(branch_row.longitude))
+    dist = haversine(lat, lon, float(branch_row.latitude), float(branch_row.longitude))
     if dist > radius_m:
         return _forbidden(f"You are {int(dist)} m away. Allowed {int(radius_m)} m.")
 
+    # --- Check existing attendance ---
     existing = frappe.db.get_value(
         "Attendance",
         {
             "employee": employee,
             "attendance_date": day,
             "shift": shift_type,
-            "docstatus": ["<", 2],  
+            "docstatus": ["<", 2],
         },
         "name",
     )
     if existing:
-        return _conflict(f"Attendance already exists for {employee} on {day} in shift '{shift_type}'.", attendance_id=existing)
-
+        return _conflict(
+            f"Attendance already exists for {employee} on {day} in shift '{shift_type}'.",
+            attendance_id=existing,
+        )
 
     total_today = frappe.db.count(
         "Attendance",
         {"employee": employee, "attendance_date": day, "docstatus": ["<", 2]},
     )
     if total_today >= 2:
-        return _conflict(f"Max 2 attendances allowed per day. Already have {total_today} on {day}.")
+        return _conflict(
+            f"Max 2 attendances allowed per day. Already have {total_today} on {day}."
+        )
 
-
-    att = frappe.get_doc({
-        "doctype": "Attendance",
-        "employee": employee,
-        "attendance_date": day,
-        "status": status,
-        "branch": branch,
-        "shift": shift_type,
-        "in_time": now() if status in ["Present"] else None,
-        "latitude": latitude,
-        "longitude": longitude,
-    })
+    # --- Insert attendance ---
+    att = frappe.get_doc(
+        {
+            "doctype": "Attendance",
+            "employee": employee,
+            "attendance_date": day,
+            "status": status,
+            "branch": branch,
+            "shift": shift_type,
+            "in_time": now() if status in ["Present"] else None,
+            "latitude": lat,
+            "longitude": lon,
+        }
+    )
     att.insert(ignore_permissions=True)
 
     result = mark_checking(employee, status, branch, shift_type)
@@ -170,9 +215,7 @@ def attendance(employee, status, attendance_date=None, shift_type=None,
     if result.get("status") == "success":
         att.submit()
         frappe.db.commit()
-        return {
-            "status": "success",
-        }
+        return {"status": "success"}
 
     att.delete()
     frappe.db.commit()
@@ -181,62 +224,79 @@ def attendance(employee, status, attendance_date=None, shift_type=None,
 
 def mark_checking(employee, status, branch, shift_type):
     try:
-        if status in ["Present", "Absent"]: 
+        if status in ["Present", "Absent"]:
             response = check_in_employee_for_shift(employee, branch, shift_type)
-            checkin = frappe.get_doc({
-                "doctype": "Employee Checkin",
-                "employee": employee,
-                "log_type": "IN",
-                "branch": branch,
-                "shift_type": shift_type
-            })
+            checkin = frappe.get_doc(
+                {
+                    "doctype": "Employee Checkin",
+                    "employee": employee,
+                    "log_type": "IN",
+                    "branch": branch,
+                    "shift_type": shift_type,
+                }
+            )
             checkin.flags.ignore_hooks = True
             checkin.insert(ignore_permissions=True)
             frappe.db.commit()
         else:
-            response = {"status": "success", "message": f"Attendance marked as {status}"}
+            response = {
+                "status": "success",
+                "message": f"Attendance marked as {status}",
+            }
 
         return {
             "status": response.get("status"),
             "message": response.get("message"),
         }
     except Exception as e:
-        frappe.log_error(title="Employee Attendance Error", message=frappe.get_traceback())
+        frappe.log_error(
+            title="Employee Attendance Error", message=frappe.get_traceback()
+        )
         return {"status": "error", "message": str(e)}
 
 
 def check_in_employee_for_shift(employee, branch, shift_type):
-    
-    shift_count = frappe.db.count("Shift Log", {
-        "employee": employee,
-        "check_in_time": [">=", today()]
-    })
+
+    shift_count = frappe.db.count(
+        "Shift Log", {"employee": employee, "check_in_time": [">=", today()]}
+    )
 
     if shift_count >= 2:
-        return {"status": "error", "message": "This employee has already completed 2 shifts today!"}
+        return {
+            "status": "error",
+            "message": "This employee has already completed 2 shifts today!",
+        }
 
-    shift_log = frappe.get_doc({
-        "doctype": "Shift Log",
-        "employee": employee,
-        "branch": branch,
-        "shift_type": shift_type,
-        "check_in_time": now()
-    })
+    shift_log = frappe.get_doc(
+        {
+            "doctype": "Shift Log",
+            "employee": employee,
+            "branch": branch,
+            "shift_type": shift_type,
+            "check_in_time": now(),
+        }
+    )
     shift_log.insert(ignore_permissions=True)
     frappe.db.commit()
 
-    return {"status": "success", "message": "Check-in successful!", "shift_id": shift_log.name}
+    return {
+        "status": "success",
+        "message": "Check-in successful!",
+        "shift_id": shift_log.name,
+    }
 
 
 def check_out_employee_for_shift(employee):
 
-    shift = frappe.db.get_value("Shift Log", {
-        "employee": employee,
-        "check_out_time": ["is", "null"]
-    }, "name")
+    shift = frappe.db.get_value(
+        "Shift Log", {"employee": employee, "check_out_time": ["is", "null"]}, "name"
+    )
 
     if not shift:
-        return {"status": "error", "message": "No active shift found for this employee!"}
+        return {
+            "status": "error",
+            "message": "No active shift found for this employee!",
+        }
 
     shift_doc = frappe.get_doc("Shift Log", shift)
     shift_doc.check_out_time = now()
@@ -252,9 +312,7 @@ def get_employees_for_bulk_attendance_bkp(branch=None):
     employee_id = frappe.db.get_value("Employee", {"user_id": user}, "name")
 
     branches = frappe.get_all(
-        "Branch",
-        filters={"branch_manager": employee_id},
-        pluck="name"
+        "Branch", filters={"branch_manager": employee_id}, pluck="name"
     )
 
     if not branches:
@@ -263,7 +321,7 @@ def get_employees_for_bulk_attendance_bkp(branch=None):
     if branch:
         branches = [branch]
 
-    placeholders = ','.join(['%s'] * len(branches))
+    placeholders = ",".join(["%s"] * len(branches))
 
     today = frappe.utils.today()
 
@@ -285,15 +343,14 @@ def get_employees_for_bulk_attendance_bkp(branch=None):
 
     return employees
 
+
 @frappe.whitelist()
 def get_employees_for_bulk_attendance(branch=None, shift_type=None):
     user = frappe.session.user
     employee_id = frappe.db.get_value("Employee", {"user_id": user}, "name")
 
     branches = frappe.get_all(
-        "Branch",
-        filters={"branch_manager": employee_id},
-        pluck="name"
+        "Branch", filters={"branch_manager": employee_id}, pluck="name"
     )
 
     if not branches:
@@ -302,7 +359,7 @@ def get_employees_for_bulk_attendance(branch=None, shift_type=None):
     if branch:
         branches = [branch]
 
-    placeholders = ','.join(['%s'] * len(branches))
+    placeholders = ",".join(["%s"] * len(branches))
     today = frappe.utils.today()
 
     # Prepare base query and conditions
@@ -343,9 +400,7 @@ def get_branches_for_manager():
         return []
 
     branches = frappe.get_all(
-        "Branch",
-        filters={"branch_manager": employee_id},
-        pluck="name"
+        "Branch", filters={"branch_manager": employee_id}, pluck="name"
     )
 
     return branches

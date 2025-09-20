@@ -6,7 +6,7 @@ def execute():
         doc = frappe.get_doc({
             "doctype": "DocType",
             "name": "Attendance Log",
-            "module": "Custom KCS",  # अपने module का नाम डालें
+            "module": "Custom KCS",
             "custom": 1,
             "fields": [
                 {
