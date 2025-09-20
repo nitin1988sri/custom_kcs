@@ -107,11 +107,11 @@ def attendance(
 
     # --- Validate employee existence ---
     if not frappe.db.exists("Employee", employee):
-        return _bad_request("emp not found")
+        return _not_found("emp not found")
 
     # --- Validate branch existence ---
     if branch and not frappe.db.exists("Branch", branch):
-        return _bad_request("branch not found")
+        return _not_found("branch not found")
 
     # --- Validate latitude/longitude ---
     try:
