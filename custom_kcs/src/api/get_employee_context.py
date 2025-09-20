@@ -6,7 +6,17 @@ from math import radians, sin, cos, asin, sqrt
 def _today_str():
     return date.today().isoformat()
 
-
+from custom_kcs.src.http_response import (
+    _respond,
+    _ok,
+    _created,
+    _bad_request,
+    _forbidden,
+    _not_found,
+    _conflict,
+    _unprocessable,
+    _server_error,
+)
 
 def haversine(lat1, lon1, lat2, lon2):
     R = 6371000.0
@@ -84,15 +94,13 @@ def _split_assignments(employee: str, emp_primary_shift: str | None):
             overtime.append(item)            # different shift -> overtime
     return branch_switch, overtime
 
-@frappe.whitelist(methods=["GET"])
-def get_employee_context(employee_id=None):
-    # resolve employee
-    if not employee_id:
-        employee_id = frappe.db.get_value("Employee", {"user_id": frappe.session.user}, "name")
-    if not employee_id:
-        return {"status":"error","message":"Employee not linked."}
 
-    # normalize date
+@frappe.whitelist(methods=["GET"])
+def get_employee_context():
+    employee_id = frappe.db.get_value("Employee", {"user_id": frappe.session.user}, "name")
+    if not employee_id:
+        return _not_found("emp not found")
+
     day = date.today().isoformat()
 
     emp = frappe.db.get_value("Employee", employee_id, ["branch","shift"], as_dict=True)
