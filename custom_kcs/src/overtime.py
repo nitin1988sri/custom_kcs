@@ -10,11 +10,11 @@ def validate_admin_access():
 @frappe.whitelist()
 def get_employees():
     employees = frappe.get_all("Employee", fields=["name", "employee_name", "branch"])
-    
+
     for emp in employees:
         shift_logs = frappe.get_all(
-            "Shift Log", 
-            filters={"employee": emp.name}, 
+            "Shift Log",
+            filters={"employee": emp.name},
             fields=["shift_type", "check_in_time", "branch"],
             order_by="check_in_time desc",
             limit_page_length=2
@@ -30,7 +30,7 @@ def get_employees():
                     shift_info += f" (Night shift Branch:- {log.branch})"
                 else:
                     shift_info += f" ({shift_label.title()} Branch:- {log.branch})"
-        
+
         emp["shift_info"] = shift_info
 
     return employees
@@ -42,30 +42,53 @@ def get_branches():
 
 @frappe.whitelist()
 def create_overtime(employee_id, overtime_branch, start_date, end_date, overtime_shift):
-    # if "Administrator" not in frappe.get_roles(frappe.session.user):
-    #     frappe.throw("You are not authorized to perform this action.", frappe.PermissionError)
+
+    # Validate overlapping / duplicate Overtime
+    existing = frappe.db.exists(
+        "Overtime",
+        {
+            "employee": employee_id,
+            "overtime_branch": overtime_branch,
+            "start_date": start_date,
+            "end_date": end_date,
+            "shift_type": overtime_shift,
+            "status": "Active"
+        }
+    )
+
+    if existing:
+        frappe.throw(
+            f"Duplicate Overtime entry already exists ({existing}) for employee {employee_id} "
+            f"with same branch, dates and shift."
+        )
+
+    # Fetch employee
+    employee = frappe.get_doc("Employee", employee_id)
+    original_branch = employee.branch
+
+    # Call your validation
+    validate_overtime_assignment(employee_id, start_date, overtime_shift)
+
+    # Create new overtime entry
+    temp_transfer = frappe.get_doc({
+        "doctype": "Overtime",
+        "employee": employee_id,
+        "original_branch": original_branch,
+        "overtime_branch": overtime_branch,
+        "start_date": start_date,
+        "end_date": end_date,
+        "shift_type": overtime_shift,
+        "status": "Active"
+    })
+    temp_transfer.insert()
+    frappe.db.commit()
+
+    return f"Employee {employee.name} has been allocated for overtime to {overtime_branch} from {start_date} to {end_date}."
+
+def create_overtimeBKP(employee_id, overtime_branch, start_date, end_date, overtime_shift):
 
     employee = frappe.get_doc("Employee", employee_id)
     original_branch = employee.branch
-    #current_contract = frappe.get_value("Contract", {"party_name": employee.client}, "name")
-
-    # if not current_contract:
-    #     frappe.throw("No active contract found for this employee!")
-
-    # new_contract = frappe.get_value("Contract", {"branch": temp_branch_id}, "name")
-    # if not new_contract:
-    #     frappe.throw("No active contract found for this branch!")
-
-    # new_rate = None
-    # contract_roles = frappe.get_all( "Contract Role", filters={"parent": new_contract},fields=["role", "billing_rate"])
-    # for role in contract_roles:
-    #     if role['role'] == employee.designation:
-    #         new_rate = role['billing_rate']
-    #         break
-
-    # if not new_rate:
-    #     frappe.throw("No matching role found in the new contract!")
-
     validate_overtime_assignment(employee_id, start_date, overtime_shift)
 
     temp_transfer = frappe.get_doc({
@@ -143,7 +166,7 @@ def get_overtime_employees_for_branch(branch=None, shift_type=None):
         params.append(shift_type)
 
     query = f"""
-        SELECT 
+        SELECT
             ot.employee,
             e.employee_name,
             ot.overtime_branch,
